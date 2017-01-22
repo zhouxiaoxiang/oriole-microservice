@@ -1,0 +1,28 @@
+sudo: false
+language: python
+python:
+    - '3.5'
+
+addons:
+    apt_packages:
+        - libenchant-dev
+
+install:
+    - pip install .
+
+cache:
+    directories:
+        - "$HOME/.cache/pip"
+
+script:
+    - make
+
+deploy:
+    provider: pypi
+    distributions: "sdist bdist_egg"
+    user: Eric.Zhou
+    password: 
+        secure: EI7iYXjjblRBCAIq2eVcNprnXWcXTXui+0C7avFndqOCLNUdW5vI5t2hTx0X8xuafrrlHANlZeKHYCX2Exxfm1JaxP61M9aIlW5t2EQm4P7fxoAnPHZnxpm+HUUK/iUyKPlqr6m3T0UIGhGL5F4/Df7ZaNRhh/Xln9KoHKrvFuSbRZoPAHRaMDVAmzVvIJYUEBFscoYQe+2+ziDKWZq8MY4QbnyaO/JIgKnDl+UKMHLLGRLwiqEmhehf68CpPWYSX52Gu3pUNdPcYoDc2A98MppSzWE2VO3hvBtZw3t8kRTqBWzm6C2poN9Azfj1jXmBGaU2HIzX9FdF2jWWDhqXHUumxViRXohslj4TNkoEVAz6YW16H4wYHkWzKI+tQN3Lj5jmrQ2IwPyGsG0rcyI+mYvJ5VFoajhYbYZPcjeant0pqASTfQH9Mff9fbc5veU7ZWU0NAzbnLCPSPkW1Ty7hqKaqHPWyNNqSyJX5Pj9KDNq4x+U+UQWPsnek6sKRy4JpxE1CAXtG7M/k/Sq4ygf+axBe/phdHO66yEsMsHZIRtnR9n60+BevGQ3nEKi3vgBEXxUVbNlagcGIV4SUfNmgH5Ws79HRtU3vxpbRp+iFrD+OrDettrcIyg18113c0BnJVbKONS7dHz0tsStQX+Paf3OK5fMGU71Qib96ethdk4=
+    on:
+        tags: true
+        repo: zhouxiaoxiang/oriole
