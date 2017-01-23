@@ -19,10 +19,10 @@ script:
 
 deploy:
     provider: pypi
-    distributions: "sdist bdist_egg"
+    distributions: "sdist bdist_wheel bdist_egg"
     user: Eric.Zhou
     password: 
-        secure: EI7iYXjjblRBCAIq2eVcNprnXWcXTXui+0C7avFndqOCLNUdW5vI5t2hTx0X8xuafrrlHANlZeKHYCX2Exxfm1JaxP61M9aIlW5t2EQm4P7fxoAnPHZnxpm+HUUK/iUyKPlqr6m3T0UIGhGL5F4/Df7ZaNRhh/Xln9KoHKrvFuSbRZoPAHRaMDVAmzVvIJYUEBFscoYQe+2+ziDKWZq8MY4QbnyaO/JIgKnDl+UKMHLLGRLwiqEmhehf68CpPWYSX52Gu3pUNdPcYoDc2A98MppSzWE2VO3hvBtZw3t8kRTqBWzm6C2poN9Azfj1jXmBGaU2HIzX9FdF2jWWDhqXHUumxViRXohslj4TNkoEVAz6YW16H4wYHkWzKI+tQN3Lj5jmrQ2IwPyGsG0rcyI+mYvJ5VFoajhYbYZPcjeant0pqASTfQH9Mff9fbc5veU7ZWU0NAzbnLCPSPkW1Ty7hqKaqHPWyNNqSyJX5Pj9KDNq4x+U+UQWPsnek6sKRy4JpxE1CAXtG7M/k/Sq4ygf+axBe/phdHO66yEsMsHZIRtnR9n60+BevGQ3nEKi3vgBEXxUVbNlagcGIV4SUfNmgH5Ws79HRtU3vxpbRp+iFrD+OrDettrcIyg18113c0BnJVbKONS7dHz0tsStQX+Paf3OK5fMGU71Qib96ethdk4=
+        secure: Xp9njkAnNPIjxH4s6FpxOJPAyTFrKYDU65nt9lhMDyJsz3M2sGaFijrRSDXMaoEMkzhvJ1Ij3tqvse//MP9ga11O0snixj9NYI/jym/MLkM/0Qg9FtI1NA2Rnz+q/VA27t36WVP3tjhlH1toTxLqli9aKpIFYnwJFz9qQ2NNTfHNH3Rw1QZUz3zDU/QqktYQLeNbwy8kwXg5x9INlPepv9G/GL437ch2CscZylUWfZ12Th6U1P3VTNFEUfWCcblFkNjfuwrPQQ9PmgpyE00+ak5Ayo7Cijh/UN5do8rIKB/rc/EIvIFy0aMqLBrucRB+QsHCjkWk0pZWilHBcJBv0j43Z8wk5Y35Y1yv1ZL3RD9hpK2gqzQkXAaJ2HnxsarvyMSubHHEq8cTtC42IgzEf+FxJdp9Lw6IRBEDKaimyHhNiE0guoeNDqvSsTAgy0q2WGOTs+3W2cRr90pWAEO7cEhtHhHFn2RBrKKIC6kLOB7QyyPERKYwtwt96Q+rxd8nXk60aG+OdeEAaoD/ezUujpqMuJI47DUi5R8RX+mccVpsO5kNGwuU2z948c3FyB+pEzGznqkNRETBqecTBqm4WA/RGiUZnohLrsu7MSO8VGaqEmg+G3AdEZgj7pvfH++t/QfXioilxNCX1TTgBicGQJLHLESA+XE1hHDuL7AEUqI=
     on:
         tags: true
-        repo: zhouxiaoxiang/oriole
+        repo: zhouxiaoxiang/oriole-service
