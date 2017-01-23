@@ -4,7 +4,7 @@ Oriole-Service
 .. image:: https://travis-ci.org/zhouxiaoxiang/oriole-service.png?branch=master  
   :target: http://travis-ci.org/zhouxiaoxiang/oriole-service
 
-Apply microservices and TDD makes enterprises more productive.
+Rapidly create services.
 
 *[Framework]*
 
