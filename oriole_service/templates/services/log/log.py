@@ -9,7 +9,7 @@ class LogService(App):
     Example::
 
         from nameko.standalone.rpc import ClusterRpcProxy
-        CONFIG = {"AMQP_URI":"amqp://guest:guest@localhost"}
+        CONFIG = {"AMQP_URI":"pyamqp://guest:guest@localhost"}
         with ClusterRpcProxy(CONFIG) as services:
             result = services.log_service.add_log({"content": "info"})
     """
