@@ -1,16 +1,10 @@
-# Oriole-Service
+# Oriole-Service (企业级服务框架)
 
-企业级服务框架
-
-Rapidly create services.
-
-构建企业级服务平台，以其微妙而能驰骋天下。
+Rapidly create services. (构建企业级服务平台，以其微妙而能驰骋天下。)
 
 [![build](https://travis-ci.org/zhouxiaoxiang/oriole-service.png?branch=master)](https://travis-ci.org/zhouxiaoxiang/oriole-service)
 
 **[Framework]**
-
-框架
 
 [Orile-Service](https://github.com/zhouxiaoxiang/oriole-service)
 
