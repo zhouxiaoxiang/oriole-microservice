@@ -30,7 +30,7 @@ with open(os.path.join(here, 'README.md'), 'r', 'utf-8') as handle:
 
 setup(
     name='oriole-service',
-    version='1.1.0',
+    version='1.1.1',
     description='Rapidly create services.',
     long_description=readme,
     author='Eric.Zhou',
