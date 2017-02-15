@@ -4,6 +4,7 @@ from mock import *
 from pytest import *
 from mockredis import *
 from oriole_service.log import logger
+from nameko.testing.services import worker_factory
 
 
 class Mock_app(object):
@@ -35,7 +36,7 @@ class Mock_app(object):
         return lambda self: None
 
     def create(self, name):
-        self.service = name()
+        self.service = worker_factory(name)
         return self.service
 
     def get_attr(self, attr):
