@@ -15,6 +15,7 @@ class UserService(App):
     """
 
     name = "user_service"
+    log = RpcProxy("log_service")
 
     def __init__(self):
         super().init()
@@ -29,5 +30,6 @@ class UserService(App):
         user.add_time = current_date
         user.add_time_int = current_time
 
+        self.log.add_log({"add_user": name})
         self.db.add(user)
         self.db.commit()
