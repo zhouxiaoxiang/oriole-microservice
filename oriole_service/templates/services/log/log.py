@@ -17,7 +17,7 @@ class LogService(App):
     name = "log_service"
 
     def __init__(self):
-        super().init()
+        self.init()
 
         # Standard log
         self._log = logger()

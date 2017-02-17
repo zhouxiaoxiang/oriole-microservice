@@ -18,7 +18,7 @@ class UserService(App):
     log = RpcProxy("log_service")
 
     def __init__(self):
-        super().init()
+        self.init()
 
     @rpc
     def add_user(self, name):
