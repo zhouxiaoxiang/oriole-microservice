@@ -1,3 +1,4 @@
+from oriole_service.db import *
 from dao import *
 import mongomock
 from mock import *

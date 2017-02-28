@@ -22,6 +22,7 @@ install_requires = [
     "Sphinx>=1.5b1",
     "PyMySQL>=0.7.9",
     "mysqlclient>=1.3.9",
+    "zope.sqlalchemy>=0.7.7",
 ]
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -30,7 +31,7 @@ with open(os.path.join(here, 'README.md'), 'r', 'utf-8') as handle:
 
 setup(
     name='oriole-service',
-    version='1.1.3',
+    version='1.2.0',
     description='Rapidly create services.',
     long_description=readme,
     author='Eric.Zhou',

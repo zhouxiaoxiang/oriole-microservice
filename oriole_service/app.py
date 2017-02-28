@@ -4,6 +4,7 @@ from nameko.rpc import rpc, RpcProxy
 from nameko.events import EventDispatcher, event_handler
 from oriole_service.conf import Config
 from oriole_service.log import logger
+from oriole_service.db import *
 
 topdir = path.join(getcwd(), pardir, pardir)
 sys.path.insert(0, topdir)
