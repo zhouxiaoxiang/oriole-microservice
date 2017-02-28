@@ -20,19 +20,20 @@ class Db(object):
         db.get_rs()
     """
 
-    def __init__(self):
+    def __init__(self, base=Base):
+        self.base = base
         self._log = logger()
         self.config = Config()
 
     def get_db(self):
         self._log.info("Get db...")
         self.engine = create_engine(self.config["database"])
-        Base.metadata.create_all(self.engine)
+        self.base.metadata.create_all(self.engine)
         return scoped_session(sessionmaker(self.engine))
 
     def drop_db(self):
         self._log.info("Drop db...")
-        Base.metadata.drop_all(self.engine)
+        self.base.metadata.drop_all(self.engine)
 
     def get_rs(self):
         self._log.info("Get redis...")

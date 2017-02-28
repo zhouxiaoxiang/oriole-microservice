@@ -32,7 +32,7 @@ class App(object):
         self._log = logger()
         self._log.info('Create app...')
 
-        data = Db()
+        data = Db(Base)
         self.db = data.get_db()
         self.rs = data.get_rs()
         self.cf = Config()
