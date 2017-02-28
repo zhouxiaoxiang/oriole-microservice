@@ -29,7 +29,7 @@ class Mock_app(object):
         return mock_redis_client()
 
     def db(self):
-        engine = create_engine('sqlite:///:memory:')
+        engine = create_engine('sqlite://')
         Base.metadata.create_all(engine)
         return sessionmaker(engine)()
 
