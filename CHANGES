@@ -54,3 +54,9 @@ Version 2.0.0
 
 Released 2017-3-8
 Add obj2json for more objects.
+
+Version 2.0.1
+-------------
+
+Released 2017-3-8
+Get ride of metadata from obj.

@@ -42,7 +42,7 @@ class App(object):
     def obj2dict(self, obj):
         result = {}
         for key in dir(obj):
-            if not key.startswith("_"):
+            if key != "metadata" and key[0] != "_":
                 value = getattr(obj, key)
                 if not callable(value):
                     result[key] = self._obj2json(value)
