@@ -30,6 +30,9 @@ class App(object):
     # config
     cf = ""
 
+    # service
+    name = "app_service"
+
     def init(self):
         self._log = logger()
         self._log.info('Create app...')
@@ -38,6 +41,10 @@ class App(object):
         self.db = data.get_db()
         self.rs = data.get_rs()
         self.cf = Config()
+
+    @rpc
+    def ping(self):
+        return True
 
     def obj2dict(self, obj):
         result = {}
@@ -48,20 +55,17 @@ class App(object):
                     result[key] = self._obj2json(value)
         return result
 
-
     def _list2json(self, obj):
         result = []
         for item in obj:
             result.append(self._obj2json(item))
         return result
 
-
     def _dict2json(self, obj):
         result = {}
         for item in obj:
             result[item] = self._obj2json(obj[item])
         return result
-
 
     def _obj2json(self, obj):
         if isinstance(obj, (list, set, tuple)):

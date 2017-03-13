@@ -60,3 +60,9 @@ Version 2.0.1
 
 Released 2017-3-8
 Get ride of metadata from obj.
+
+Version 2.2.0
+-------------
+
+Released 2017-3-13
+Support ping each service.
