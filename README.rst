@@ -10,14 +10,6 @@ Rapidly create services.
 
 `Orile-Service <https://github.com/zhouxiaoxiang/oriole-service>`_.
 
-* Create a service.
-
-  .. code:: python
-
-  oriole go <name>
-
-  e.g. oriole go log
-
 * Run a service.
 
   .. code:: python
