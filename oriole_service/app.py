@@ -6,6 +6,7 @@ from oriole_service.conf import Config
 from oriole_service.log import logger
 from oriole_service.db import *
 from datetime import datetime
+from decimal import Decimal
 
 topdir = path.join(getcwd(), pardir, pardir)
 sys.path.insert(0, topdir)
@@ -70,6 +71,8 @@ class App(object):
     def _obj2json(self, obj):
         if isinstance(obj, (list, set, tuple)):
             return self._list2json(obj)
+        elif isinstance(obj, Decimal):
+            return str(obj)
         elif isinstance(obj, dict):
             return self._dict2json(obj)
         elif obj == None or isinstance(obj, (int, str, bool, float)):

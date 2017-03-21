@@ -66,3 +66,9 @@ Version 2.2.0
 
 Released 2017-3-13
 Support ping each service.
+
+Version 2.2.1
+-------------
+
+Released 2017-3-21
+Transfer decimal to str.
