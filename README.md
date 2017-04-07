@@ -21,6 +21,7 @@ Rapidly create services.
 ```
   oriole test
 ```
+![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/test.gif)
 
 - Create documents. 
 
