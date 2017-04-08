@@ -20,8 +20,6 @@
 
 ```
   oriole run <service>
-
-  e.g. oriole run log
 ```
 
 - Create documents. 
@@ -35,3 +33,5 @@
 ```
   oriole sh
 ```
+ 
+That's all.
