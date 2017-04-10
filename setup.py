@@ -31,7 +31,7 @@ with open(os.path.join(here, 'README.md'), 'r', 'utf-8') as handle:
 
 setup(
     name='oriole-service',
-    version='2.2.2',
+    version='3.0.0',
     description='Rapidly create services.',
     long_description=readme,
     author='Eric.Zhou',
@@ -42,7 +42,7 @@ setup(
     install_requires=install_requires,
     entry_points={
         'console_scripts': [ 
-            'oriole=oriole_service.cli.main:main', 
+            'oriole=oriole_service.cli:main', 
         ], 
     },
     zip_safe=True,

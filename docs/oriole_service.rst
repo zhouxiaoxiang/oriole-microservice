@@ -1,50 +1,58 @@
-oriole_service package
-======================
+oriole\_service package
+=======================
 
 Subpackages
 -----------
 
 .. toctree::
 
-    oriole_service.cli
+    oriole_service.modules
 
 Submodules
 ----------
 
-oriole_service.app module
--------------------------
+oriole\_service\.app module
+---------------------------
 
 .. automodule:: oriole_service.app
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole_service.conf module
---------------------------
+oriole\_service\.cli module
+---------------------------
+
+.. automodule:: oriole_service.cli
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+oriole\_service\.conf module
+----------------------------
 
 .. automodule:: oriole_service.conf
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole_service.db module
-------------------------
+oriole\_service\.db module
+--------------------------
 
 .. automodule:: oriole_service.db
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole_service.log module
--------------------------
+oriole\_service\.log module
+---------------------------
 
 .. automodule:: oriole_service.log
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole_service.test module
---------------------------
+oriole\_service\.test module
+----------------------------
 
 .. automodule:: oriole_service.test
     :members:

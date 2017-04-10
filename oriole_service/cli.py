@@ -4,7 +4,7 @@ import os
 import sys
 import re
 import yaml
-from . import doc, test, run, go, goto, sh
+from .modules import *
 
 ENV_VAR_MATCHER = re.compile(r"""
         \$\{       # match characters `${` literally
@@ -30,7 +30,7 @@ def setup_parser():
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
 
-    for module in [doc, test, run, go, goto, sh]:
+    for module in modules:
         name = module.__name__.split('.')[-1]
         module_parser = subparsers.add_parser(name, description=module.__doc__)
         module.init_parser(module_parser)
