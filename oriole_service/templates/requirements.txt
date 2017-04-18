@@ -1,1 +1,1 @@
-oriole-service>=3.0.2
+oriole-service>=3.0.3
