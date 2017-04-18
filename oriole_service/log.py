@@ -67,7 +67,6 @@ class Log(object):
     def get(self):
         """ Return log handler """
 
-        self._log.info("Connect %s.%s" % (self.host, self.db))
         self.conn = mogo.connect(self.db, self.host)
         self.log = self.conn[self.db][self.tb]
         if not self.log:

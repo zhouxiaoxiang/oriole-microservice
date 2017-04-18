@@ -3,7 +3,6 @@ from os import path, pardir, getcwd
 from nameko.rpc import rpc, RpcProxy
 from nameko.events import EventDispatcher, event_handler
 from oriole_service.conf import Config
-from oriole_service.log import logger
 from oriole_service.db import *
 from datetime import datetime
 from decimal import Decimal
@@ -35,9 +34,6 @@ class App(object):
     name = "app_service"
 
     def init(self):
-        self._log = logger()
-        self._log.info('Create app...')
-
         data = Db(Base)
         self.db = data.get_db()
         self.rs = data.get_rs()

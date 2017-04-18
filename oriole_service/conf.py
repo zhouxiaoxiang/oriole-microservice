@@ -17,10 +17,7 @@ class Config(object):
     file_name = "services.cfg"
 
     def __new__(self, *args, **kwargs):
-
         if not self.content:
-
-            # Full path
             config = ""
             curdir = getcwd()
             for _ in range(self.max_depth):
@@ -29,9 +26,6 @@ class Config(object):
                     break
                 else:
                     curdir = path.join(curdir, pardir)
-
-            if not config:
-                raise RuntimeError("Need conf file.")
 
             with open(config) as f:
                 self.content = yaml.load(f)

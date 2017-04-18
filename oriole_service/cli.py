@@ -1,10 +1,10 @@
-from __future__ import print_function
-import argparse
 import os
-import sys
 import re
+import sys
 import yaml
+import argparse
 from .modules import *
+from oriole_service import api
 
 ENV_VAR_MATCHER = re.compile(r"""
         \$\{       # match characters `${` literally
@@ -22,6 +22,19 @@ IMPLICIT_ENV_VAR_MATCHER = re.compile(r"""
     """, re.VERBOSE)
 
 
+def _add_parser(parser, module, name):
+    module_parser = parser.add_parser(name, description=module.__doc__)
+    module.init_parser(module_parser)
+    module_parser.set_defaults(main=module.main)
+
+
+def add_parser(parser, modules):
+    for module in modules:
+        name = module.__name__.split('.')[-1]
+        _add_parser(parser, module, name)
+        _add_parser(parser, module, name[0])
+
+
 def setup_parser():
     curdir = os.getcwd()
     if curdir not in sys.path:
@@ -29,12 +42,7 @@ def setup_parser():
 
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
-
-    for module in modules:
-        name = module.__name__.split('.')[-1]
-        module_parser = subparsers.add_parser(name, description=module.__doc__)
-        module.init_parser(module_parser)
-        module_parser.set_defaults(main=module.main)
+    add_parser(subparsers, modules)
     return parser
 
 
