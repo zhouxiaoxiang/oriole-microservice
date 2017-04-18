@@ -3,6 +3,4 @@ recursive-include oriole_service/templates *
 
 graft docs
 prune docs/build
-
-graft test
 global-exclude *.pyc
