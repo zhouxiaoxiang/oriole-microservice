@@ -11,7 +11,7 @@
 - Install oriole.
 
 ```
-pip install oriole-service
+  pip install oriole-service
 ```
 
 - Run unit tests.
