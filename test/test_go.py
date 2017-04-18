@@ -1,7 +1,7 @@
 from mock import patch
 from pytest import *
 from oriole_service.cli import setup_parser
-from oriole_service.modules.run import main
+from oriole_service.modules.go import main
 
 
 @fixture
@@ -9,25 +9,25 @@ def p():
     return setup_parser()
 
 
-def test_run(p):
+def test_go(p):
     args = p.parse_args([
-        'run',
+        'go',
         'log',
     ])
 
-    with patch('oriole_service.api.run') as run:
+    with patch('oriole_service.api.copy') as run:
         main(args)
         assert run.call_count == 1
-        assert run.call_args[0][0] == 'log'
+        assert run.call_args[0][1] == 'log'
 
 
-def test_r(p):
+def test_g(p):
     args = p.parse_args([
-        'r',
+        'g',
         'log',
     ])
 
-    with patch('oriole_service.api.run') as run:
+    with patch('oriole_service.api.copy') as run:
         main(args)
         assert run.call_count == 1
-        assert run.call_args[0][0] == 'log'
+        assert run.call_args[0][1] == 'log'

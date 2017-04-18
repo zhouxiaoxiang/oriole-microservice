@@ -1,92 +1,81 @@
-Release Notes
-=============
+# Release Notes
 
-Version 1.0.0
--------------
+## 1.0.0
 
-Released 2017-1-22
-Created from orile.
+2017-1-22
+Created from my oriole.
 
-Version 1.0.1
--------------
+## 1.0.1
 
-Released 2017-1-23
-No supply sdist_egg.
+2017-1-23
+No supply egg.
 
-Version 1.0.2
--------------
+## Version 1.0.2
 
-Released 2017-1-25
+2017-1-25
 Automatic deploy.
 
-Version 1.1.0
--------------
+## 1.1.0
 
-Released 2017-2-15
+2017-2-15
 Support rpcProxy
 
-Version 1.1.1
--------------
+## Version 1.1.1
 
-Released 2017-2-15
+2017-2-15
 Demo on 127.0.0.1
 
-Version 1.1.2
--------------
+## Version 1.1.2
 
-Released 2017-2-15
+2017-2-15
 Add RpcProxy demo.
 
-Version 1.1.3
--------------
+## 1.1.3
 
-Released 2017-2-28
+2017-2-28
 Take dynamic Base.
 
-Version 1.2.0
--------------
+## 1.2.0
 
-Released 2017-2-28
+2017-2-28
 Add zope.sqlalchemy
 
-Version 2.0.0
--------------
+## 2.0.0
 
-Released 2017-3-8
+2017-3-8
 Add obj2json for more objects.
 
-Version 2.0.1
--------------
+## 2.0.1
 
-Released 2017-3-8
+2017-3-8
 Get ride of metadata from obj.
 
-Version 2.2.0
--------------
+## 2.2.0
 
-Released 2017-3-13
+2017-3-13
 Support ping each service.
 
-Version 2.2.1
--------------
+## 2.2.1
 
-Released 2017-3-21
+2017-3-21
 Transfer decimal to str.
 
-Version 2.2.2
--------------
+## 2.2.2
 
-Released 2017-4-7
+2017-4-7
 Add remote test.
 
-Version 3.0.0
--------------
+## 3.0.0
 
-Released 2017-4-10
+2017-4-10
 Add the whole c/s system.
 
-Version 3.0.1
--------------
+## 3.0.1
 
-Released 2017-4-18
+2017-4-18
 Add oriole-api.
+
+## 3.0.2
+
+2017-4-18
+Add test for oriole-api.
