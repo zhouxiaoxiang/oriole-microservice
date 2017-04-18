@@ -8,6 +8,12 @@
 
 [Orile-Service](https://github.com/zhouxiaoxiang/oriole-service)
 
+- Install oriole.
+
+```
+pip install oriole-service
+```
+
 - Run unit tests.
 
 ```
