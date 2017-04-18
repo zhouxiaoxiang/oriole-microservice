@@ -22,16 +22,22 @@
   oriole run <service>
 ```
 
+![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif)
+
 - Create documents. 
 
 ```
   oriole doc
 ```
 
+![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/doc.gif)
+
 - Run a client.
 
 ```
   oriole sh
 ```
+
+![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif)
  
 That's all.
