@@ -8,6 +8,14 @@
 
 [Orile-Service](https://github.com/zhouxiaoxiang/oriole-service)
 
+- Prerequisites
+
+  - python >= 3.5.2
+  - mongodb
+  - mysql
+  - rabbitmq
+  - redis-server
+  
 - Install oriole.
 
 ```
