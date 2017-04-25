@@ -5,7 +5,7 @@ from os.path import *
 
 
 def main(args):
-    proj = join(dirname(__file__), pardir, "templates")
+    proj = join(dirname(__file__), pardir, "proj")
     api.copy(proj, args.name)
 
 

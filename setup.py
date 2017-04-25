@@ -23,6 +23,7 @@ install_requires = [
     "PyMySQL>=0.7.9",
     "mysqlclient>=1.3.9",
     "zope.sqlalchemy>=0.7.7",
+    "six>=1.10.0",
 ]
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -31,7 +32,7 @@ with open(os.path.join(here, 'README.md'), 'r', 'utf-8') as handle:
 
 setup(
     name='oriole-service',
-    version='3.0.3',
+    version='3.1.0',
     description='Rapidly create services.',
     long_description=readme,
     author='Eric.Zhou',
