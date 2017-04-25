@@ -12,22 +12,6 @@ oriole\_service\.modules\.doc module
     :undoc-members:
     :show-inheritance:
 
-oriole\_service\.modules\.go module
------------------------------------
-
-.. automodule:: oriole_service.modules.go
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-oriole\_service\.modules\.goto module
--------------------------------------
-
-.. automodule:: oriole_service.modules.goto
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 oriole\_service\.modules\.run module
 ------------------------------------
 

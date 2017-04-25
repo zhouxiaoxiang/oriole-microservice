@@ -21,10 +21,6 @@ def cwd() -> str:
     return os.getcwd()
 
 
-def copy(src: str, dest: str):
-    shutil.copytree(src, dest)
-
-
 def run(service: str):
     config = path.join(cwd(), "services.cfg")
     for fpath, _, fs in walk("services"):

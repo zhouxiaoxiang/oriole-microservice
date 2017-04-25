@@ -11,6 +11,14 @@ Subpackages
 Submodules
 ----------
 
+oriole\_service\.api module
+---------------------------
+
+.. automodule:: oriole_service.api
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 oriole\_service\.app module
 ---------------------------
 
