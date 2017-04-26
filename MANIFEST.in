@@ -1,6 +1,4 @@
 include CHANGES LICENSE README.md
-recursive-include oriole_service/templates *
-
 graft docs
 prune docs/build
 global-exclude *.pyc
