@@ -94,3 +94,8 @@ Update to new-arch.
 
 2017-4-25
 Remove go directive.
+
+## 3.2.0
+
+2017-4-26
+Support mysql and sqlite.

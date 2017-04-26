@@ -1,3 +1,5 @@
+""" Oriole-CLI """
+
 import os
 import re
 import sys

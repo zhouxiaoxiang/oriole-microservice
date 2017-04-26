@@ -1,35 +1,36 @@
+""" Oriole-DB """
+
 from sqlalchemy import Column, Integer, String, create_engine, types
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy import and_, or_, distinct, func
 from redis import StrictRedis
-from oriole_service.conf import Config
+from oriole_service.api import Config
 
 Base = declarative_base()
 
 
 class Db(object):
-    """ Create db.
-
-    Examples::
-
-        from oriole_service.db import *
-        db = Db()
-        db.get_db()
-        db.get_rs()
-    """
-
     def __init__(self, base=Base):
+        self.engine = ""
         self.base = base
         self.config = Config()
 
     def get_db(self):
-        self.engine = create_engine(self.config["database"])
-        self.base.metadata.create_all(self.engine)
-        return scoped_session(sessionmaker(self.engine))
+        database = self.config.get("database")
+        return self.create_db(database)
+
+    def get_test_db(self):
+        database = self.config.get("test_database", "sqlite://")
+        return self.create_db(database)
 
     def drop_db(self):
         self.base.metadata.drop_all(self.engine)
 
     def get_rs(self):
         return StrictRedis.from_url(self.config["datasets"])
+
+    def create_db(self, database):
+        self.engine = create_engine(database)
+        self.base.metadata.create_all(self.engine)
+        return scoped_session(sessionmaker(self.engine))

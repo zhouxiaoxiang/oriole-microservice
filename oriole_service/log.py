@@ -1,10 +1,12 @@
+""" Oriole-LOG """
+
 import mogo
 from logging import getLogger
 from logging import StreamHandler
 from logging import Formatter
 from logging import getLoggerClass
 from logging import DEBUG, ERROR
-from oriole_service.conf import Config
+from oriole_service.api import Config
 
 FORMAT = '[%(asctime)s] %(levelname)s in %(module)s: %(message)s'
 

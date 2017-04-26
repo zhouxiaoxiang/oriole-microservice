@@ -1,8 +1,10 @@
+""" Oriole-APP """
+
 import sys
 from os import path, pardir, getcwd
 from nameko.rpc import rpc, RpcProxy
 from nameko.events import EventDispatcher, event_handler
-from oriole_service.conf import Config
+from oriole_service.api import Config
 from oriole_service.db import *
 from datetime import datetime
 from decimal import Decimal
@@ -13,25 +15,11 @@ from dao import *
 
 
 class App(object):
-    """ App base.
 
-    Examples::
-
-        from oriole_service.app import App
-        app = App()
-    """
-
-    # mysql
     db = ""
-
-    # redis
     rs = ""
-
-    # config
     cf = ""
-
-    # service
-    name = "app_service"
+    name = "supervisor_thread"
 
     def init(self):
         data = Db(Base)
