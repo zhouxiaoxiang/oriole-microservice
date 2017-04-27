@@ -25,7 +25,11 @@ class Db(object):
         return self.create_db(database)
 
     def drop_db(self):
+        self.dbo.rollback()
+        self.dbo.commit()
+        self.dbo.close()
         self.base.metadata.drop_all(self.engine)
+        self.engine.dispose()
 
     def get_rs(self):
         return StrictRedis.from_url(self.config["datasets"])
@@ -33,4 +37,5 @@ class Db(object):
     def create_db(self, database):
         self.engine = create_engine(database)
         self.base.metadata.create_all(self.engine)
-        return scoped_session(sessionmaker(self.engine))
+        self.dbo = scoped_session(sessionmaker(self.engine))
+        return self.dbo

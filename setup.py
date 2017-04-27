@@ -9,7 +9,8 @@ from setuptools import find_packages, setup
 py_version = sys.version_info[:2]
 
 if py_version < (3, 5):
-    raise RuntimeError('Error: oriole-service only supports Python 3.5 or better')
+    raise RuntimeError(
+        'Error: oriole-service only supports Python 3.5 or better')
 
 install_requires = [
     "nameko-sqlalchemy>=0.0.4",
@@ -32,7 +33,7 @@ with open(os.path.join(here, 'README.md'), 'r', 'utf-8') as handle:
 
 setup(
     name='oriole-service',
-    version='3.2.0',
+    version='3.2.1',
     description='Rapidly create services.',
     long_description=readme,
     author='Eric.Zhou',
@@ -42,9 +43,10 @@ setup(
     include_package_data=True,
     install_requires=install_requires,
     entry_points={
-        'console_scripts': [ 
-            'oriole=oriole_service.cli:main', 
-        ], 
+        'console_scripts': [
+            'oriole=oriole_service.cli:main',
+            'o=oriole_service.cli:main',
+        ],
     },
     zip_safe=True,
     license='Apache License, Version 2.0',
@@ -56,5 +58,4 @@ setup(
         "Topic :: Internet",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Intended Audience :: Developers",
-    ]
-)
+    ])
