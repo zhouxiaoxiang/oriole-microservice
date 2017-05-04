@@ -1,5 +1,5 @@
 test:
-	@pytest test
+	@pytest -v test
 
 docs:
 	@sphinx-apidoc -f -o docs oriole_service

@@ -1,6 +1,7 @@
 """ Oriole-APP """
 
 import sys
+import copy
 from os import path, pardir, getcwd
 from nameko.rpc import rpc, RpcProxy
 from nameko.events import EventDispatcher, event_handler
@@ -31,37 +32,65 @@ class App(object):
     def ping(self):
         return True
 
-    def obj2dict(self, obj):
-        result = {}
-        for key in dir(obj):
-            if key != "metadata" and key[0] != "_":
-                value = getattr(obj, key)
-                if not callable(value):
-                    result[key] = self._obj2json(value)
-        return result
+    #
+    # These methods are used in services.
+    # NOT use in oriole-service anytime.
+    #
 
-    def _list2json(self, obj):
-        result = []
-        for item in obj:
-            result.append(self._obj2json(item))
-        return result
+    def _(self, item):
+        """ Get item from params """
 
-    def _dict2json(self, obj):
-        result = {}
-        for item in obj:
-            result[item] = self._obj2json(obj[item])
-        return result
+        if isinstance(item, dict):
+            self._params = copy.deepcopy(item)
+            return self._params
 
-    def _obj2json(self, obj):
+        try:
+            return self._params.get(item)
+        except:
+            return RuntimeError("Use self._(params) first.")
+
+    def _o(self, obj):
+        """ Translate object to json.
+
+        Dict in python is not json, so don't be confused.
+        When return object from rpc, should always use _o.
+        """
+
         if isinstance(obj, (list, set, tuple)):
-            return self._list2json(obj)
+            return self._ol(obj)
         elif isinstance(obj, Decimal):
             return str(obj)
         elif isinstance(obj, dict):
-            return self._dict2json(obj)
+            return self._od(obj)
         elif obj == None or isinstance(obj, (int, str, bool, float)):
             return obj
         elif isinstance(obj, datetime):
             return obj.strftime("%Y-%m-%d %H:%M:%S")
         else:
-            return self.obj2dict(obj)
+            return self._oo(obj)
+
+    def _oo(self, obj):
+        """ Don't use it! """
+
+        result = {}
+        for key in dir(obj):
+            if key != "metadata" and key[0] != "_":
+                value = getattr(obj, key)
+                if not callable(value):
+                    result[key] = self._o(value)
+        return result
+
+    def _ol(self, obj):
+        """ Don't use it! """
+
+        return [self._o(item) for item in obj]
+
+    def _od(self, obj):
+        """ Don't use it! """
+
+        return {item: self._o(obj[item]) for item in obj}
+
+    def obj2dict(self, obj):
+        """ Don't use it! """
+
+        return self._oo(obj)

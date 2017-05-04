@@ -35,14 +35,6 @@ oriole\_service\.cli module
     :undoc-members:
     :show-inheritance:
 
-oriole\_service\.conf module
-----------------------------
-
-.. automodule:: oriole_service.conf
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 oriole\_service\.db module
 --------------------------
 

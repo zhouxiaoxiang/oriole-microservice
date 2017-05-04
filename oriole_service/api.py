@@ -42,11 +42,11 @@ def mexec(f, s):
     return [i for i in map(f, s)]
 
 
-def cwd() -> str:
+def cwd():
     return os.getcwd()
 
 
-def run(service: str):
+def run(service):
     config = path.join(cwd(), "services.cfg")
     for fpath, _, fs in walk("services"):
         if (service + ".py") in fs:
