@@ -15,7 +15,7 @@ def test_test(p):
         'log',
     ])
 
-    with patch('oriole_service.api.mexec') as run:
+    with patch('oriole_service.api.mexe') as run:
         main(args)
         assert run.call_count == 1
         assert 'log' in run.call_args[0][1]
@@ -27,7 +27,7 @@ def test_t(p):
         'log',
     ])
 
-    with patch('oriole_service.api.mexec') as run:
+    with patch('oriole_service.api.mexe') as run:
         main(args)
         assert run.call_count == 1
         assert 'log' in run.call_args[0][1]

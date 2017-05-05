@@ -12,7 +12,7 @@ def p():
 def test_doc(p):
     args = p.parse_args(['doc', ])
 
-    with patch('oriole_service.api.mexec') as run:
+    with patch('oriole_service.api.mexe') as run:
         main(args)
         assert run.call_count == 1
 
@@ -20,6 +20,6 @@ def test_doc(p):
 def test_d(p):
     args = p.parse_args(['d', ])
 
-    with patch('oriole_service.api.mexec') as run:
+    with patch('oriole_service.api.mexe') as run:
         main(args)
         assert run.call_count == 1

@@ -1,19 +1,14 @@
 """ Oriole-API """
 
-import os
 import yaml
 import code
-import shutil
-import subprocess
+from subprocess import run as sr
 from os import path, walk, pardir, getcwd
 from nameko.standalone.rpc import ClusterRpcProxy
 
 
-def Config(name="services.cfg"):
-    f = getf(name)
-    if not f:
-        raise RuntimeError('Need {}'.format(name))
-    return get_yml(f)
+def get_config(f):
+    return get_yml(get_file(f))
 
 
 def get_yml(f):
@@ -21,59 +16,69 @@ def get_yml(f):
         return yaml.load(filename)
 
 
-def getf(f):
-    max_depth = 3
-    loc = getcwd()
+def get_file(f):
+    loc = cwd()
 
-    for _ in range(max_depth):
+    for _ in range(3):
         config = path.join(loc, f)
         if path.isfile(config):
             return config
-        else:
-            loc = path.join(loc, pardir)
-    return ""
+        loc = path.join(loc, pardir)
+
+
+def get_path(f, loc):
+    for fpath, _, fs in walk(loc):
+        if f in fs:
+            return fpath
 
 
 def exe(s):
-    subprocess.run(s, shell=True)
+    sr(s, shell=True)
 
 
-def mexec(f, s):
-    return [i for i in map(f, s)]
+def mexe(f, s):
+    tuple(map(f, s))
 
 
 def cwd():
-    return os.getcwd()
+    return getcwd()
 
 
 def run(service):
+    fmt = "cd %s && nameko run %s --config %s"
     config = path.join(cwd(), "services.cfg")
-    for fpath, _, fs in walk("services"):
-        if (service + ".py") in fs:
-            fmt = "cd {} && nameko run {} --config {}"
-            cmd = fmt.format(fpath, service, config)
-            exe(cmd)
-            break
+
+    fpath = get_path("%s.py" % service, "services")
+    if fpath:
+        exe(fmt % (fpath, service, config))
 
 
-def remote_test(args):
-    usage = "Usage: services.log_service.ping()"
+def remote_test(f):
+    usage = 'Usage: s.log_service.ping()'
 
-    config = get_yml(args.config)
+    config = get_yml(f)
     with ClusterRpcProxy(config) as s:
-        local = {}
-        local.update({"services": s})
-        code.interact(usage, None, local)
+        code.interact(usage, None, {"s": s})
 
 
-def test(test=''):
+def mtest(test):
+    cmd = "py.test -v"
+    fmt = "cd %s && %s"
+
+    fpath = get_path("test_%s.py" % test, "tests")
+    if fpath:
+        exe(fmt % (fpath, cmd))
+
+
+def test(tests):
     cmd = "py.test -v"
 
-    if not test:
+    if not tests:
         exe(cmd)
-        return
+    else:
+        mexe(mtest, tests)
 
-    for fpath, _, fs in walk("tests"):
-        if ("test_%s" % test + ".py") in fs:
-            exe("cd {} && {}".format(fpath, cmd))
-            break
+
+def Config(name="services.cfg"):
+    """ Obsoleted """
+    return get_config(name)

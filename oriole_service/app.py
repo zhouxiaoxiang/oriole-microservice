@@ -2,15 +2,15 @@
 
 import sys
 import copy
-from os import path, pardir, getcwd
+from os import path, pardir
 from nameko.rpc import rpc, RpcProxy
 from nameko.events import EventDispatcher, event_handler
-from oriole_service.api import Config
+from oriole_service.api import Config, cwd
 from oriole_service.db import *
 from datetime import datetime
 from decimal import Decimal
 
-topdir = path.join(getcwd(), pardir, pardir)
+topdir = path.join(cwd(), pardir, pardir)
 sys.path.insert(0, topdir)
 from dao import *
 

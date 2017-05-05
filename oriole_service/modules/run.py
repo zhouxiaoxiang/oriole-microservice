@@ -8,4 +8,4 @@ def main(args):
 
 
 def init_parser(parser):
-    parser.add_argument('service', metavar='service', help='Service to run')
+    parser.add_argument('service', metavar='service', help='Service')
