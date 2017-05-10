@@ -7,7 +7,7 @@ from nameko.rpc import rpc, RpcProxy
 from nameko.events import EventDispatcher, event_handler
 from oriole_service.api import Config, cwd
 from oriole_service.db import *
-from datetime import datetime
+from datetime import datetime, date
 from decimal import Decimal
 
 topdir = path.join(cwd(), pardir, pardir)
@@ -47,7 +47,7 @@ class App(object):
         try:
             return self._params.get(item)
         except:
-            return RuntimeError("Use self._(params) first.")
+            raise RuntimeError("Use self._(params) first.")
 
     def _o(self, obj):
         """ Translate object to json.
@@ -64,6 +64,8 @@ class App(object):
             return self._od(obj)
         elif obj == None or isinstance(obj, (int, str, bool, float)):
             return obj
+        elif isinstance(obj, date):
+            return obj.strftime("%Y-%m-%d")
         elif isinstance(obj, datetime):
             return obj.strftime("%Y-%m-%d %H:%M:%S")
         else:
@@ -73,11 +75,15 @@ class App(object):
         """ Don't use it! """
 
         result = {}
-        for key in dir(obj):
-            if key != "metadata" and key[0] != "_":
-                value = getattr(obj, key)
-                if not callable(value):
-                    result[key] = self._o(value)
+        try:
+            for key in dir(obj):
+                if key != "metadata" and key[0] != "_":
+                    value = getattr(obj, key)
+                    if not callable(value):
+                        result[key] = self._o(value)
+        except:
+            raise RuntimeError("NOT support %s" % (type(obj)))
+
         return result
 
     def _ol(self, obj):
