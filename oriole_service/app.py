@@ -19,14 +19,12 @@ class App(object):
 
     db = ""
     rs = ""
-    cf = ""
+    cf = Config()
     name = "supervisor_thread"
 
     def init(self):
-        data = Db(Base)
-        self.db = data.get_db()
-        self.rs = data.get_rs()
-        self.cf = Config()
+        self.db = Db(Base).get_db()
+        self.rs = Db(Base).get_rs()
 
     @rpc
     def ping(self):

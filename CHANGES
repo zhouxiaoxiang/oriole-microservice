@@ -8,7 +8,7 @@
 
 2017-1-23 No supply egg.
 
-## Version 1.0.2
+## 1.0.2
 
 2017-1-25 Automatic deploy.
 
@@ -16,11 +16,11 @@
 
 2017-2-15 Support rpcProxy
 
-## Version 1.1.1
+## 1.1.1
 
 2017-2-15 Demo on 127.0.0.1
 
-## Version 1.1.2
+## 1.1.2
 
 2017-2-15 Add RpcProxy demo.
 
@@ -99,3 +99,7 @@
 ## 3.3.1
 
 2017-5-10 Support date.
+
+## 3.3.2
+
+2017-5-11 Get config from services.
