@@ -9,20 +9,19 @@ from setuptools import find_packages, setup
 py_version = sys.version_info[:2]
 
 if py_version < (3, 5):
-    raise RuntimeError(
-        'Error: oriole-service only supports Python 3.5 or better')
+    raise RuntimeError('Error: Python < 3.5')
 
 install_requires = [
     "nameko-sqlalchemy>=0.0.4",
     "mogo>=0.4.0",
     "redis>=2.10.5",
     "PyYAML>=3.12",
-    "pytest>=3.0.4",
+    "pytest>=3.0.5",
     "pytest-html>=1.14.2",
     "mockredispy>=2.9.3",
-    "mongomock>=3.7.0",
-    "Sphinx>=1.5b1",
-    "PyMySQL>=0.7.9",
+    "mongomock>=3.8.0",
+    "Sphinx>=1.5.1",
+    "PyMySQL>=0.7.11",
     "mysqlclient>=1.3.9",
     "zope.sqlalchemy>=0.7.7",
     "six>=1.10.0",
@@ -34,7 +33,7 @@ with open(os.path.join(here, 'README.md'), 'r', 'utf-8') as handle:
 
 setup(
     name='oriole-service',
-    version='3.3.2',
+    version='3.3.3',
     description='Rapidly create services.',
     long_description=readme,
     author='Eric.Zhou',

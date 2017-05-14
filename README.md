@@ -25,7 +25,7 @@
 - Run unit tests.
 
 ```
-  oriole test
+  o t
 ```
 
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/test.gif)
@@ -33,7 +33,7 @@
 - Run a service. 
 
 ```
-  oriole run <service>
+  o r <service>
 ```
 
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif)
@@ -41,15 +41,15 @@
 - Create documents. 
 
 ```
-  oriole doc
+  o d
 ```
 
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/doc.gif)
 
-- Run a client.
+- Run a client shell.
 
 ```
-  oriole sh
+  o s
 ```
 
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif)

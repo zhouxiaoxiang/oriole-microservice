@@ -1,31 +1,64 @@
 Oriole-Service
 ==============
 
-.. image:: https://travis-ci.org/zhouxiaoxiang/oriole-service.png?branch=master  
-  :target: http://travis-ci.org/zhouxiaoxiang/oriole-service
+**Rapidly create services.**
 
-Rapidly create services.
+|build|
 
-*[Framework]*
+**[Framework]**
 
-`Orile-Service <https://github.com/zhouxiaoxiang/oriole-service>`_.
+`Orile-Service <https://github.com/zhouxiaoxiang/oriole-service>`__
 
-* Run a service.
+-  Prerequisites
 
-  .. code:: python
+-  python >= 3.5.2
+-  mongodb
+-  mysql
+-  rabbitmq
+-  redis-server
 
-  oriole run <service>
+-  Install oriole.
 
-  e.g. oriole run log
+::
 
-* Run unit tests.
+      pip install oriole-service
 
-  .. code:: python
+-  Run unit tests.
 
-  oriole test
+::
 
-* Create documents.
+      o t
 
-  .. code:: python
+.. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/test.gif
+   :alt: 
 
-  oriole doc
+-  Run a service.
+
+::
+
+      o r <service>
+
+.. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif
+   :alt: 
+
+-  Create documents.
+
+::
+
+      o d
+
+.. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/doc.gif
+   :alt: 
+
+-  Run a client shell.
+
+::
+
+      o s
+
+|image1|   That's all.
+
+.. |build| image:: https://travis-ci.org/zhouxiaoxiang/oriole-service.png?branch=master
+   :target: https://travis-ci.org/zhouxiaoxiang/oriole-service
+.. |image1| image:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif
+
