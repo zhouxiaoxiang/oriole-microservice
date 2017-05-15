@@ -54,18 +54,20 @@ class App(object):
         When return object from rpc, should always use _o.
         """
 
-        if isinstance(obj, (list, set, tuple)):
-            return self._ol(obj)
+        if obj == None:
+            return obj
         elif isinstance(obj, Decimal):
             return str(obj)
-        elif isinstance(obj, dict):
-            return self._od(obj)
-        elif obj == None or isinstance(obj, (int, str, bool, float)):
-            return obj
-        elif isinstance(obj, date):
-            return obj.strftime("%Y-%m-%d")
         elif isinstance(obj, datetime):
             return obj.strftime("%Y-%m-%d %H:%M:%S")
+        elif isinstance(obj, date):
+            return obj.strftime("%Y-%m-%d")
+        elif isinstance(obj, (list, set, tuple)):
+            return self._ol(obj)
+        elif isinstance(obj, dict):
+            return self._od(obj)
+        elif isinstance(obj, (int, str, bool, float)):
+            return obj
         else:
             return self._oo(obj)
 
