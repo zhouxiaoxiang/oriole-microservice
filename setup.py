@@ -1,15 +1,22 @@
 #!/usr/bin/env python
 
 import os
+import re
 import sys
+import ast
 import warnings
 from codecs import open
 from setuptools import find_packages, setup
 
 py_version = sys.version_info[:2]
-
 if py_version < (3, 5):
     raise RuntimeError('Error: Python < 3.5')
+
+_version_re = re.compile(r'__version__\s+=\s+(.+)')
+with open('oriole_service/__init__.py', 'rb') as f:
+    version = str(
+        ast.literal_eval(
+            _version_re.search(f.read().decode('utf-8')).group(1)))
 
 install_requires = [
     "nameko-sqlalchemy>=0.0.4",
@@ -33,7 +40,7 @@ with open(os.path.join(here, 'README.md'), 'r', 'utf-8') as handle:
 
 setup(
     name='oriole-service',
-    version='3.3.4',
+    version=version,
     description='Rapidly create services.',
     long_description=readme,
     author='Eric.Zhou',
