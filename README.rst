@@ -1,29 +1,30 @@
-Oriole-Service
-==============
+Oriole-Service 服务框架
+=======================
 
 **Rapidly create services.**
 
+快速创建微服务，打造企业软件平台。临渊羡鱼，不如退而结网，宏伟蓝图从这里开始。
+
 |build|
 
-**[Framework]**
+Prerequisites 必要条件
+----------------------
 
-`Orile-Service <https://github.com/zhouxiaoxiang/oriole-service>`__
-
--  Prerequisites
-
--  python >= 3.5.2
+-  python3
 -  mongodb
 -  mysql
 -  rabbitmq
--  redis-server
+-  redis
 
--  Install oriole.
+Install oriole. 安装
+--------------------
 
 ::
 
       pip install oriole-service
 
--  Run unit tests.
+Run unit test.  单元测试
+------------------------
 
 ::
 
@@ -32,7 +33,8 @@ Oriole-Service
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/test.gif
    :alt: 
 
--  Run a service.
+Run a service. 启动服务
+-----------------------
 
 ::
 
@@ -41,7 +43,8 @@ Oriole-Service
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif
    :alt: 
 
--  Create documents.
+Generate documents. 创建文档
+----------------------------
 
 ::
 
@@ -50,15 +53,15 @@ Oriole-Service
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/doc.gif
    :alt: 
 
--  Run a client shell.
+Run a client shell. 实网测试
+----------------------------
 
 ::
 
       o s
 
-|image1|   That's all.
+.. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif
+   :alt: 
 
 .. |build| image:: https://travis-ci.org/zhouxiaoxiang/oriole-service.png?branch=master
    :target: https://travis-ci.org/zhouxiaoxiang/oriole-service
-.. |image1| image:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif
-
