@@ -7,6 +7,7 @@ from nameko.rpc import rpc, RpcProxy
 from nameko.events import EventDispatcher, event_handler
 from oriole_service.api import Config, cwd
 from oriole_service.db import *
+from oriole_service.log import logger
 from datetime import datetime, date
 from decimal import Decimal
 
@@ -20,6 +21,7 @@ class App(object):
     db = ""
     rs = ""
     cf = Config()
+    log = logger()
     name = "supervisor_thread"
 
     def init(self):
