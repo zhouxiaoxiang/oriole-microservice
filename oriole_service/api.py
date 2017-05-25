@@ -2,6 +2,11 @@
 
 import yaml
 import code
+from logging import getLogger
+from logging import StreamHandler
+from logging import Formatter
+from logging import getLoggerClass
+from logging import DEBUG, ERROR
 from subprocess import run as sr
 from os import path, walk, pardir, getcwd
 from nameko.standalone.rpc import ClusterRpcProxy
@@ -11,11 +16,6 @@ mexe = lambda f, s: tuple(map(f, s))
 cwd = lambda: getcwd()
 get_config = lambda f: get_yml(get_file(f))
 test_cmd = "py.test -v --html=report.html"
-
-
-def Config(name="services.cfg"):
-    """ Obsoleted """
-    return get_config(name)
 
 
 def get_yml(f):
@@ -65,3 +65,32 @@ def test(tests):
         exe(test_cmd)
     else:
         mexe(mtest, tests)
+
+
+def Config(name="services.cfg"):
+    """ Obsoleted """
+    return get_config(name)
+
+
+def logger():
+    fmt = '[%(asctime)s] in %(module)s: %(message)s'
+
+    class DebugLogger(getLoggerClass()):
+        def getEffectiveLevel(self):
+            return DEBUG
+
+    class DebugHandler(StreamHandler):
+        def emit(self, record):
+            StreamHandler.emit(self, record)
+
+    debug_handler = DebugHandler()
+    debug_handler.setLevel(DEBUG)
+    debug_handler.setFormatter(Formatter(fmt))
+
+    logger = getLogger(__name__)
+    del logger.handlers[:]
+    logger.__class__ = DebugLogger
+    logger.addHandler(debug_handler)
+    logger.propagate = False
+
+    return logger

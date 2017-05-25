@@ -1,5 +1,9 @@
 # Release Notes
 
+## 4.0.0
+
+2017-5-25 Limit one worker.
+
 ## 3.5.0
 
 2017-5-18 Add log.

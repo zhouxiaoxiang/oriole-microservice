@@ -5,9 +5,8 @@ import copy
 from os import path, pardir
 from nameko.rpc import rpc, RpcProxy
 from nameko.events import EventDispatcher, event_handler
-from oriole_service.api import Config, cwd
+from oriole_service.api import Config, cwd, logger
 from oriole_service.db import *
-from oriole_service.log import logger
 from datetime import datetime, date
 from decimal import Decimal
 
@@ -17,16 +16,14 @@ from dao import *
 
 
 class App(object):
-
-    db = ""
-    rs = ""
     cf = Config()
     log = logger()
+    db = Db(Base)
+    rs = Db.get_rs()
     name = "supervisor_thread"
 
     def init(self):
-        self.db = Db(Base).get_db()
-        self.rs = Db(Base).get_rs()
+        self.db = self.db.get_db()
 
     @rpc
     def ping(self):
@@ -47,7 +44,7 @@ class App(object):
         try:
             return self._params.get(item)
         except:
-            raise RuntimeError("Use self._(params) first.")
+            raise RuntimeError("Error: Use self._(params) first.")
 
     def _o(self, obj):
         """ Translate object to json.
@@ -84,7 +81,7 @@ class App(object):
                     if not callable(value):
                         result[key] = self._o(value)
         except:
-            raise RuntimeError("NOT support %s" % (type(obj)))
+            raise RuntimeError("Error: %s, only support json" % (type(obj)))
 
         return result
 

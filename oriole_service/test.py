@@ -6,7 +6,6 @@ import mongomock
 from mock import *
 from pytest import *
 from mockredis import *
-from oriole_service.log import logger
 from nameko.testing.services import worker_factory
 
 
@@ -36,7 +35,7 @@ def app(monkeypatch):
             patch.setattr(self.log_base + self.log_method, self.mongo)
 
         def close(self):
-            self.eng.drop_db()
+            self.eng.rm_db()
 
         def create(self, name):
             return worker_factory(name)
@@ -54,9 +53,8 @@ def app(monkeypatch):
             return mock_redis_client()
 
         def db(self):
-            self.eng = Db(Base)
-            self.dbo = self.eng.get_test_db()
-            return self.dbo
+            self.eng = Db(Base, "test_database")
+            return self.eng.get_db()
 
         def init(self):
             return lambda self: None
