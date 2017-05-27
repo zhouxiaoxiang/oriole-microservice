@@ -10,24 +10,24 @@ from oriole_service.api import Config
 Base = declarative_base()
 
 
-class Db(object):
+class Db:
     def __init__(self, base=Base, database="database"):
         self.base = base
-        self.engine = create_engine(Config().get(database))
-        self.base.metadata.create_all(self.engine)
-        self.session = scoped_session(sessionmaker(self.engine))
+        self.conf = Config()
+        self.bind = create_engine(self.conf.get(database), pool_recycle=3600)
+        self.base.metadata.create_all(self.bind)
+        self.dbs = scoped_session(sessionmaker(self.bind))
 
     def get_db(self):
-        self.dbo = self.session()
+        self.dbo = self.dbs()
         return self.dbo
 
     def rm_db(self):
         self.dbo.rollback()
         self.dbo.commit()
         self.dbo.close()
-        self.base.metadata.drop_all(self.engine)
-        self.engine.dispose()
+        self.base.metadata.drop_all(self.bind)
+        self.bind.dispose()
 
-    @staticmethod
-    def get_rs():
-        return StrictRedis.from_url(Config()["datasets"])
+    def get_rs(self):
+        return StrictRedis.from_url(self.conf.get("datasets"))

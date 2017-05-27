@@ -15,19 +15,33 @@ sys.path.insert(0, topdir)
 from dao import *
 
 
-class App(object):
+class App:
+    """ Connect database 
+
+    As usual, supply mysql and redis. 
+    """
+
+    rs = ""
+    db = Db(Base)
     cf = Config()
     log = logger()
-    db = Db(Base)
-    rs = Db.get_rs()
     name = "supervisor_thread"
 
     def init(self):
-        self.db = self.db.get_db()
+        """ Only run under real environment """
+
+        self.dbo = self.db
+        self.rs = self.dbo.get_rs()
+        self.db = self.dbo.get_db()
 
     @rpc
     def ping(self):
         return True
+
+    def __del__(self):
+        """ Not necessary """
+
+        self.db.close()
 
     #
     # These methods are used in services.

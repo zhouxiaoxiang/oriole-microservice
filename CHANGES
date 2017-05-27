@@ -1,5 +1,9 @@
 # Release Notes
 
+## 4.0.1
+
+2017-5-27 Limit mysql connections.
+
 ## 4.0.0
 
 2017-5-25 Limit one worker.

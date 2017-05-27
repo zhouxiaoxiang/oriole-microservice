@@ -11,7 +11,7 @@ from nameko.testing.services import worker_factory
 
 @fixture
 def app(monkeypatch):
-    class _Base(object):
+    class _Base:
         """ App interface """
 
         app_base = "oriole_service.app.App."
