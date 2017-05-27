@@ -63,5 +63,11 @@ Run a client shell. 实网测试
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif
    :alt: 
 
+Check services. 部署检查，仅示例，不提供代码。
+----------------------------------------------
+
+.. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif
+   :alt: 
+
 .. |build| image:: https://travis-ci.org/zhouxiaoxiang/oriole-service.png?branch=master
    :target: https://travis-ci.org/zhouxiaoxiang/oriole-service

@@ -52,3 +52,6 @@
 
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif)
 
+## Check services. 部署检查，仅示例，不提供代码。
+
+![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif)
