@@ -1,5 +1,9 @@
 # Release Notes
 
+## 4.1.0
+
+2017-5-31 Add log to debug.
+
 ## 4.0.1
 
 2017-5-27 Limit mysql connections.

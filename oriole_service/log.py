@@ -1,12 +1,12 @@
 """ Oriole-LOG """
 
 import mogo
-from oriole_service.api import Config, logger
+from oriole_service.api import get_config, logger
 
 
 class Log:
     def __init__(self, module=""):
-        conf = Config()['log'][module]
+        conf = get_config()['log'][module]
         self.host = conf['host']
         self.db = conf['db']
         self.tb = conf['tb']

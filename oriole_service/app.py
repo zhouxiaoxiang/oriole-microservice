@@ -5,7 +5,7 @@ import copy
 from os import path, pardir
 from nameko.rpc import rpc, RpcProxy
 from nameko.events import EventDispatcher, event_handler
-from oriole_service.api import Config, cwd, logger
+from oriole_service.api import get_config, cwd, get_logger, get_rs
 from oriole_service.db import *
 from datetime import datetime, date
 from decimal import Decimal
@@ -16,32 +16,24 @@ from dao import *
 
 
 class App:
-    """ Connect database 
+    """ Connect database
 
-    As usual, supply mysql and redis. 
+    As usual, supply mysql and redis.
     """
 
     rs = ""
-    db = Db(Base)
-    cf = Config()
-    log = logger()
+    db = ""
+    cf = get_config()
+    log = get_logger()
     name = "supervisor_thread"
 
     def init(self):
-        """ Only run under real environment """
-
-        self.dbo = self.db
-        self.rs = self.dbo.get_rs()
-        self.db = self.dbo.get_db()
+        self.db = Db(Base).get_db()
+        self.rs = get_rs()
 
     @rpc
     def ping(self):
         return True
-
-    def __del__(self):
-        """ Not necessary """
-
-        self.db.close()
 
     #
     # These methods are used in services.

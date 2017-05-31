@@ -2,20 +2,22 @@
 
 import yaml
 import code
-from logging import getLogger
-from logging import StreamHandler
-from logging import Formatter
-from logging import getLoggerClass
-from logging import DEBUG, ERROR
+from redis import StrictRedis
 from subprocess import run as sr
 from os import path, walk, pardir, getcwd
 from nameko.standalone.rpc import ClusterRpcProxy
+import logging
+from logging import DEBUG, INFO, WARNING, ERROR
+from logging import StreamHandler, Formatter, getLogger, FileHandler
 
 exe = lambda s: sr(s, shell=True)
 mexe = lambda f, s: tuple(map(f, s))
 cwd = lambda: getcwd()
-get_config = lambda f: get_yml(get_file(f))
 test_cmd = "py.test -v --html=report.html"
+
+
+def get_config(f="services.cfg"):
+    return get_yml(get_file(f))
 
 
 def get_yml(f):
@@ -72,25 +74,36 @@ def Config(name="services.cfg"):
     return get_config(name)
 
 
-def logger():
-    fmt = '[%(asctime)s] in %(module)s: %(message)s'
+def logger(level='DEBUG', name=""):
+    fmt = '[%(module)s] %(asctime)s %(levelname)-7.7s %(message)s'
+    dfmt = '%Y-%m-%d %H:%M:%S'
+    level = getattr(logging, level, DEBUG)
 
-    class DebugLogger(getLoggerClass()):
-        def getEffectiveLevel(self):
-            return DEBUG
+    logger = getLogger('services')
+    logger.setLevel(level)
+    fmter = Formatter(fmt, dfmt)
 
-    class DebugHandler(StreamHandler):
-        def emit(self, record):
-            StreamHandler.emit(self, record)
+    if name:
+        fh = FileHandler(name)
+        fh.setLevel(level)
+        fh.setFormatter(fmter)
+        logger.addHandler(fh)
 
-    debug_handler = DebugHandler()
-    debug_handler.setLevel(DEBUG)
-    debug_handler.setFormatter(Formatter(fmt))
-
-    logger = getLogger(__name__)
-    del logger.handlers[:]
-    logger.__class__ = DebugLogger
-    logger.addHandler(debug_handler)
+    ch = StreamHandler()
+    ch.setLevel(level)
+    ch.setFormatter(fmter)
+    logger.addHandler(ch)
     logger.propagate = False
 
     return logger
+
+
+def get_logger():
+    cf = get_config()
+    level = cf.get("log_level", "DEBUG")
+    name = cf.get("log_name", "")
+    return logger(level, name)
+
+
+def get_rs():
+    return StrictRedis.from_url(get_config().get("datasets"))
