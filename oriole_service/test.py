@@ -1,4 +1,18 @@
-""" Oriole-TEST """
+"""
+                __   _,--="=--,_   __
+               /  \."    .-.    "./  \
+              /  ,/  _   : :   _  \/` \
+              \  `| /o\  :_:  /o\ |\__/
+               `-'| :="~` _ `~"=: |
+                  \`     (_)     `/
+           .-"-.   \      |      /   .-"-.
+    .-----{     }--|  /,.-'-.,\  |--{     }-----.
+     )    (_)_)_)  \_/`~-===-~`\_/  (_(_(_)    (
+    (                                          )
+     )                Oriole-TEST              (
+    (                  Eric.Zhou               )
+    '-------------------------------------------'
+"""
 
 from oriole_service.db import *
 from dao import *
@@ -7,6 +21,9 @@ from mock import *
 from pytest import *
 from mockredis import *
 from nameko.testing.services import worker_factory
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from oriole_service.api import get_config
 
 
 @fixture
@@ -14,28 +31,15 @@ def app(monkeypatch):
     class _Base:
         """ App interface """
 
-        app_base = "oriole_service.app.App."
-        log_base = "oriole_service.log.Log."
-        log_method = "get"
-        app_methods = ["rs", "db", "init"]
-
-        def get_attr(self, attr):
-            attr.side_effect = self.get_effect
-
-        def get_effect(self, args):
-            self.get_result = args
-
-        def set_attr(self, attr, value):
-            attr.return_value = value
-
         def duck(self, patch):
-            for app_method, method in zip(self.app_methods,
-                                          [self.rs, self.db, self.init]):
-                patch.setattr(self.app_base + app_method, method())
-            patch.setattr(self.log_base + self.log_method, self.mongo)
+            app_base = "oriole_service.app.App."
+            log_base = "oriole_service.log.Log."
+            log_method = "get"
+            methods = ["rs", "db", "init"]
 
-        def close(self):
-            self.eng.rm_db()
+            for old, new in zip(methods, [self.rs, self.db, self.init]):
+                patch.setattr(app_base + old, new())
+            patch.setattr(log_base + log_method, self.mongo)
 
         def create(self, name):
             return worker_factory(name)
@@ -46,6 +50,9 @@ def app(monkeypatch):
         def __init__(self, patch):
             self.duck(patch)
 
+        def init(self):
+            return lambda self: None
+
         def mongo(self):
             return mongomock.MongoClient().db.collection
 
@@ -53,12 +60,24 @@ def app(monkeypatch):
             return mock_redis_client()
 
         def db(self):
-            self.eng = Db(Base, "test_database")
-            return self.eng.get_db()
+            self.bind = create_engine(get_config().get("test_database"))
+            Base.metadata.create_all(self.bind)
+            session_cls = sessionmaker(self.bind)
+            self.session = session_cls()
 
-        def init(self):
-            return lambda self: None
+            return self.session
 
+        def close(self):
+            self.session.rollback()
+            self.session.commit()
+            self.session.close()
+            Base.metadata.drop_all(self.bind)
+            self.bind.dispose()
+
+    # Supply database and redis to test.
     _app = App(monkeypatch)
+
+    # Only supply app to create service.
+    # Don't create service by class directly, it's wrong.
     yield _app
     _app.close()

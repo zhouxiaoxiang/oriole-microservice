@@ -1,33 +1,72 @@
-""" Oriole-DB """
+"""
+                __   _,--="=--,_   __
+               /  \."    .-.    "./  \
+              /  ,/  _   : :   _  \/` \
+              \  `| /o\  :_:  /o\ |\__/
+               `-'| :="~` _ `~"=: |
+                  \`     (_)     `/
+           .-"-.   \      |      /   .-"-.
+    .-----{     }--|  /,.-'-.,\  |--{     }-----.
+     )    (_)_)_)  \_/`~-===-~`\_/  (_(_(_)    (
+    (                                          )
+     )                 Oriole-DB               (
+    (                  Eric.Zhou               )
+    '-------------------------------------------'
+"""
 
 from sqlalchemy import Column, Integer, String, create_engine, types
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy import and_, or_, distinct, func
-from oriole_service.api import get_config
+from weakref import WeakKeyDictionary
+from nameko.extensions import DependencyProvider
 
 Base = declarative_base()
+DB_URI = "database"
 
 
-class Db:
-    def __init__(self, base=Base, database="database"):
-        self.conf = get_config()
+class Db(DependencyProvider):
+    """Add sqlalchemy.
+
+    It works for mysql and sqlite.
+    """
+
+    def __init__(self, Base):
+        self.base = Base
+        self.dbs = WeakKeyDictionary()
+
+    def setup(self):
+        """Setup sqlalchemy's pool.
+
+        It's enough. Usually, active size is 2.
+        """
+
+        self.conf = self.container.config
         pool_size = int(self.conf.get("pool_size", 10))
         pool_recycle = int(self.conf.get("pool_recycle", 300))
 
-        self.base = base
         self.bind = create_engine(
-            self.conf.get(database),
+            self.conf.get(DB_URI),
             pool_size=pool_size,
             pool_recycle=pool_recycle)
         self.base.metadata.create_all(self.bind)
 
-    def get_db(self):
-        self.dbo = scoped_session(sessionmaker(self.bind))
-        return self.dbo
+    def stop(self):
+        """Only a common usage, is not necessary. """
 
-    def rm_db(self):
-        self.dbo.rollback()
-        self.dbo.commit()
-        self.dbo.close()
-        self.base.metadata.drop_all(self.bind)
+        self.bind.dispose()
+        del self.bind
+
+    def get_dependency(self, worker_ctx):
+        """Supply a session to user. """
+
+        session_cls = sessionmaker(self.bind)
+        session = session_cls()
+        self.dbs[worker_ctx] = session
+        return session
+
+    def worker_teardown(self, worker_ctx):
+        """Don't store any session. """
+
+        session = self.dbs.pop(worker_ctx)
+        session.close()

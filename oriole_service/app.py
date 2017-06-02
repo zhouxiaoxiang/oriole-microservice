@@ -1,4 +1,18 @@
-""" Oriole-APP """
+"""
+                __   _,--="=--,_   __
+               /  \."    .-.    "./  \
+              /  ,/  _   : :   _  \/` \
+              \  `| /o\  :_:  /o\ |\__/
+               `-'| :="~` _ `~"=: |
+                  \`     (_)     `/
+           .-"-.   \      |      /   .-"-.
+    .-----{     }--|  /,.-'-.,\  |--{     }-----.
+     )    (_)_)_)  \_/`~-===-~`\_/  (_(_(_)    (
+    (                                          )
+     )                Oriole-APP               (
+    (                  Eric.Zhou               )
+    '-------------------------------------------'
+"""
 
 import sys
 import copy
@@ -22,13 +36,12 @@ class App:
     """
 
     rs = ""
-    db = ""
+    db = Db(Base)
     cf = get_config()
     log = get_logger()
     name = "supervisor_thread"
 
     def init(self):
-        self.db = Db(Base).get_db()
         self.rs = get_rs()
 
     @rpc
