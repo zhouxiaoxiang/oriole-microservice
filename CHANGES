@@ -1,5 +1,9 @@
 # Release Notes
 
+## 4.2.1
+
+2017-6-5 Fix log twice.
+
 ## 4.2.0
 
 2017-6-2 Rewrite db.

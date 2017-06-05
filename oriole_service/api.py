@@ -96,6 +96,7 @@ def logger(level='DEBUG', name=""):
     logger = getLogger('services')
     logger.setLevel(level)
     fmter = Formatter(fmt, dfmt)
+    del logger.handlers[:]
 
     if name:
         fh = FileHandler(name)

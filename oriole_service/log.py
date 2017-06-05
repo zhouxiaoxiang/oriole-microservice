@@ -15,7 +15,8 @@
 """
 
 import mogo
-from oriole_service.api import get_config, logger
+from oriole_service.api import get_config
+from oriole_service.api import get_logger as logger
 
 
 class Log:
