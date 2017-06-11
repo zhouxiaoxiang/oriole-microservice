@@ -17,6 +17,18 @@ cache:
 script:
     - make
 
+notifications:
+  email:
+    - xiaoxiang.cn@gmail.com
+    - xiaoxiang_cn@qq.com
+
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/cf729254f8369ea4f7c3
+    on_success: change
+    on_failure: always
+    on_start: never
+
 deploy:
     provider: pypi
     distributions: "sdist bdist_wheel"
