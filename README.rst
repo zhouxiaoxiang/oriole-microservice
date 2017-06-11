@@ -1,7 +1,7 @@
 Oriole-Service
 ==============
 
-|Eric's world| |Eric's world|
+|Join project| |Let's go|
 
 **Rapidly create services.**
 
@@ -59,7 +59,7 @@ Check 检查平台所有服务
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif
    :alt: 
 
-.. |Eric's world| image:: https://badges.gitter.im/zhouxiaoxiang/oriole-service.svg
+.. |Join project| image:: https://badges.gitter.im/zhouxiaoxiang/oriole-service.svg
    :target: https://gitter.im/oriole-service/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link
-.. |Eric's world| image:: https://travis-ci.org/zhouxiaoxiang/oriole-service.svg?branch=master
+.. |Let's go| image:: https://travis-ci.org/zhouxiaoxiang/oriole-service.svg?branch=master
    :target: https://travis-ci.org/zhouxiaoxiang/oriole-service

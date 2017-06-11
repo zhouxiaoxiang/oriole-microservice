@@ -1,7 +1,7 @@
 Oriole-Service
 ==============
 
-[![Eric's world](https://travis-ci.org/zhouxiaoxiang/oriole-service.svg?branch=master)](https://travis-ci.org/zhouxiaoxiang/oriole-service) [![Eric's world](https://travis-ci.org/zhouxiaoxiang/oriole-service.svg?branch=master)](https://travis-ci.org/zhouxiaoxiang/oriole-service)
+[![Join project](https://badges.gitter.im/zhouxiaoxiang/oriole-service.svg)](https://gitter.im/oriole-service/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link) [![Let's go](https://travis-ci.org/zhouxiaoxiang/oriole-service.svg?branch=master)](https://travis-ci.org/zhouxiaoxiang/oriole-service)
 
 **Rapidly create services.**
 
@@ -42,8 +42,7 @@ Document 文档化
 
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/doc.gif)
 
-
-Check (DEMO) 检查平台所有服务
+Check 检查平台所有服务
 ----------------------
 
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif)
