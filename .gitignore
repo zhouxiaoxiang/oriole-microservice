@@ -11,4 +11,3 @@ _py_cache
 *.egg-info
 dist
 .tox
-build

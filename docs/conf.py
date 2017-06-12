@@ -20,6 +20,7 @@ copyright = '2017, Eric.Zhou'
 author = u'Eric.Zhou'
 version = pkg_resources.get_distribution('oriole-service').version
 release = version
+autodoc_mock_imports = ['dao']
 exclude_patterns = []
 pygments_style = 'sphinx'
 modindex_common_prefix = ['oriole-service.']
