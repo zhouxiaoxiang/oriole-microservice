@@ -1,3 +1,3 @@
-from . import doc, test, run, sh
+from . import doc, test, run, sh, conf
 
-modules = [doc, test, run, sh]
+modules = [doc, test, run, sh, conf]

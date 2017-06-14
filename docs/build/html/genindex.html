@@ -1,13 +1,13 @@
 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Index &#8212; Oriole-service 4.3.0 documentation</title>
+    <title>Index &#8212; Oriole-service 4.3.1 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4.3.0',
+        VERSION:     '4.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -28,11 +28,11 @@
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="index.html">Oriole-service 4.3.0 documentation</a></div>
+          href="index.html">Oriole-service 4.3.1 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -90,8 +90,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="oriole_service.html#oriole_service.app.App.cf">cf (oriole_service.app.App attribute)</a>
 </li>
+      <li><a href="oriole_service.html#oriole_service.api.check">check() (in module oriole_service.api)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="oriole_service.html#oriole_service.api.conf">conf() (in module oriole_service.api)</a>
+</li>
       <li><a href="oriole_service.html#oriole_service.api.Config">Config() (in module oriole_service.api)</a>
 </li>
       <li><a href="oriole_service.html#oriole_service.api.cwd">cwd() (in module oriole_service.api)</a>
@@ -124,14 +128,16 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="oriole_service.html#oriole_service.log.Log.get">get() (oriole_service.log.Log method)</a>
 </li>
+      <li><a href="oriole_service.html#oriole_service.api.get_cfg">get_cfg() (in module oriole_service.api)</a>
+</li>
       <li><a href="oriole_service.html#oriole_service.api.get_config">get_config() (in module oriole_service.api)</a>
 </li>
       <li><a href="oriole_service.html#oriole_service.db.Db.get_dependency">get_dependency() (oriole_service.db.Db method)</a>
 </li>
-      <li><a href="oriole_service.html#oriole_service.api.get_file">get_file() (in module oriole_service.api)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="oriole_service.html#oriole_service.api.get_file">get_file() (in module oriole_service.api)</a>
+</li>
       <li><a href="oriole_service.html#oriole_service.api.get_logger">get_logger() (in module oriole_service.api)</a>
 </li>
       <li><a href="oriole_service.html#oriole_service.api.get_path">get_path() (in module oriole_service.api)</a>
@@ -148,9 +154,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="oriole_service.html#oriole_service.app.App.init">init() (oriole_service.app.App method)</a>
 </li>
-      <li><a href="oriole_service.modules.html#oriole_service.modules.doc.init_parser">init_parser() (in module oriole_service.modules.doc)</a>
+      <li><a href="oriole_service.modules.html#oriole_service.modules.conf.init_parser">init_parser() (in module oriole_service.modules.conf)</a>
 
       <ul>
+        <li><a href="oriole_service.modules.html#oriole_service.modules.doc.init_parser">(in module oriole_service.modules.doc)</a>
+</li>
         <li><a href="oriole_service.modules.html#oriole_service.modules.run.init_parser">(in module oriole_service.modules.run)</a>
 </li>
         <li><a href="oriole_service.modules.html#oriole_service.modules.sh.init_parser">(in module oriole_service.modules.sh)</a>
@@ -181,6 +189,8 @@
       <li><a href="oriole_service.html#oriole_service.cli.main">main() (in module oriole_service.cli)</a>
 
       <ul>
+        <li><a href="oriole_service.modules.html#oriole_service.modules.conf.main">(in module oriole_service.modules.conf)</a>
+</li>
         <li><a href="oriole_service.modules.html#oriole_service.modules.doc.main">(in module oriole_service.modules.doc)</a>
 </li>
         <li><a href="oriole_service.modules.html#oriole_service.modules.run.main">(in module oriole_service.modules.run)</a>
@@ -222,11 +232,13 @@
 </li>
       <li><a href="oriole_service.html#module-oriole_service.db">oriole_service.db (module)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="oriole_service.html#module-oriole_service.log">oriole_service.log (module)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="oriole_service.modules.html#module-oriole_service.modules">oriole_service.modules (module)</a>
+</li>
+      <li><a href="oriole_service.modules.html#module-oriole_service.modules.conf">oriole_service.modules.conf (module)</a>
 </li>
       <li><a href="oriole_service.modules.html#module-oriole_service.modules.doc">oriole_service.modules.doc (module)</a>
 </li>
@@ -339,7 +351,7 @@
           
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Eric.Zhou.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.1.
     </div>
         </div>
         <div class="clearer"></div>

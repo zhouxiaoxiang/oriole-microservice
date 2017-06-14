@@ -4,6 +4,14 @@ oriole\_service\.modules package
 Submodules
 ----------
 
+oriole\_service\.modules\.conf module
+-------------------------------------
+
+.. automodule:: oriole_service.modules.conf
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 oriole\_service\.modules\.doc module
 ------------------------------------
 

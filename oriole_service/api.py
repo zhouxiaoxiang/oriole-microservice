@@ -14,13 +14,17 @@
 #    '-------------------------------------------'
 #
 
+import os
 import yaml
 import code
+import shutil
+import logging
+import tempfile
+import contextlib
 from redis import StrictRedis
 from subprocess import run as sr
 from os import path, walk, pardir, getcwd
 from nameko.standalone.rpc import ClusterRpcProxy
-import logging
 from logging import DEBUG, INFO, WARNING, ERROR
 from logging import StreamHandler, Formatter, getLogger, FileHandler
 
@@ -122,3 +126,33 @@ def get_logger():
 
 def get_rs():
     return StrictRedis.from_url(get_config().get("datasets"))
+
+
+@contextlib.contextmanager
+def get_cfg(f):
+    try:
+        loc = tempfile.mkdtemp()
+        name = "%s/%s" % (loc, f)
+        shutil.copy(f, loc)
+        yield name
+        shutil.copy(name, f)
+    finally:
+        os.remove(name)
+        os.rmdir(loc)
+
+
+def check(f):
+    try:
+        get_yml(f)
+        return True
+    except Exception as e:
+        input("%s %s" % (e.context, e.problem))
+        return False
+
+
+def conf(name):
+    with get_cfg(name) as f:
+        ed = os.environ.get('EDITOR', 'vi')
+        while True:
+            exe('%s "%s"' % (ed, f))
+            if check(f): break

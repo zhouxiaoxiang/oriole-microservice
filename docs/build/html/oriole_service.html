@@ -1,12 +1,12 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>oriole_service package &#8212; Oriole-service 4.3.0 documentation</title>
+    <title>oriole_service package &#8212; Oriole-service 4.3.1 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4.3.0',
+        VERSION:     '4.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -29,11 +29,11 @@
     <link rel="next" title="oriole_service.modules package" href="oriole_service.modules.html" />
     <link rel="prev" title="oriole_service" href="modules.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="index.html">Oriole-service 4.3.0 documentation</a></div>
+          href="index.html">Oriole-service 4.3.1 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="modules.html" title="oriole_service"
              accesskey="P">previous</a> |
@@ -63,6 +63,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="oriole_service.modules.html">oriole_service.modules package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="oriole_service.modules.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oriole_service.modules.html#module-oriole_service.modules.conf">oriole_service.modules.conf module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="oriole_service.modules.html#module-oriole_service.modules.doc">oriole_service.modules.doc module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="oriole_service.modules.html#module-oriole_service.modules.run">oriole_service.modules.run module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="oriole_service.modules.html#module-oriole_service.modules.sh">oriole_service.modules.sh module</a></li>
@@ -80,9 +81,19 @@
 <span id="oriole-service-api-module"></span><h2>oriole_service.api module<a class="headerlink" href="#module-oriole_service.api" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="oriole_service.api.Config">
-<code class="descclassname">oriole_service.api.</code><code class="descname">Config</code><span class="sig-paren">(</span><em>name='services.cfg'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#Config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.Config" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">oriole_service.api.</code><code class="descname">Config</code><span class="sig-paren">(</span><em>name=’services.cfg’</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#Config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.Config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Obsoleted</p>
 </dd></dl>
+
+<dl class="function">
+<dt id="oriole_service.api.check">
+<code class="descclassname">oriole_service.api.</code><code class="descname">check</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.check" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="oriole_service.api.conf">
+<code class="descclassname">oriole_service.api.</code><code class="descname">conf</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#conf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.conf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="oriole_service.api.cwd">
@@ -95,8 +106,13 @@
 <dd></dd></dl>
 
 <dl class="function">
+<dt id="oriole_service.api.get_cfg">
+<code class="descclassname">oriole_service.api.</code><code class="descname">get_cfg</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#get_cfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.get_cfg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="oriole_service.api.get_config">
-<code class="descclassname">oriole_service.api.</code><code class="descname">get_config</code><span class="sig-paren">(</span><em>f='services.cfg'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#get_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.get_config" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">oriole_service.api.</code><code class="descname">get_config</code><span class="sig-paren">(</span><em>f=’services.cfg’</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#get_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.get_config" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -126,7 +142,7 @@
 
 <dl class="function">
 <dt id="oriole_service.api.logger">
-<code class="descclassname">oriole_service.api.</code><code class="descname">logger</code><span class="sig-paren">(</span><em>level='DEBUG'</em>, <em>name=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.logger" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">oriole_service.api.</code><code class="descname">logger</code><span class="sig-paren">(</span><em>level=’DEBUG’</em>, <em>name=”</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.logger" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -165,7 +181,7 @@
 <p>As usual, supply mysql and redis.</p>
 <dl class="attribute">
 <dt id="oriole_service.app.App.cf">
-<code class="descname">cf</code><em class="property"> = {'AMQP_URI': 'pyamqp://test:test&#64;127.0.0.1'}</em><a class="headerlink" href="#oriole_service.app.App.cf" title="Permalink to this definition">¶</a></dt>
+<code class="descname">cf</code><em class="property"> = {‘AMQP_URI’: ‘pyamqp://test:test&#64;127.0.0.1’}</em><a class="headerlink" href="#oriole_service.app.App.cf" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -185,13 +201,13 @@
 
 <dl class="attribute">
 <dt id="oriole_service.app.App.name">
-<code class="descname">name</code><em class="property"> = 'supervisor_thread'</em><a class="headerlink" href="#oriole_service.app.App.name" title="Permalink to this definition">¶</a></dt>
+<code class="descname">name</code><em class="property"> = ‘supervisor_thread’</em><a class="headerlink" href="#oriole_service.app.App.name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="oriole_service.app.App.obj2dict">
 <code class="descname">obj2dict</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/app.html#App.obj2dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.app.App.obj2dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Don&#8217;t use it!</p>
+<dd><p>Don’t use it!</p>
 </dd></dl>
 
 <dl class="method">
@@ -201,7 +217,7 @@
 
 <dl class="attribute">
 <dt id="oriole_service.app.App.rs">
-<code class="descname">rs</code><em class="property"> = ''</em><a class="headerlink" href="#oriole_service.app.App.rs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">rs</code><em class="property"> = ”</em><a class="headerlink" href="#oriole_service.app.App.rs" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -247,8 +263,8 @@
 <dl class="method">
 <dt id="oriole_service.db.Db.setup">
 <code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/db.html#Db.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.db.Db.setup" title="Permalink to this definition">¶</a></dt>
-<dd><p>Setup sqlalchemy&#8217;s pool.</p>
-<p>It&#8217;s enough. Usually, active size is 2.</p>
+<dd><p>Setup sqlalchemy’s pool.</p>
+<p>It’s enough. Usually, active size is 2.</p>
 </dd></dl>
 
 <dl class="method">
@@ -260,7 +276,7 @@
 <dl class="method">
 <dt id="oriole_service.db.Db.worker_teardown">
 <code class="descname">worker_teardown</code><span class="sig-paren">(</span><em>worker_ctx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/db.html#Db.worker_teardown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.db.Db.worker_teardown" title="Permalink to this definition">¶</a></dt>
-<dd><p>Don&#8217;t store any session.</p>
+<dd><p>Don’t store any session.</p>
 </dd></dl>
 
 </dd></dl>
@@ -270,7 +286,7 @@
 <span id="oriole-service-log-module"></span><h2>oriole_service.log module<a class="headerlink" href="#module-oriole_service.log" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="oriole_service.log.Log">
-<em class="property">class </em><code class="descclassname">oriole_service.log.</code><code class="descname">Log</code><span class="sig-paren">(</span><em>module=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/log.html#Log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.log.Log" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">oriole_service.log.</code><code class="descname">Log</code><span class="sig-paren">(</span><em>module=”</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/log.html#Log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.log.Log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="oriole_service.log.Log.get">
@@ -357,7 +373,7 @@
           
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Eric.Zhou.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.1.
     </div>
         </div>
         <div class="clearer"></div>
