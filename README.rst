@@ -21,14 +21,14 @@ Install 安装
 
 ::
 
-      pip install oriole-service
+    pip install oriole-service
 
 Test 测试
 ---------
 
 ::
 
-      o t
+    o t
 
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/test.gif
    :alt: 
@@ -38,17 +38,24 @@ Run 启动
 
 ::
 
-      o r <service>
+    o r <service>
 
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif
    :alt: 
+
+Halt 停止
+---------
+
+::
+
+    o h <service>
 
 Document 文档化
 ---------------
 
 ::
 
-      o d
+    o d
 
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/doc.gif
    :alt: 

@@ -35,6 +35,11 @@ Run 启动
 
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif)
 
+Halt 停止
+---------
+
+    o h <service>
+
 Document 文档化
 ---------------
 

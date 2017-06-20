@@ -20,6 +20,14 @@ oriole\_service\.modules\.doc module
     :undoc-members:
     :show-inheritance:
 
+oriole\_service\.modules\.halt module
+-------------------------------------
+
+.. automodule:: oriole_service.modules.halt
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 oriole\_service\.modules\.run module
 ------------------------------------
 

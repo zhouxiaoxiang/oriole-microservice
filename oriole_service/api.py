@@ -23,6 +23,7 @@ import tempfile
 import contextlib
 from redis import StrictRedis
 from subprocess import run as sr
+from subprocess import Popen, PIPE
 from os import path, walk, pardir, getcwd
 from nameko.standalone.rpc import ClusterRpcProxy
 from logging import DEBUG, INFO, WARNING, ERROR
@@ -32,6 +33,7 @@ exe = lambda s: sr(s, shell=True)
 mexe = lambda f, s: tuple(map(f, s))
 cwd = lambda: getcwd()
 test_cmd = "py.test -v --html=report.html"
+get_first = lambda s: s.strip().split()[0]
 
 
 def get_config(f="services.cfg"):
@@ -64,6 +66,26 @@ def run(service):
     fpath = get_path("%s.py" % service, "services")
     if fpath:
         exe(fmt % (fpath, service, config))
+
+
+def halt(service):
+    comm_ps = ["ps", "ax"]
+    comm_nameko = ["grep", "nameko run %s" % service]
+    comm_python = ["grep", "python"]
+
+    try:
+        p_all = Popen(comm_ps, stdout=PIPE)
+        p_rpc = Popen(comm_nameko, stdin=p_all.stdout, stdout=PIPE)
+        p_result = Popen(comm_python, stdin=p_rpc.stdout, stdout=PIPE)
+        p_all.stdout.close()
+        p_rpc.stdout.close()
+
+        proc = p_result.communicate()[0]
+        if proc:
+            pid = int(get_first(proc))
+            exe("kill %s" % pid)
+    except:
+        raise RuntimeError("Error: cannot kill %s." % service)
 
 
 def remote_test(f):

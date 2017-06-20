@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>oriole_service.api &#8212; Oriole-service 4.3.1 documentation</title>
+    <title>oriole_service.api &#8212; Oriole-service 4.5.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '4.3.1',
+        VERSION:     '4.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -31,7 +31,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="../../index.html">Oriole-service 4.3.1 documentation</a></div>
+          href="../../index.html">Oriole-service 4.5.0 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -75,6 +75,7 @@
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">from</span> <span class="nn">redis</span> <span class="k">import</span> <span class="n">StrictRedis</span>
 <span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">run</span> <span class="k">as</span> <span class="n">sr</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span>
 <span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">walk</span><span class="p">,</span> <span class="n">pardir</span><span class="p">,</span> <span class="n">getcwd</span>
 <span class="kn">from</span> <span class="nn">nameko.standalone.rpc</span> <span class="k">import</span> <span class="n">ClusterRpcProxy</span>
 <span class="kn">from</span> <span class="nn">logging</span> <span class="k">import</span> <span class="n">DEBUG</span><span class="p">,</span> <span class="n">INFO</span><span class="p">,</span> <span class="n">WARNING</span><span class="p">,</span> <span class="n">ERROR</span>
@@ -84,6 +85,7 @@
 <span class="n">mexe</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
 <span class="n">cwd</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">getcwd</span><span class="p">()</span>
 <span class="n">test_cmd</span> <span class="o">=</span> <span class="s2">&quot;py.test -v --html=report.html&quot;</span>
+<span class="n">get_first</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="get_config"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_config">[docs]</a><span class="k">def</span> <span class="nf">get_config</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="s2">&quot;services.cfg&quot;</span><span class="p">):</span>
@@ -116,6 +118,26 @@
     <span class="n">fpath</span> <span class="o">=</span> <span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.py&quot;</span> <span class="o">%</span> <span class="n">service</span><span class="p">,</span> <span class="s2">&quot;services&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">fpath</span><span class="p">:</span>
         <span class="n">exe</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">fpath</span><span class="p">,</span> <span class="n">service</span><span class="p">,</span> <span class="n">config</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="halt"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.halt">[docs]</a><span class="k">def</span> <span class="nf">halt</span><span class="p">(</span><span class="n">service</span><span class="p">):</span>
+    <span class="n">comm_ps</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ps&quot;</span><span class="p">,</span> <span class="s2">&quot;ax&quot;</span><span class="p">]</span>
+    <span class="n">comm_nameko</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;grep&quot;</span><span class="p">,</span> <span class="s2">&quot;nameko run </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">service</span><span class="p">]</span>
+    <span class="n">comm_python</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;grep&quot;</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">p_all</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">comm_ps</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
+        <span class="n">p_rpc</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">comm_nameko</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="n">p_all</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
+        <span class="n">p_result</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">comm_python</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="n">p_rpc</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
+        <span class="n">p_all</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">p_rpc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="n">proc</span> <span class="o">=</span> <span class="n">p_result</span><span class="o">.</span><span class="n">communicate</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">proc</span><span class="p">:</span>
+            <span class="n">pid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">get_first</span><span class="p">(</span><span class="n">proc</span><span class="p">))</span>
+            <span class="n">exe</span><span class="p">(</span><span class="s2">&quot;kill </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pid</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Error: cannot kill </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="n">service</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="remote_test"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.remote_test">[docs]</a><span class="k">def</span> <span class="nf">remote_test</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
