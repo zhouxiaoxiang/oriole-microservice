@@ -5,12 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>oriole_service.app &#8212; Oriole-service 4.5.0 documentation</title>
-    
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
@@ -91,6 +88,7 @@
     <span class="n">db</span> <span class="o">=</span> <span class="n">Db</span><span class="p">(</span><span class="n">Base</span><span class="p">)</span>
     <span class="n">cf</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
+    <span class="n">ver</span> <span class="o">=</span> <span class="s2">&quot;1.0.0&quot;</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;supervisor_thread&quot;</span>
 
 <div class="viewcode-block" id="App.init"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.App.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -99,6 +97,10 @@
 <div class="viewcode-block" id="App.ping"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.App.ping">[docs]</a>    <span class="nd">@rpc</span>
     <span class="k">def</span> <span class="nf">ping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="App.version"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.App.version">[docs]</a>    <span class="nd">@rpc</span>
+    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ver</span></div>
 
     <span class="c1">#</span>
     <span class="c1"># These methods are used in services.</span>
@@ -214,7 +216,7 @@
           
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Eric.Zhou.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
         </div>
         <div class="clearer"></div>

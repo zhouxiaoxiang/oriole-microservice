@@ -39,6 +39,7 @@ class App:
     db = Db(Base)
     cf = get_config()
     log = get_logger()
+    ver = "1.0.0"
     name = "supervisor_thread"
 
     def init(self):
@@ -47,6 +48,10 @@ class App:
     @rpc
     def ping(self):
         return True
+
+    @rpc
+    def version(self):
+        return self.ver
 
     #
     # These methods are used in services.
