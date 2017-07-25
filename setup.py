@@ -3,20 +3,17 @@
 import os
 import re
 import sys
-import ast
 import warnings
 from codecs import open
+from ast import literal_eval
 from setuptools import find_packages, setup
 
-py_version = sys.version_info[:2]
-if py_version < (3, 5):
-    raise RuntimeError('Error: Python < 3.5')
+if sys.version_info[:2] < (3, 3):
+    raise RuntimeError('Error: Python < 3.3')
 
-_version_re = re.compile(r'__version__\s+=\s+(.+)')
+_ver = re.compile(r'__version__\s+=\s+(.+)')
 with open('oriole_service/__init__.py', 'rb') as f:
-    version = str(
-        ast.literal_eval(
-            _version_re.search(f.read().decode('utf-8')).group(1)))
+    version = str(literal_eval(_ver.search(f.read().decode()).group(1)))
 
 install_requires = [
     "nameko-sqlalchemy>=0.0.4",
@@ -61,7 +58,10 @@ setup(
         "Programming Language :: Python",
         "Operating System :: MacOS :: MacOS X",
         "Operating System :: POSIX",
+        "Programming Language :: Python :: 3.3",
+        "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
         "Topic :: Internet",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Intended Audience :: Developers",
