@@ -8,8 +8,8 @@ from codecs import open
 from ast import literal_eval
 from setuptools import find_packages, setup
 
-if sys.version_info[:2] < (3, 3):
-    raise RuntimeError('Error: Python < 3.3')
+if sys.version_info[:2] < (3, 5):
+    raise RuntimeError('Error: Python < 3.5')
 
 _ver = re.compile(r'__version__\s+=\s+(.+)')
 with open('oriole_service/__init__.py', 'rb') as f:
