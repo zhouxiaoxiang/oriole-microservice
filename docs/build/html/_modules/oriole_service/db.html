@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>oriole_service.db &#8212; Oriole-service 4.6.1 documentation</title>
+    <title>oriole_service.db &#8212; Oriole-service 4.6.2 documentation</title>
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '4.6.1',
+        VERSION:     '4.6.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -28,7 +28,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="../../index.html">Oriole-service 4.6.1 documentation</a></div>
+          href="../../index.html">Oriole-service 4.6.2 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -69,30 +69,24 @@
 <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="k">import</span> <span class="n">and_</span><span class="p">,</span> <span class="n">or_</span><span class="p">,</span> <span class="n">distinct</span><span class="p">,</span> <span class="n">func</span>
 <span class="kn">from</span> <span class="nn">weakref</span> <span class="k">import</span> <span class="n">WeakKeyDictionary</span>
 <span class="kn">from</span> <span class="nn">nameko.extensions</span> <span class="k">import</span> <span class="n">DependencyProvider</span>
+<span class="kn">from</span> <span class="nn">redis</span> <span class="k">import</span> <span class="n">StrictRedis</span>
 
 <span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+<span class="n">RS_URI</span> <span class="o">=</span> <span class="s2">&quot;datasets&quot;</span>
 <span class="n">DB_URI</span> <span class="o">=</span> <span class="s2">&quot;database&quot;</span>
+<span class="n">DB_POOL</span> <span class="o">=</span> <span class="s2">&quot;pool_size&quot;</span>
+<span class="n">DB_RECYCLE</span> <span class="o">=</span> <span class="s2">&quot;pool_recycle&quot;</span>
 
 
 <div class="viewcode-block" id="Db"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Db">[docs]</a><span class="k">class</span> <span class="nc">Db</span><span class="p">(</span><span class="n">DependencyProvider</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Add sqlalchemy.</span>
-
-<span class="sd">    It works for mysql and sqlite.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Base</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base</span> <span class="o">=</span> <span class="n">Base</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dbs</span> <span class="o">=</span> <span class="n">WeakKeyDictionary</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Db.setup"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Db.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Setup sqlalchemy&#39;s pool.</span>
-
-<span class="sd">        It&#39;s enough. Usually, active size is 2.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">config</span>
-        <span class="n">pool_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pool_size&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-        <span class="n">pool_recycle</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pool_recycle&quot;</span><span class="p">,</span> <span class="mi">300</span><span class="p">))</span>
+        <span class="n">pool_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">DB_POOL</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="n">pool_recycle</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">DB_RECYCLE</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">3600</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">bind</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">DB_URI</span><span class="p">),</span>
@@ -101,24 +95,27 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Db.stop"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Db.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Only a common usage, is not necessary. &quot;&quot;&quot;</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="o">.</span><span class="n">dispose</span><span class="p">()</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">bind</span></div>
 
 <div class="viewcode-block" id="Db.get_dependency"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Db.get_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">get_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker_ctx</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Supply a session to user. &quot;&quot;&quot;</span>
-
         <span class="n">session_cls</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">)</span>
         <span class="n">session</span> <span class="o">=</span> <span class="n">session_cls</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dbs</span><span class="p">[</span><span class="n">worker_ctx</span><span class="p">]</span> <span class="o">=</span> <span class="n">session</span>
         <span class="k">return</span> <span class="n">session</span></div>
 
 <div class="viewcode-block" id="Db.worker_teardown"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Db.worker_teardown">[docs]</a>    <span class="k">def</span> <span class="nf">worker_teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker_ctx</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Don&#39;t store any session. &quot;&quot;&quot;</span>
-
         <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">worker_ctx</span><span class="p">)</span>
         <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="Rs"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Rs">[docs]</a><span class="k">class</span> <span class="nc">Rs</span><span class="p">(</span><span class="n">DependencyProvider</span><span class="p">):</span>
+<div class="viewcode-block" id="Rs.setup"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Rs.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rs</span> <span class="o">=</span> <span class="n">StrictRedis</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">RS_URI</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Rs.get_dependency"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Rs.get_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">get_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker_ctx</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rs</span></div></div>
 </pre></div>
 
           </div>

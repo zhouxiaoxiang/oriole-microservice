@@ -21,7 +21,6 @@ import shutil
 import logging
 import tempfile
 import contextlib
-from redis import StrictRedis
 from subprocess import run as sr
 from subprocess import Popen, PIPE
 from os import path, walk, pardir, getcwd
@@ -146,10 +145,6 @@ def get_logger():
     return logger(level, name)
 
 
-def get_rs():
-    return StrictRedis.from_url(get_config().get("datasets"))
-
-
 @contextlib.contextmanager
 def get_cfg(f):
     try:
@@ -168,7 +163,7 @@ def check(f):
         get_yml(f)
         return True
     except Exception as e:
-        input("%s %s" % (e.context, e.problem))
+        input(str(e))
         return False
 
 

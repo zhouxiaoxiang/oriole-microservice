@@ -20,30 +20,24 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy import and_, or_, distinct, func
 from weakref import WeakKeyDictionary
 from nameko.extensions import DependencyProvider
+from redis import StrictRedis
 
 Base = declarative_base()
+RS_URI = "datasets"
 DB_URI = "database"
+DB_POOL = "pool_size"
+DB_RECYCLE = "pool_recycle"
 
 
 class Db(DependencyProvider):
-    """Add sqlalchemy.
-
-    It works for mysql and sqlite.
-    """
-
     def __init__(self, Base):
         self.base = Base
         self.dbs = WeakKeyDictionary()
 
     def setup(self):
-        """Setup sqlalchemy's pool.
-
-        It's enough. Usually, active size is 2.
-        """
-
         self.conf = self.container.config
-        pool_size = int(self.conf.get("pool_size", 10))
-        pool_recycle = int(self.conf.get("pool_recycle", 300))
+        pool_size = int(self.conf.get(DB_POOL, 10))
+        pool_recycle = int(self.conf.get(DB_RECYCLE, 4 * 3600))
 
         self.bind = create_engine(
             self.conf.get(DB_URI),
@@ -52,21 +46,24 @@ class Db(DependencyProvider):
         self.base.metadata.create_all(self.bind)
 
     def stop(self):
-        """Only a common usage, is not necessary. """
-
         self.bind.dispose()
         del self.bind
 
     def get_dependency(self, worker_ctx):
-        """Supply a session to user. """
-
         session_cls = sessionmaker(self.bind)
         session = session_cls()
         self.dbs[worker_ctx] = session
         return session
 
     def worker_teardown(self, worker_ctx):
-        """Don't store any session. """
-
         session = self.dbs.pop(worker_ctx)
         session.close()
+
+
+class Rs(DependencyProvider):
+    def setup(self):
+        self.conf = self.container.config
+        self.rs = StrictRedis.from_url(self.conf.get(RS_URI))
+
+    def get_dependency(self, worker_ctx):
+        return self.rs

@@ -19,7 +19,7 @@ import copy
 from os import path, pardir
 from nameko.rpc import rpc, RpcProxy
 from nameko.events import EventDispatcher, event_handler
-from oriole_service.api import get_config, cwd, get_logger, get_rs
+from oriole_service.api import get_config, cwd, get_logger
 from oriole_service.db import *
 from datetime import datetime, date
 from decimal import Decimal
@@ -35,15 +35,14 @@ class App:
     As usual, supply mysql and redis.
     """
 
-    rs = ""
     db = Db(Base)
-    cf = get_config()
+    rs = Rs()
     log = get_logger()
     ver = "1.0.0"
     name = "supervisor_thread"
 
     def init(self):
-        self.rs = get_rs()
+        ''' Noop '''
 
     @rpc
     def ping(self):
