@@ -16,11 +16,7 @@
 
 import os
 import yaml
-import code
-import shutil
 import logging
-import tempfile
-import contextlib
 from subprocess import run as sr
 from subprocess import Popen, PIPE
 from os import path, walk, pardir, getcwd
@@ -88,10 +84,14 @@ def halt(service):
 
 
 def remote_test(f):
-    usage = 'Usage: s.log_service.ping()'
-    config = get_yml(f)
-    with ClusterRpcProxy(config) as s:
-        code.interact(usage, None, {"s": s})
+    with ClusterRpcProxy(get_yml(f)) as s:
+        try:
+            from IPython import embed
+            embed()
+        except:
+            scope = dict(s=s)
+            import code
+            code.interact(None, None, scope)
 
 
 def mtest(test):
@@ -143,33 +143,3 @@ def get_logger():
     level = cf.get("log_level", "DEBUG")
     name = cf.get("log_name", "")
     return logger(level, name)
-
-
-@contextlib.contextmanager
-def get_cfg(f):
-    try:
-        loc = tempfile.mkdtemp()
-        name = "%s/%s" % (loc, f)
-        shutil.copy(f, loc)
-        yield name
-        shutil.copy(name, f)
-    finally:
-        os.remove(name)
-        os.rmdir(loc)
-
-
-def check(f):
-    try:
-        get_yml(f)
-        return True
-    except Exception as e:
-        input(str(e))
-        return False
-
-
-def conf(name):
-    with get_cfg(name) as f:
-        ed = os.environ.get('EDITOR', 'vi')
-        while True:
-            exe('%s "%s"' % (ed, f))
-            if check(f): break

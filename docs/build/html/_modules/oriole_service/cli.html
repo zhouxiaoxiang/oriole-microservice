@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>oriole_service.cli &#8212; Oriole-service 4.6.2 documentation</title>
+    <title>oriole_service.cli &#8212; Oriole-service 5.1.0 documentation</title>
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '4.6.2',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -28,7 +28,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="../../index.html">Oriole-service 4.6.2 documentation</a></div>
+          href="../../index.html">Oriole-service 5.1.0 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -69,22 +69,9 @@
 <span class="kn">import</span> <span class="nn">yaml</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">from</span> <span class="nn">.modules</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">oriole_service</span> <span class="k">import</span> <span class="n">api</span>
 
-<span class="n">ENV_VAR_MATCHER</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        \$\{       # match characters `${` literally</span>
-<span class="s2">        ([^}:\s]+) # 1st group: matches any character except `}` or `:`</span>
-<span class="s2">        :?         # matches the literal `:` character zero or one times</span>
-<span class="s2">        ([^}]+)?   # 2nd group: matches any character except `}`</span>
-<span class="s2">        \}         # match character `}` literally</span>
-<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
-
-<span class="n">IMPLICIT_ENV_VAR_MATCHER</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        .*          # matches any number of any characters</span>
-<span class="s2">        \$\{.*\}    # matches any number of any characters</span>
-<span class="s2">                    # between `${` and `}` literally</span>
-<span class="s2">        .*          # matches any number of any characters</span>
-<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
+<span class="n">ENV_VAR_MATCHER</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\$\{([^}:\s]+):?([^}]+)?\}&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
+<span class="n">IMPLICIT_ENV_VAR_MATCHER</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;.*\$\{.*\}.*&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_add_parser</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>

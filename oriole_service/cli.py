@@ -20,22 +20,9 @@ import sys
 import yaml
 import argparse
 from .modules import *
-from oriole_service import api
 
-ENV_VAR_MATCHER = re.compile(r"""
-        \$\{       # match characters `${` literally
-        ([^}:\s]+) # 1st group: matches any character except `}` or `:`
-        :?         # matches the literal `:` character zero or one times
-        ([^}]+)?   # 2nd group: matches any character except `}`
-        \}         # match character `}` literally
-    """, re.VERBOSE)
-
-IMPLICIT_ENV_VAR_MATCHER = re.compile(r"""
-        .*          # matches any number of any characters
-        \$\{.*\}    # matches any number of any characters
-                    # between `${` and `}` literally
-        .*          # matches any number of any characters
-    """, re.VERBOSE)
+ENV_VAR_MATCHER = re.compile(r"\$\{([^}:\s]+):?([^}]+)?\}", re.VERBOSE)
+IMPLICIT_ENV_VAR_MATCHER = re.compile(r".*\$\{.*\}.*", re.VERBOSE)
 
 
 def _add_parser(parser, module, name):

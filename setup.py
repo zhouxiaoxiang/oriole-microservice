@@ -3,7 +3,6 @@
 import os
 import re
 import sys
-import warnings
 from codecs import open
 from ast import literal_eval
 from setuptools import find_packages, setup
@@ -16,19 +15,18 @@ with open('oriole_service/__init__.py', 'rb') as f:
     version = str(literal_eval(_ver.search(f.read().decode()).group(1)))
 
 install_requires = [
-    "nameko-sqlalchemy>=0.0.4",
+    "nameko>=2.6.0",
+    "SQLAlchemy>=1.1.13",
     "mogo>=0.4.0",
-    "redis>=2.10.5",
+    "redis>=2.10.6",
     "PyYAML>=3.12",
-    "pytest>=3.0.5",
-    "pytest-html>=1.14.2",
+    "pytest>=3.2.1",
+    "pytest-html>=1.15.2",
     "mockredispy>=2.9.3",
     "mongomock>=3.8.0",
-    "Sphinx>=1.5.1",
+    "Sphinx>=1.6.3",
     "PyMySQL>=0.7.11",
-    "mysqlclient>=1.3.9",
-    "zope.sqlalchemy>=0.7.7",
-    "six>=1.10.0",
+    "mysqlclient>=1.3.10",
 ]
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -58,8 +56,6 @@ setup(
         "Programming Language :: Python",
         "Operating System :: MacOS :: MacOS X",
         "Operating System :: POSIX",
-        "Programming Language :: Python :: 3.3",
-        "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Topic :: Internet",
