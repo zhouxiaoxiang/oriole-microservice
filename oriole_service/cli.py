@@ -15,14 +15,10 @@
 #
 
 import os
-import re
 import sys
-import yaml
 import argparse
 from .modules import *
-
-ENV_VAR_MATCHER = re.compile(r"\$\{([^}:\s]+):?([^}]+)?\}", re.VERBOSE)
-IMPLICIT_ENV_VAR_MATCHER = re.compile(r".*\$\{.*\}.*", re.VERBOSE)
+from .api import setup_yaml_parser
 
 
 def _add_parser(parser, module, name):
@@ -49,22 +45,8 @@ def setup_parser():
     return parser
 
 
-def _replace_env_var(match):
-    env_var, default = match.groups()
-    return os.environ.get(env_var, default)
-
-
-def _env_var_constructor(loader, node):
-    value = loader.construct_scalar(node)
-    return ENV_VAR_MATCHER.sub(_replace_env_var, value)
-
-
-def setup_yaml_parser():
-    yaml.add_constructor('!env_var', _env_var_constructor)
-    yaml.add_implicit_resolver('!env_var', IMPLICIT_ENV_VAR_MATCHER)
-
-
 def main():
+    setup_yaml_parser()
     parser = setup_parser()
     args = parser.parse_args()
     setup_yaml_parser()

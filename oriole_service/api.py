@@ -15,6 +15,7 @@
 #
 
 import os
+import re
 import yaml
 import logging
 from subprocess import run as sr
@@ -31,11 +32,29 @@ test_cmd = "py.test -v --html=report.html"
 get_first = lambda s: s.strip().split()[0]
 
 
+def _replace_env_var(match):
+    env_var, default = match.groups()
+    return os.environ.get(env_var, default)
+
+
+def _env_var_constructor(loader, node):
+    var = re.compile(r"\$\{([^}:\s]+):?([^}]+)?\}", re.VERBOSE)
+    value = loader.construct_scalar(node)
+    return var.sub(_replace_env_var, value)
+
+
+def setup_yaml_parser():
+    var = re.compile(r".*\$\{.*\}.*", re.VERBOSE)
+    yaml.add_constructor('!env_var', _env_var_constructor)
+    yaml.add_implicit_resolver('!env_var', var)
+
+
 def get_config(f="services.cfg"):
     return get_yml(get_file(f))
 
 
 def get_yml(f):
+    setup_yaml_parser()
     with open(f) as filename:
         return yaml.load(filename)
 
