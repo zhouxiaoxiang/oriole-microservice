@@ -24,8 +24,9 @@ from oriole_service.db import *
 from datetime import datetime, date
 from decimal import Decimal
 
-topdir = path.join(cwd(), pardir, pardir)
-sys.path.insert(0, topdir)
+loc = path.join(cwd(), pardir, pardir)
+if loc not in sys.path:
+    sys.path.insert(0, loc)
 from dao import *
 
 

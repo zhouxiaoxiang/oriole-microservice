@@ -1,5 +1,9 @@
 # Release Notes
 
+# 5.2.2
+
+2017-10-22 Remove redundant yaml_loader.
+
 # 5.2.1
 
 2017-9-8 Suppress logger. 

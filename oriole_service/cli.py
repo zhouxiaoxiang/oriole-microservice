@@ -17,8 +17,8 @@
 import os
 import sys
 import argparse
-from .modules import *
-from .api import setup_yaml_parser
+from oriole_service.modules import *
+from oriole_service.api import setup_yaml_parser
 
 
 def _add_parser(parser, module, name):
@@ -49,5 +49,4 @@ def main():
     setup_yaml_parser()
     parser = setup_parser()
     args = parser.parse_args()
-    setup_yaml_parser()
     args.main(args)
