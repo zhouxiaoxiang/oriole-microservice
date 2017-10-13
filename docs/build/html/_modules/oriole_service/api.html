@@ -67,6 +67,7 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">run</span> <span class="k">as</span> <span class="n">sr</span>
 <span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span>
 <span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">walk</span><span class="p">,</span> <span class="n">pardir</span><span class="p">,</span> <span class="n">getcwd</span>
@@ -129,6 +130,21 @@
     <span class="n">fpath</span> <span class="o">=</span> <span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.py&quot;</span> <span class="o">%</span> <span class="n">service</span><span class="p">,</span> <span class="s2">&quot;services&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">fpath</span><span class="p">:</span>
         <span class="n">exe</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">fpath</span><span class="p">,</span> <span class="n">service</span><span class="p">,</span> <span class="n">config</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="build"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.build">[docs]</a><span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="n">service</span><span class="p">):</span>
+    <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;docker build -t </span><span class="si">{}</span><span class="s2">_service -f </span><span class="si">{}</span><span class="s2"> .&quot;</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;FROM zhouxiaoxiang/service</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;COPY . /service</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;WORKDIR /service</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;RUN make</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;CMD o r </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">service</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+        <span class="n">tmp</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">exe</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="n">tmp</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">tmp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="halt"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.halt">[docs]</a><span class="k">def</span> <span class="nf">halt</span><span class="p">(</span><span class="n">service</span><span class="p">):</span>

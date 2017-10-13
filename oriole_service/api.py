@@ -18,6 +18,7 @@ import os
 import re
 import yaml
 import logging
+import tempfile
 from subprocess import run as sr
 from subprocess import Popen, PIPE
 from os import path, walk, pardir, getcwd
@@ -80,6 +81,21 @@ def run(service):
     fpath = get_path("%s.py" % service, "services")
     if fpath:
         exe(fmt % (fpath, service, config))
+
+
+def build(service):
+    fmt = "docker build -t {}_service -f {} ."
+    tmp = tempfile.NamedTemporaryFile(dir=".")
+    try:
+        tmp.write(b"FROM zhouxiaoxiang/service\n")
+        tmp.write(b"COPY . /service\n")
+        tmp.write(b"WORKDIR /service\n")
+        tmp.write(b"RUN make\n")
+        tmp.write("CMD o r {}\n".format(service).encode())
+        tmp.seek(0)
+        exe(fmt.format(service, tmp.name))
+    finally:
+        tmp.close()
 
 
 def halt(service):
