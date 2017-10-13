@@ -5,26 +5,24 @@ Oriole-Service
 
 **Rapidly create services.**
 
-软件平台的搭建框架，更快，更好，更高。
+Prerequisites
+-------------
 
-Prerequisites 系统软件
-----------------------
-
--  python3
+-  python >= 3.6
 -  mongodb
 -  mysql
 -  rabbitmq
 -  redis
 
-Install 安装
-------------
+Install
+-------
 
 ::
 
     pip install oriole-service
 
-Test 测试
----------
+Test
+----
 
 ::
 
@@ -33,8 +31,8 @@ Test 测试
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/test.gif
    :alt: 
 
-Run 启动
---------
+Run
+---
 
 ::
 
@@ -43,15 +41,15 @@ Run 启动
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif
    :alt: 
 
-Halt 停止
----------
+Halt
+----
 
 ::
 
     o h <service>
 
-Document 文档化
----------------
+Document
+--------
 
 ::
 
@@ -60,11 +58,35 @@ Document 文档化
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/doc.gif
    :alt: 
 
-Check 检查平台所有服务
-----------------------
+Check
+-----
 
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif
    :alt: 
+
+Docker Base (Version: 1.13.1)
+-----------------------------
+
+If you are not familar with docker, skip this paragraph. Startup your
+rabbitmq/mysql/redis, and use their address below.
+
+-  Create an auth\_service.
+
+::
+
+    docker containers run -e 'RABBIT=pyamqp://' \
+                          -e 'MYSQL=mysql://'   \
+                          -e 'REDIS=redis://'   \
+                          zhouxiaoxiang/service
+
+-  Login.
+
+::
+
+    from oriole_service.api import ClusterRpcProxy
+
+    with ClusterRpcProxy({'AMQP_URI':'pyamqp://'}) as s:
+        s.auth_service.login({})
 
 .. |Join project| image:: https://badges.gitter.im/zhouxiaoxiang/oriole-service.svg
    :target: https://gitter.im/oriole-service/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link
