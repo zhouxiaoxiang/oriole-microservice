@@ -26,11 +26,24 @@ from nameko.standalone.rpc import ClusterRpcProxy
 from logging import DEBUG, INFO, WARNING, ERROR
 from logging import StreamHandler, Formatter, getLogger, FileHandler
 
-exe = lambda s: sr(s, shell=True)
-mexe = lambda f, s: tuple(map(f, s))
-cwd = lambda: getcwd()
+
 test_cmd = "py.test -v --html=report.html"
-get_first = lambda s: s.strip().split()[0]
+
+
+def exe(s):
+    return sr(s, shell=True)
+
+
+def mexe(f, s):
+    return tuple(map(f, s))
+
+
+def cwd():
+    return getcwd()
+
+
+def get_first(s):
+    return s.strip().split()[0]
 
 
 def _replace_env_var(match):
@@ -84,14 +97,14 @@ def run(service):
 
 
 def build(service):
+    loc = "/service"
     fmt = "docker build -t {}_service -f {} ."
     tmp = tempfile.NamedTemporaryFile(dir=".")
     try:
-        tmp.write(b"FROM zhouxiaoxiang/service\n")
-        tmp.write(b"COPY . /service\n")
-        tmp.write(b"WORKDIR /service\n")
-        tmp.write(b"RUN make\n")
-        tmp.write("CMD o r {}\n".format(service).encode())
+        cf = get_config()
+        image = cf.get('image', 'zhouxiaoxiang/service')
+        tmp.write("FROM {0}\nCOPY . {1}\nWORKDIR {1}\nRUN make\nCMD o r {2}\n".format(
+            image, loc, service).encode())
         tmp.seek(0)
         exe(fmt.format(service, tmp.name))
     finally:

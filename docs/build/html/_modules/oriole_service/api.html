@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>oriole_service.api &#8212; Oriole-service 5.2.1 documentation</title>
+    <title>oriole_service.api &#8212; Oriole-service 5.4.0 documentation</title>
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '5.2.1',
+        VERSION:     '5.4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -28,7 +28,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="../../index.html">Oriole-service 5.2.1 documentation</a></div>
+          href="../../index.html">Oriole-service 5.4.0 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -75,11 +75,24 @@
 <span class="kn">from</span> <span class="nn">logging</span> <span class="k">import</span> <span class="n">DEBUG</span><span class="p">,</span> <span class="n">INFO</span><span class="p">,</span> <span class="n">WARNING</span><span class="p">,</span> <span class="n">ERROR</span>
 <span class="kn">from</span> <span class="nn">logging</span> <span class="k">import</span> <span class="n">StreamHandler</span><span class="p">,</span> <span class="n">Formatter</span><span class="p">,</span> <span class="n">getLogger</span><span class="p">,</span> <span class="n">FileHandler</span>
 
-<span class="n">exe</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">sr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">mexe</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
-<span class="n">cwd</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">getcwd</span><span class="p">()</span>
+
 <span class="n">test_cmd</span> <span class="o">=</span> <span class="s2">&quot;py.test -v --html=report.html&quot;</span>
-<span class="n">get_first</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="exe"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.exe">[docs]</a><span class="k">def</span> <span class="nf">exe</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">sr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mexe"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.mexe">[docs]</a><span class="k">def</span> <span class="nf">mexe</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="cwd"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.cwd">[docs]</a><span class="k">def</span> <span class="nf">cwd</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">getcwd</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="get_first"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_first">[docs]</a><span class="k">def</span> <span class="nf">get_first</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
 <span class="k">def</span> <span class="nf">_replace_env_var</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
@@ -133,14 +146,14 @@
 
 
 <div class="viewcode-block" id="build"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.build">[docs]</a><span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="n">service</span><span class="p">):</span>
+    <span class="n">loc</span> <span class="o">=</span> <span class="s2">&quot;/service&quot;</span>
     <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;docker build -t </span><span class="si">{}</span><span class="s2">_service -f </span><span class="si">{}</span><span class="s2"> .&quot;</span>
     <span class="n">tmp</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;FROM zhouxiaoxiang/service</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;COPY . /service</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;WORKDIR /service</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;RUN make</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;CMD o r </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">service</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+        <span class="n">cf</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="s1">&#39;zhouxiaoxiang/service&#39;</span><span class="p">)</span>
+        <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;FROM </span><span class="si">{0}</span><span class="se">\n</span><span class="s2">COPY . </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">WORKDIR </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">RUN make</span><span class="se">\n</span><span class="s2">CMD o r </span><span class="si">{2}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">image</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">service</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
         <span class="n">tmp</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">exe</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="n">tmp</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
     <span class="k">finally</span><span class="p">:</span>
@@ -271,7 +284,7 @@
           
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Eric.Zhou.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
     </div>
         </div>
         <div class="clearer"></div>

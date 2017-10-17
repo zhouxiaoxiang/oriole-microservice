@@ -1,5 +1,9 @@
 # Release Notes
 
+# 5.5.0
+
+2017-10-17 Add image config.
+
 # 5.4.0
 
 2017-10-13 Add docker builder.
