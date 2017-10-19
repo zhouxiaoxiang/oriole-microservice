@@ -12,6 +12,14 @@ oriole\_service\.modules\.build module
     :undoc-members:
     :show-inheritance:
 
+oriole\_service\.modules\.comp module
+-------------------------------------
+
+.. automodule:: oriole_service.modules.comp
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 oriole\_service\.modules\.doc module
 ------------------------------------
 

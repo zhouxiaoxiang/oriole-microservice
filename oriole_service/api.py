@@ -191,3 +191,18 @@ def get_logger():
     level = cf.get("log_level", "DEBUG")
     name = cf.get("log_name", "")
     return logger(level, name)
+
+
+def comp(shell):
+    print(r'''#!/bin/bash
+    # In your bash, run:
+    # eval "$(o c)"
+
+    function _comp() {
+        local cur="${COMP_WORDS[COMP_CWORD]}"
+        local add="$(o -h|awk '/usage/{print $4}'|grep -E -o '\b[[:alpha:]]\b')"
+        COMPREPLY=($(compgen -W "$add" -- "$cur"))
+    }
+
+    complete -o default -F _comp o
+    ''')
