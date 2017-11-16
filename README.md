@@ -6,62 +6,45 @@
 
 ## Prerequisites
 
--   python >= 3.6
--   mongodb
--   mysql
--   rabbitmq
--   redis
+1. Install and run these servers.
+
+ - python >= 3.6
+ - mongodb
+ - mysql
+ - rabbitmq
+ - redis
+
+2. Modify services.cfg in your project.
+
+```
+AMQP_URI:      ${RABBIT:pyamqp://test:test@127.0.0.1}                                 
+database:      ${MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
+test_database: ${TEST_MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
+datasets:      ${REDIS:redis://127.0.0.1/0}
+max_workers:   ${WORKER:1}
+log_level:     ${LEVEL:DEBUG}
+```
 
 ## Install
 
-    pip install oriole-service
+  cd (`nameko` project)
 
-## Test
-
-    o t
-
-![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/test.gif)
+  make
 
 ## Run
 
-    o r <service>
+  o r <service>
+
+## Apply
+
+  o s
 
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif)
 
 ## Halt
 
-    o h <service>
-
-## Document
-
-    o d
-
-![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/doc.gif)
+  o h <service>
 
 ## Check
 
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif)
-
-
-## Docker Base (Version: 1.13.1)
-
-If you are not familar with docker,  skip this paragraph.
-Startup your rabbitmq/mysql/redis, and use their address below.
-
-- Create an auth_service.
-
-```
-docker containers run -e 'RABBIT=pyamqp://' \
-                      -e 'MYSQL=mysql://'   \
-                      -e 'REDIS=redis://'   \
-                      zhouxiaoxiang/service
-```
-
-- Login.
-
-```
-from oriole_service.api import ClusterRpcProxy
-
-with ClusterRpcProxy({'AMQP_URI':'pyamqp://'}) as s:
-    s.auth_service.login({})
-```

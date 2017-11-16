@@ -8,35 +8,41 @@ Oriole-Service
 Prerequisites
 -------------
 
+1. Install and run these servers.
+
 -  python >= 3.6
 -  mongodb
 -  mysql
 -  rabbitmq
 -  redis
 
+2. Modify services.cfg in your project.
+
+::
+
+    AMQP_URI:      ${RABBIT:pyamqp://test:test@127.0.0.1}                                 
+    database:      ${MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
+    test_database: ${TEST_MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
+    datasets:      ${REDIS:redis://127.0.0.1/0}
+    max_workers:   ${WORKER:1}
+    log_level:     ${LEVEL:DEBUG}
+
 Install
 -------
 
-::
+cd (``nameko`` project)
 
-    pip install oriole-service
-
-Test
-----
-
-::
-
-    o t
-
-.. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/test.gif
-   :alt: 
+make
 
 Run
 ---
 
-::
+o r
 
-    o r <service>
+Apply
+-----
+
+o s
 
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif
    :alt: 
@@ -44,49 +50,13 @@ Run
 Halt
 ----
 
-::
-
-    o h <service>
-
-Document
---------
-
-::
-
-    o d
-
-.. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/doc.gif
-   :alt: 
+o h
 
 Check
 -----
 
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif
    :alt: 
-
-Docker Base (Version: 1.13.1)
------------------------------
-
-If you are not familar with docker, skip this paragraph. Startup your
-rabbitmq/mysql/redis, and use their address below.
-
--  Create an auth\_service.
-
-::
-
-    docker containers run -e 'RABBIT=pyamqp://' \
-                          -e 'MYSQL=mysql://'   \
-                          -e 'REDIS=redis://'   \
-                          zhouxiaoxiang/service
-
--  Login.
-
-::
-
-    from oriole_service.api import ClusterRpcProxy
-
-    with ClusterRpcProxy({'AMQP_URI':'pyamqp://'}) as s:
-        s.auth_service.login({})
 
 .. |Join project| image:: https://badges.gitter.im/zhouxiaoxiang/oriole-service.svg
    :target: https://gitter.im/oriole-service/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link

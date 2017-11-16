@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>logging &#8212; Oriole-service 5.5.0 documentation</title>
+    <title>logging &#8212; Oriole-service 5.6.0 documentation</title>
     <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '5.5.0',
+        VERSION:     '5.6.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -28,7 +28,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="../index.html">Oriole-service 5.5.0 documentation</a></div>
+          href="../index.html">Oriole-service 5.6.0 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -1746,6 +1746,27 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">hasHandlers</span><span class="p">()</span>
 
+    <span class="k">def</span> <span class="nf">_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stack_info</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Low-level log implementation, proxied to allow nested logger adapters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">_log</span><span class="p">(</span>
+            <span class="n">level</span><span class="p">,</span>
+            <span class="n">msg</span><span class="p">,</span>
+            <span class="n">args</span><span class="p">,</span>
+            <span class="n">exc_info</span><span class="o">=</span><span class="n">exc_info</span><span class="p">,</span>
+            <span class="n">extra</span><span class="o">=</span><span class="n">extra</span><span class="p">,</span>
+            <span class="n">stack_info</span><span class="o">=</span><span class="n">stack_info</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">manager</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">manager</span>
+
+    <span class="nd">@manager</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_manager</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">manager</span> <span class="o">=</span> <span class="n">value</span>
+
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span>
         <span class="n">level</span> <span class="o">=</span> <span class="n">getLevelName</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">getEffectiveLevel</span><span class="p">())</span>
@@ -2085,7 +2106,7 @@
           
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Eric.Zhou.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
     </div>
         </div>
         <div class="clearer"></div>
