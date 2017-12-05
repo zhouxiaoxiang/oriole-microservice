@@ -27,7 +27,7 @@ from logging import DEBUG, INFO, WARNING, ERROR
 from logging import StreamHandler, Formatter, getLogger, FileHandler
 
 
-test_cmd = "py.test -v --html=report.html"
+test_cmd = "py.test"
 
 
 def exe(s):
