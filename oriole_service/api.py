@@ -132,7 +132,7 @@ def halt(service):
 
 
 def remote_test(f):
-    with ClusterRpcProxy(get_yml(f)) as s:
+    with ClusterRpcProxy(get_yml(f), timeout=3) as s:
         try:
             from IPython import embed
             embed()

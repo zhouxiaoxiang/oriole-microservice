@@ -1,5 +1,9 @@
 # Release Notes
 
+# 6.2.0
+
+2017-12-8 Add timeout.
+
 # 6.1.0
 
 2017-12-5 Change test details from oriole into project.
