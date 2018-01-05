@@ -8,24 +8,26 @@
 #           .-"-.   \      |      /   .-"-.
 #    .-----{     }--|  /,.-'-.,\  |--{     }-----.
 #     )    (_)_)_)  \_/`~-===-~`\_/  (_(_(_)    (
-#    (                                          )
+#    (                                           )
 #     )                Oriole-API               (
-#    (                  Eric.Zhou               )
+#    (                  Eric.Zhou                )
 #    '-------------------------------------------'
 #
 
+import argparse
+import logging
 import os
 import re
-import yaml
-import logging
 import tempfile
+from logging import (DEBUG, ERROR, INFO, WARNING, FileHandler, Formatter,
+                     StreamHandler, getLogger)
+from os import getcwd, pardir, path, walk
 from subprocess import run as sr
-from subprocess import Popen, PIPE
-from os import path, walk, pardir, getcwd
-from nameko.standalone.rpc import ClusterRpcProxy
-from logging import DEBUG, INFO, WARNING, ERROR
-from logging import StreamHandler, Formatter, getLogger, FileHandler
+from subprocess import PIPE, Popen
 
+import yaml
+from nameko.standalone.rpc import ClusterRpcProxy
+from pyetcd.client import Client
 
 test_cmd = "py.test"
 
@@ -48,12 +50,14 @@ def get_first(s):
 
 def _replace_env_var(match):
     env_var, default = match.groups()
+
     return os.environ.get(env_var, default)
 
 
 def _env_var_constructor(loader, node):
     var = re.compile(r"\$\{([^}:\s]+):?([^}]+)?\}", re.VERBOSE)
     value = loader.construct_scalar(node)
+
     return var.sub(_replace_env_var, value)
 
 
@@ -75,8 +79,10 @@ def get_yml(f):
 
 def get_file(f):
     loc = cwd()
+
     for _ in range(3):
         config = path.join(loc, f)
+
         if path.isfile(config):
             return config
         loc = path.join(loc, pardir)
@@ -92,6 +98,7 @@ def run(service):
     fmt = "cd %s && nameko run %s --config %s"
     config = path.join(cwd(), "services.cfg")
     fpath = get_path("%s.py" % service, "services")
+
     if fpath:
         exe(fmt % (fpath, service, config))
 
@@ -124,6 +131,7 @@ def halt(service):
         p_rpc.stdout.close()
 
         proc = p_result.communicate()[0]
+
         if proc:
             pid = int(get_first(proc))
             exe("kill %s" % pid)
@@ -145,6 +153,7 @@ def remote_test(f):
 def mtest(test):
     fmt = "cd %s && %s"
     fpath = get_path("test_%s.py" % test, "tests")
+
     if fpath:
         exe(fmt % (fpath, test_cmd))
 
@@ -158,6 +167,7 @@ def test(tests):
 
 def Config(name="services.cfg"):
     """ Obsoleted """
+
     return get_config(name)
 
 
@@ -190,6 +200,7 @@ def get_logger():
     cf = get_config()
     level = cf.get("log_level", "DEBUG")
     name = cf.get("log_name", "")
+
     return logger(level, name)
 
 
@@ -206,3 +217,35 @@ def comp(shell):
 
     complete -o default -F _comp o
     ''')
+
+
+class MsConfig:
+    def __init__(self):
+        self.add_args()
+        self.client = Client()
+
+    def add_args(self):
+        title = 'Microservice configuration client.'
+        p = argparse.ArgumentParser(description=title)
+        args = [
+            ('head', 'head', '?', '/ms/test/', "server's directory."),
+            ('conf', 'conf', '?', 'services.cfg', 'where to store.'),
+        ]
+
+        for arg in args:
+            s, var, nargs, default, help = arg
+            p.add_argument(s, metavar=var, nargs=nargs,
+                           default=default, help=help)
+        self.args = p.parse_args()
+
+    def read(self, k):
+        try:
+            data = self.client.read(self.args.head + k)
+        except Exception as e:
+            raise RuntimeError("Please contact with administrator.")
+        else:
+            return data.node['value']
+
+    def load(self, cfg):
+        with open(self.args.conf, 'wb') as f:
+            f.write(yaml.dump(cfg).encode())
