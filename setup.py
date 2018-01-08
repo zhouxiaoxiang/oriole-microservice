@@ -21,6 +21,7 @@ install_requires = [
     "redis==2.10.6",
     "PyYAML==3.12",
     "pyetcd==1.8.0",
+    "Jinja2==2.10",
     "pytest==3.2.3",
     "pytest-html==1.16.0",
     "mockredispy==2.9.3",

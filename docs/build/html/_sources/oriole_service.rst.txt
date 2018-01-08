@@ -51,6 +51,14 @@ oriole\_service\.db module
     :undoc-members:
     :show-inheritance:
 
+oriole\_service\.ext module
+---------------------------
+
+.. automodule:: oriole_service.ext
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 oriole\_service\.log module
 ---------------------------
 

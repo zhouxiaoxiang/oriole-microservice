@@ -14,11 +14,18 @@
 #    '-------------------------------------------'
 #
 
-from oriole_service.api import MsConfig
+from jinja2.ext import Extension
 
-# Create configuration for every microservice, not all.
-# Etcd is required, or raise an exception.
-_cf = MsConfig()
 
-# Supply r/w for configuration files.
-write, read = _cf.write, _cf.read
+class CfExtension(Extension):
+    '''Restore configuration.'''
+
+    def __init__(self, env):
+        super().__init__(env)
+
+        def read(k):
+            from oriole_service.cf import read
+
+            return read(k)
+
+        env.globals.update({'_': read})

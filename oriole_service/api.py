@@ -26,6 +26,7 @@ from subprocess import run as sr
 from subprocess import PIPE, Popen
 
 import yaml
+from jinja2 import Environment, StrictUndefined
 from nameko.standalone.rpc import ClusterRpcProxy
 from pyetcd.client import Client
 
@@ -211,7 +212,7 @@ def comp(shell):
 
     function _comp() {
         local cur="${COMP_WORDS[COMP_CWORD]}"
-        local add="$(o -h|awk '/usage/{print $4}'|grep -E -o '\b[[:alpha:]]\b')"
+        local add="$(o -h|awk '/usage/{print $4}'|grep -Eo '\b[[:alpha:]]\b')"
         COMPREPLY=($(compgen -W "$add" -- "$cur"))
     }
 
@@ -219,33 +220,40 @@ def comp(shell):
     ''')
 
 
-class MsConfig:
-    def __init__(self):
-        self.add_args()
-        self.client = Client()
+class Loader:
+    def __init__(self, **kwargs):
+        try:
+            self.client = Client()
+        except Exception as e:
+            raise RuntimeError('Please contact with administrator.')
 
-    def add_args(self):
-        title = 'Microservice configuration client.'
-        p = argparse.ArgumentParser(description=title)
-        args = [
-            ('head', 'head', '?', '/ms/test/', "server's directory."),
-            ('conf', 'conf', '?', 'services.cfg', 'where to store.'),
-        ]
+        super().__init__(
+            extensions=['oriole_service.ext.CfExtension'],
+            **kwargs
+        )
 
-        for arg in args:
-            s, var, nargs, default, help = arg
-            p.add_argument(s, metavar=var, nargs=nargs,
-                           default=default, help=help)
-        self.args = p.parse_args()
+
+class MsConfig(Loader, Environment):
+    def __init__(self, **kwargs):
+        super().__init__(
+            undefined=StrictUndefined,
+            **kwargs
+        )
 
     def read(self, k):
         try:
-            data = self.client.read(self.args.head + k)
+            data = self.client.read(self.directory + k)
         except Exception as e:
-            raise RuntimeError("Please contact with administrator.")
+            raise RuntimeError('Please contact with administrator.')
         else:
             return data.node['value']
 
-    def load(self, cfg):
-        with open(self.args.conf, 'wb') as f:
-            f.write(yaml.dump(cfg).encode())
+    def write(self, directory, outfile, infile):
+        self.directory = directory
+
+        with open(infile, 'rb') as f:
+            cfg = f.read().decode()
+            out = self.from_string(cfg).render()
+
+        with open(outfile, 'wb') as f:
+            f.write(out.encode())

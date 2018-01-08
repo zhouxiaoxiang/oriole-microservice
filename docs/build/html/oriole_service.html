@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>oriole_service package &#8212; Oriole-service 6.2.0 documentation</title>
+    <title>oriole_service package &#8212; Oriole-service 8.0.0 documentation</title>
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '6.2.0',
+        VERSION:     '8.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -30,7 +30,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="index.html">Oriole-service 6.2.0 documentation</a></div>
+          href="index.html">Oriole-service 8.0.0 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="modules.html" title="oriole_service"
              accesskey="P">previous</a> |
@@ -62,6 +62,7 @@
 <li class="toctree-l2"><a class="reference internal" href="oriole_service.modules.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="oriole_service.modules.html#module-oriole_service.modules.build">oriole_service.modules.build module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="oriole_service.modules.html#module-oriole_service.modules.comp">oriole_service.modules.comp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oriole_service.modules.html#module-oriole_service.modules.conf">oriole_service.modules.conf module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="oriole_service.modules.html#module-oriole_service.modules.doc">oriole_service.modules.doc module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="oriole_service.modules.html#module-oriole_service.modules.halt">oriole_service.modules.halt module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="oriole_service.modules.html#module-oriole_service.modules.run">oriole_service.modules.run module</a></li>
@@ -85,22 +86,23 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="oriole_service.api.MsConfig">
-<em class="property">class </em><code class="descclassname">oriole_service.api.</code><code class="descname">MsConfig</code><a class="reference internal" href="_modules/oriole_service/api.html#MsConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.MsConfig" title="Permalink to this definition">¶</a></dt>
+<dt id="oriole_service.api.Loader">
+<em class="property">class </em><code class="descclassname">oriole_service.api.</code><code class="descname">Loader</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#Loader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.Loader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<dl class="method">
-<dt id="oriole_service.api.MsConfig.add_args">
-<code class="descname">add_args</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#MsConfig.add_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.MsConfig.add_args" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+</dd></dl>
 
-<dl class="method">
-<dt id="oriole_service.api.MsConfig.load">
-<code class="descname">load</code><span class="sig-paren">(</span><em>cfg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#MsConfig.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.MsConfig.load" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dl class="class">
+<dt id="oriole_service.api.MsConfig">
+<em class="property">class </em><code class="descclassname">oriole_service.api.</code><code class="descname">MsConfig</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#MsConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.MsConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#oriole_service.api.Loader" title="oriole_service.api.Loader"><code class="xref py py-class docutils literal"><span class="pre">oriole_service.api.Loader</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">jinja2.environment.Environment</span></code></p>
 <dl class="method">
 <dt id="oriole_service.api.MsConfig.read">
 <code class="descname">read</code><span class="sig-paren">(</span><em>k</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#MsConfig.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.MsConfig.read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="oriole_service.api.MsConfig.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>directory</em>, <em>outfile</em>, <em>infile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#MsConfig.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.MsConfig.write" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -320,6 +322,21 @@
 </dd></dl>
 
 </div>
+<div class="section" id="module-oriole_service.ext">
+<span id="oriole-service-ext-module"></span><h2>oriole_service.ext module<a class="headerlink" href="#module-oriole_service.ext" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="oriole_service.ext.CfExtension">
+<em class="property">class </em><code class="descclassname">oriole_service.ext.</code><code class="descname">CfExtension</code><span class="sig-paren">(</span><em>env</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/ext.html#CfExtension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.ext.CfExtension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">jinja2.ext.Extension</span></code></p>
+<p>Restore configuration.</p>
+<dl class="attribute">
+<dt id="oriole_service.ext.CfExtension.identifier">
+<code class="descname">identifier</code><em class="property"> = 'oriole_service.ext.CfExtension'</em><a class="headerlink" href="#oriole_service.ext.CfExtension.identifier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-oriole_service.log">
 <span id="oriole-service-log-module"></span><h2>oriole_service.log module<a class="headerlink" href="#module-oriole_service.log" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -365,6 +382,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-oriole_service.cf">oriole_service.cf module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-oriole_service.cli">oriole_service.cli module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-oriole_service.db">oriole_service.db module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-oriole_service.ext">oriole_service.ext module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-oriole_service.log">oriole_service.log module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-oriole_service.test">oriole_service.test module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-oriole_service">Module contents</a></li>

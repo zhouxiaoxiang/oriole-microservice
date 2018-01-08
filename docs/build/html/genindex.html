@@ -6,13 +6,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Index &#8212; Oriole-service 6.2.0 documentation</title>
+    <title>Index &#8212; Oriole-service 8.0.0 documentation</title>
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '6.2.0',
+        VERSION:     '8.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -29,7 +29,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="index.html">Oriole-service 6.2.0 documentation</a></div>
+          href="index.html">Oriole-service 8.0.0 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -74,8 +74,6 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="oriole_service.html#oriole_service.api.MsConfig.add_args">add_args() (oriole_service.api.MsConfig method)</a>
-</li>
       <li><a href="oriole_service.html#oriole_service.cli.add_parser">add_parser() (in module oriole_service.cli)</a>
 </li>
   </ul></td>
@@ -98,6 +96,8 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="oriole_service.html#oriole_service.ext.CfExtension">CfExtension (class in oriole_service.ext)</a>
+</li>
       <li><a href="oriole_service.html#oriole_service.api.comp">comp() (in module oriole_service.api)</a>
 </li>
   </ul></td>
@@ -168,12 +168,16 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="oriole_service.html#oriole_service.ext.CfExtension.identifier">identifier (oriole_service.ext.CfExtension attribute)</a>
+</li>
       <li><a href="oriole_service.html#oriole_service.app.App.init">init() (oriole_service.app.App method)</a>
 </li>
       <li><a href="oriole_service.modules.html#oriole_service.modules.build.init_parser">init_parser() (in module oriole_service.modules.build)</a>
 
       <ul>
         <li><a href="oriole_service.modules.html#oriole_service.modules.comp.init_parser">(in module oriole_service.modules.comp)</a>
+</li>
+        <li><a href="oriole_service.modules.html#oriole_service.modules.conf.init_parser">(in module oriole_service.modules.conf)</a>
 </li>
         <li><a href="oriole_service.modules.html#oriole_service.modules.doc.init_parser">(in module oriole_service.modules.doc)</a>
 </li>
@@ -192,7 +196,7 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="oriole_service.html#oriole_service.api.MsConfig.load">load() (oriole_service.api.MsConfig method)</a>
+      <li><a href="oriole_service.html#oriole_service.api.Loader">Loader (class in oriole_service.api)</a>
 </li>
       <li><a href="oriole_service.html#oriole_service.log.Log">Log (class in oriole_service.log)</a>
 </li>
@@ -214,6 +218,8 @@
         <li><a href="oriole_service.modules.html#oriole_service.modules.build.main">(in module oriole_service.modules.build)</a>
 </li>
         <li><a href="oriole_service.modules.html#oriole_service.modules.comp.main">(in module oriole_service.modules.comp)</a>
+</li>
+        <li><a href="oriole_service.modules.html#oriole_service.modules.conf.main">(in module oriole_service.modules.conf)</a>
 </li>
         <li><a href="oriole_service.modules.html#oriole_service.modules.doc.main">(in module oriole_service.modules.doc)</a>
 </li>
@@ -262,6 +268,8 @@
 </li>
       <li><a href="oriole_service.html#module-oriole_service.db">oriole_service.db (module)</a>
 </li>
+      <li><a href="oriole_service.html#module-oriole_service.ext">oriole_service.ext (module)</a>
+</li>
       <li><a href="oriole_service.html#module-oriole_service.log">oriole_service.log (module)</a>
 </li>
   </ul></td>
@@ -271,6 +279,8 @@
       <li><a href="oriole_service.modules.html#module-oriole_service.modules.build">oriole_service.modules.build (module)</a>
 </li>
       <li><a href="oriole_service.modules.html#module-oriole_service.modules.comp">oriole_service.modules.comp (module)</a>
+</li>
+      <li><a href="oriole_service.modules.html#module-oriole_service.modules.conf">oriole_service.modules.conf (module)</a>
 </li>
       <li><a href="oriole_service.modules.html#module-oriole_service.modules.doc">oriole_service.modules.doc (module)</a>
 </li>
@@ -357,6 +367,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="oriole_service.html#oriole_service.db.Db.worker_teardown">worker_teardown() (oriole_service.db.Db method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="oriole_service.html#oriole_service.api.MsConfig.write">write() (oriole_service.api.MsConfig method)</a>
 </li>
   </ul></td>
 </tr></table>
