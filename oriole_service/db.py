@@ -30,8 +30,9 @@ DB_RECYCLE = "pool_recycle"
 
 
 class Db(DependencyProvider):
-    def __init__(self, Base):
+    def __init__(self, Base, uri=DB_URI):
         self.base = Base
+        self.uri = uri
         self.dbs = WeakKeyDictionary()
 
     def setup(self):
@@ -40,7 +41,7 @@ class Db(DependencyProvider):
         pool_recycle = int(self.conf.get(DB_RECYCLE, 4 * 3600))
 
         self.bind = create_engine(
-            self.conf.get(DB_URI),
+            self.conf.get(self.uri),
             pool_size=pool_size,
             pool_recycle=pool_recycle)
         self.base.metadata.create_all(self.bind)
