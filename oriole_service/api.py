@@ -96,12 +96,13 @@ def get_path(f, loc):
 
 
 def run(service):
-    fmt = "cd %s && nameko run %s --config %s"
-    config = path.join(cwd(), "services.cfg")
+    fmt = "nameko run %s --config %s"
     fpath = get_path("%s.py" % service, "services")
 
     if fpath:
-        exe(fmt % (fpath, service, config))
+        os.chdir(fpath)
+        config = get_file("services.cfg")
+        exe(fmt % (service, config))
 
 
 def build(service):
