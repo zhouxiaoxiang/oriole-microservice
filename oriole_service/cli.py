@@ -14,11 +14,10 @@
 #    '-------------------------------------------'
 #
 
-import os
-import sys
 import argparse
-from oriole_service.modules import *
+
 from oriole_service.api import setup_yaml_parser
+from oriole_service.modules import *
 
 
 def _add_parser(parser, module, name):
@@ -35,13 +34,10 @@ def add_parser(parser, modules):
 
 
 def setup_parser():
-    curdir = os.getcwd()
-    if curdir not in sys.path:
-        sys.path.insert(0, curdir)
-
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
     add_parser(subparsers, modules)
+
     return parser
 
 

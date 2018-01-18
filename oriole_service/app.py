@@ -8,26 +8,22 @@
 #           .-"-.   \      |      /   .-"-.
 #    .-----{     }--|  /,.-'-.,\  |--{     }-----.
 #     )    (_)_)_)  \_/`~-===-~`\_/  (_(_(_)    (
-#    (                                          )
+#    (                                           )
 #     )                Oriole-APP               (
-#    (                  Eric.Zhou               )
+#    (                  Eric.Zhou                )
 #    '-------------------------------------------'
 #
 
-import sys
 import copy
-from os import path, pardir
-from nameko.rpc import rpc, RpcProxy
-from nameko.events import EventDispatcher, event_handler
-from oriole_service.api import get_config, cwd, get_logger
-from oriole_service.db import *
-from datetime import datetime, date
+from datetime import date, datetime
 from decimal import Decimal
 
-loc = path.join(cwd(), pardir, pardir)
-if loc not in sys.path:
-    sys.path.insert(0, loc)
+from nameko.events import EventDispatcher, event_handler
+from nameko.rpc import RpcProxy, rpc
+
 from dao import *
+from oriole_service.api import cwd, get_config, get_logger, service_name
+from oriole_service.db import *
 
 
 class App:
@@ -63,6 +59,7 @@ class App:
 
         if isinstance(item, dict):
             self._params = copy.deepcopy(item)
+
             return self._params
 
         try:
@@ -102,6 +99,7 @@ class App:
             for key in dir(obj):
                 if key != "metadata" and key[0] != "_":
                     value = getattr(obj, key)
+
                     if not callable(value):
                         result[key] = self._o(value)
         except:

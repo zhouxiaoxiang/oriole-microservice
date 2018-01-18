@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>oriole_service.api &#8212; Oriole-service 8.1.1 documentation</title>
+    <title>oriole_service.api &#8212; Oriole-service 8.2.0 documentation</title>
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '8.1.1',
+        VERSION:     '8.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -28,7 +28,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="../../index.html">Oriole-service 8.1.1 documentation</a></div>
+          href="../../index.html">Oriole-service 8.2.0 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -70,9 +70,12 @@
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">from</span> <span class="nn">logging</span> <span class="k">import</span> <span class="p">(</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">ERROR</span><span class="p">,</span> <span class="n">INFO</span><span class="p">,</span> <span class="n">WARNING</span><span class="p">,</span> <span class="n">FileHandler</span><span class="p">,</span> <span class="n">Formatter</span><span class="p">,</span>
                      <span class="n">StreamHandler</span><span class="p">,</span> <span class="n">getLogger</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">getcwd</span><span class="p">,</span> <span class="n">pardir</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">walk</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span> <span class="k">as</span> <span class="n">opath</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">getcwd</span><span class="p">,</span> <span class="n">pardir</span><span class="p">,</span> <span class="n">walk</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">basename</span><span class="p">,</span> <span class="n">splitext</span>
 <span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">run</span> <span class="k">as</span> <span class="n">sr</span>
 <span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">PIPE</span><span class="p">,</span> <span class="n">Popen</span>
+<span class="kn">from</span> <span class="nn">sys</span> <span class="k">import</span> <span class="n">path</span> <span class="k">as</span> <span class="n">spath</span>
 
 <span class="kn">import</span> <span class="nn">yaml</span>
 <span class="kn">from</span> <span class="nn">jinja2</span> <span class="k">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">StrictUndefined</span>
@@ -118,7 +121,7 @@
 
 
 <div class="viewcode-block" id="get_config"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_config">[docs]</a><span class="k">def</span> <span class="nf">get_config</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="s2">&quot;services.cfg&quot;</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">get_yml</span><span class="p">(</span><span class="n">get_file</span><span class="p">(</span><span class="n">f</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">get_yml</span><span class="p">(</span><span class="n">get_loc</span><span class="p">(</span><span class="n">f</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="get_yml"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_yml">[docs]</a><span class="k">def</span> <span class="nf">get_yml</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
@@ -127,15 +130,27 @@
         <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_file"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_file">[docs]</a><span class="k">def</span> <span class="nf">get_file</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+<div class="viewcode-block" id="get_loc"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_loc">[docs]</a><span class="k">def</span> <span class="nf">get_loc</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">ftype</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">loc</span> <span class="o">=</span> <span class="n">cwd</span><span class="p">()</span>
 
     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">opath</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">config</span>
-        <span class="n">loc</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">pardir</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">ftype</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">opath</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">config</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">opath</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">loc</span>
+
+        <span class="n">loc</span> <span class="o">=</span> <span class="n">opath</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">pardir</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="set_loc"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.set_loc">[docs]</a><span class="k">def</span> <span class="nf">set_loc</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="s1">&#39;dao&#39;</span><span class="p">):</span>
+    <span class="n">loc</span> <span class="o">=</span> <span class="n">get_loc</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">loc</span> <span class="ow">and</span> <span class="n">loc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">spath</span><span class="p">:</span>
+        <span class="n">spath</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_path"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_path">[docs]</a><span class="k">def</span> <span class="nf">get_path</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">loc</span><span class="p">):</span>
@@ -150,7 +165,7 @@
 
     <span class="k">if</span> <span class="n">fpath</span><span class="p">:</span>
         <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">get_file</span><span class="p">(</span><span class="s2">&quot;services.cfg&quot;</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">get_loc</span><span class="p">(</span><span class="s2">&quot;services.cfg&quot;</span><span class="p">)</span>
         <span class="n">exe</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="n">config</span><span class="p">))</span></div>
 
 
@@ -307,6 +322,11 @@
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span></div></div>
+
+
+<div class="viewcode-block" id="service_name"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.service_name">[docs]</a><span class="k">def</span> <span class="nf">service_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;service&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">splitext</span><span class="p">(</span><span class="n">basename</span><span class="p">(</span><span class="n">name</span><span class="p">))[</span><span class="mi">0</span><span class="p">],</span> <span class="n">unit</span><span class="p">))</span></div>
 </pre></div>
 
           </div>

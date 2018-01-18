@@ -21,9 +21,12 @@ import re
 import tempfile
 from logging import (DEBUG, ERROR, INFO, WARNING, FileHandler, Formatter,
                      StreamHandler, getLogger)
-from os import getcwd, pardir, path, walk
+from os import path as opath
+from os import getcwd, pardir, walk
+from os.path import basename, splitext
 from subprocess import run as sr
 from subprocess import PIPE, Popen
+from sys import path as spath
 
 import yaml
 from jinja2 import Environment, StrictUndefined
@@ -69,7 +72,7 @@ def setup_yaml_parser():
 
 
 def get_config(f="services.cfg"):
-    return get_yml(get_file(f))
+    return get_yml(get_loc(f))
 
 
 def get_yml(f):
@@ -78,15 +81,27 @@ def get_yml(f):
         return yaml.load(filename)
 
 
-def get_file(f):
+def get_loc(f, ftype=True):
     loc = cwd()
 
     for _ in range(3):
-        config = path.join(loc, f)
+        config = opath.join(loc, f)
 
-        if path.isfile(config):
-            return config
-        loc = path.join(loc, pardir)
+        if ftype:
+            if opath.isfile(config):
+                return config
+        else:
+            if opath.isdir(config):
+                return loc
+
+        loc = opath.join(loc, pardir)
+
+
+def set_loc(f='dao'):
+    loc = get_loc(f, False)
+
+    if loc and loc not in spath:
+        spath.insert(0, loc)
 
 
 def get_path(f, loc):
@@ -101,7 +116,7 @@ def run(service):
 
     if fpath:
         os.chdir(fpath)
-        config = get_file("services.cfg")
+        config = get_loc("services.cfg")
         exe(fmt % (service, config))
 
 
@@ -258,3 +273,8 @@ class MsConfig(Loader, Environment):
 
         with open(outfile, 'wb') as f:
             f.write(out.encode())
+
+
+def service_name(name, unit='service'):
+    if name:
+        return '_'.join((splitext(basename(name))[0], unit))

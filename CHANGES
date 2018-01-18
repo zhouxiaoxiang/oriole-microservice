@@ -1,5 +1,9 @@
 # Release Notes
 
+# 8.3.0
+
+2018-1-18 Import project at startup.
+
 # 8.2.0
 
 2018-1-17 Add diff cfg.
