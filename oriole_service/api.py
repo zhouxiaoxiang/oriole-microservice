@@ -33,8 +33,6 @@ from jinja2 import Environment, StrictUndefined
 from nameko.standalone.rpc import ClusterRpcProxy
 from pyetcd.client import Client
 
-test_cmd = "py.test"
-
 
 def exe(s):
     return sr(s, shell=True)
@@ -82,7 +80,7 @@ def get_yml(f):
 
 
 def get_loc(f, ftype=True):
-    loc = cwd()
+    loc = cwd().replace('/tests/', '/services/')
 
     for _ in range(3):
         config = opath.join(loc, f)
@@ -167,19 +165,13 @@ def remote_test(f):
             code.interact(None, None, scope)
 
 
-def mtest(test):
-    fmt = "cd %s && %s"
-    fpath = get_path("test_%s.py" % test, "tests")
+def test(service):
+    fmt = "py.test"
+    fpath = get_path("test_%s.py" % service, "tests")
 
     if fpath:
-        exe(fmt % (fpath, test_cmd))
-
-
-def test(tests):
-    if not tests:
-        exe(test_cmd)
-    else:
-        mexe(mtest, tests)
+        os.chdir(fpath)
+        exe(fmt)
 
 
 def Config(name="services.cfg"):
