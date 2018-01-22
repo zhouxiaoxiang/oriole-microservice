@@ -8,18 +8,18 @@
 #           .-"-.   \      |      /   .-"-.
 #    .-----{     }--|  /,.-'-.,\  |--{     }-----.
 #     )    (_)_)_)  \_/`~-===-~`\_/  (_(_(_)    (
-#    (                                          )
+#    (                                           )
 #     )                Oriole-CLI               (
-#    (                  Eric.Zhou               )
-#    )                Build services            (
+#    (                  Eric.Zhou                )
+#     )              Build services             (
 #    '-------------------------------------------'
 #
 
-from oriole_service import api
+from oriole.ops import build
 
 
 def main(args):
-    api.build(args.service)
+    build(args.service)
 
 
 def init_parser(parser):

@@ -8,28 +8,31 @@
 #           .-"-.   \      |      /   .-"-.
 #    .-----{     }--|  /,.-'-.,\  |--{     }-----.
 #     )    (_)_)_)  \_/`~-===-~`\_/  (_(_(_)    (
-#    (                                          )
+#    (                                           )
 #     )                Oriole-LOG               (
-#    (                  Eric.Zhou               )
+#    (                  Eric.Zhou                )
 #    '-------------------------------------------'
 #
 
 import mogo
-from oriole_service.api import get_config
+from nameko.extensions import DependencyProvider
+
+from oriole.vos import get_config
 
 
-class Log:
-    def __init__(self, module=""):
+class Log(DependencyProvider):
+    def __init__(self, module=''):
         conf = get_config()['log'][module]
         self.host = conf['host']
         self.db = conf['db']
         self.tb = conf['tb']
 
+    def setup(self):
         try:
             self.conn = mogo.connect(self.db, self.host)
             self.log = self.conn[self.db][self.tb]
         except:
             raise RuntimeError("Error: Mongo is down.")
 
-    def get(self):
+    def get_dependency(self, worker_ctx):
         return self.log

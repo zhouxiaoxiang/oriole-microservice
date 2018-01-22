@@ -14,11 +14,11 @@
 #    '-------------------------------------------'
 #
 
-from oriole_service.api import MsConfig
+from oriole.cf import MsConfig
 
 # Create configuration for every microservice, not all.
 # Etcd is required, or raise an exception.
-_cf = MsConfig()
+_cf = MsConfig('oriole_service.ext.CfExtension')
 
 # Supply r/w for configuration files.
 write, read = _cf.write, _cf.read

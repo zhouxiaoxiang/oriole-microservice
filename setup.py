@@ -7,28 +7,25 @@ from codecs import open
 from ast import literal_eval
 from setuptools import find_packages, setup
 
-if sys.version_info[:2] < (3, 5):
-    raise RuntimeError('Error: Python < 3.5')
+if sys.version_info[:2] < (3, 6):
+    raise RuntimeError('Error: Python < 3.6')
 
 _ver = re.compile(r'__version__\s+=\s+(.+)')
 with open('oriole_service/__init__.py', 'rb') as f:
     version = str(literal_eval(_ver.search(f.read().decode()).group(1)))
 
 install_requires = [
+    "oriole>=5.0.0",
     "nameko==2.7.0",
     "SQLAlchemy==1.1.14",
     "mogo==0.4.0",
     "redis==2.10.6",
-    "PyYAML==3.12",
-    "pyetcd==1.8.0",
     "Jinja2==2.10",
-    "pytest==3.2.3",
-    "pytest-html==1.16.0",
-    "mockredispy==2.9.3",
-    "mongomock==3.8.0",
-    "Sphinx==1.6.5",
     "PyMySQL==0.7.11",
     "mysqlclient==1.3.12",
+    "pytest==3.2.3",
+    "pytest-html==1.16.0",
+    "Sphinx==1.6.5",
 ]
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -58,7 +55,6 @@ setup(
         "Programming Language :: Python",
         "Operating System :: MacOS :: MacOS X",
         "Operating System :: POSIX",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Topic :: Internet",
         "Topic :: Software Development :: Libraries :: Python Modules",

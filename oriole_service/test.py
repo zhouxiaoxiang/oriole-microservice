@@ -8,74 +8,51 @@
 #           .-"-.   \      |      /   .-"-.
 #    .-----{     }--|  /,.-'-.,\  |--{     }-----.
 #     )    (_)_)_)  \_/`~-===-~`\_/  (_(_(_)    (
-#    (                                          )
+#    (                                           )
 #     )                Oriole-TEST              (
-#    (                  Eric.Zhou               )
+#    (                  Eric.Zhou                )
 #    '-------------------------------------------'
 #
 
-from oriole_service.db import *
-from dao import *
-import mongomock
 from mock import *
-from pytest import *
-from mockredis import *
 from nameko.testing.services import worker_factory
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from oriole_service.api import get_config
+from pytest import *
+
+from dao import *
+from oriole.fake import fake_db, fake_mongo, fake_redis
 
 
 @fixture
 def app(monkeypatch):
-    class _Base:
-        """ App interface """
+    class _App:
+        def __init__(self, fake):
+            self.fake = fake.setattr
+            self._db = fake_db(Base)
+            self.dbs = [self._db]
 
-        def duck(self, patch):
-            app_base = "oriole_service.app.App."
-            log_base = "oriole_service.log.Log."
-            log_method = "get"
-            methods = ["rs", "db", "init"]
+            for old, new in zip((
+                "oriole_service.app.App.rs",
+                "oriole_service.app.App.db",
+            ), (fake_redis(), self._db.get())):
+                self.fake(old, new)
 
-            for old, new in zip(methods, [self.rs, self.db, self.init]):
-                patch.setattr(app_base + old, new())
-            patch.setattr(log_base + log_method, self.mongo)
+        def close(self):
+            for db in self.dbs:
+                db.close()
 
         def create(self, name):
             return worker_factory(name)
 
-    class App(_Base):
-        """ Supply database """
+        def add_db(self, service, name='db', uri='test_database'):
+            db = fake_db(Base, uri)
+            self.dbs.append(db)
+            self.fake(service, name, db.get())
 
-        def __init__(self, patch):
-            self.duck(patch)
-
-        def init(self):
-            return lambda self: None
-
-        def mongo(self):
-            return mongomock.MongoClient().db.collection
-
-        def rs(self):
-            return mock_redis_client()
-
-        def db(self):
-            self.bind = create_engine(get_config().get("test_database"))
-            Base.metadata.create_all(self.bind)
-            session_cls = sessionmaker(self.bind)
-            self.session = session_cls()
-
-            return self.session
-
-        def close(self):
-            self.session.rollback()
-            self.session.commit()
-            self.session.close()
-            Base.metadata.drop_all(self.bind)
-            self.bind.dispose()
+        def add_mongo(self, service, name='db_log'):
+            self.fake(service, name, fake_mongo())
 
     # Supply database and redis to test.
-    _app = App(monkeypatch)
+    _app = _App(monkeypatch)
 
     # Only supply app to create service.
     # Don't create service by class directly, it's wrong.

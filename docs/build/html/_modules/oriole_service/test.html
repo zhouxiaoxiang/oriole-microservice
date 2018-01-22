@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>oriole_service.test &#8212; Oriole-service 8.2.0 documentation</title>
+    <title>oriole_service.test &#8212; Oriole-service 8.4.0 documentation</title>
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '8.2.0',
+        VERSION:     '8.4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -28,7 +28,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="../../index.html">Oriole-service 8.2.0 documentation</a></div>
+          href="../../index.html">Oriole-service 8.4.0 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -57,74 +57,51 @@
 <span class="c1">#           .-&quot;-.   \      |      /   .-&quot;-.</span>
 <span class="c1">#    .-----{     }--|  /,.-&#39;-.,\  |--{     }-----.</span>
 <span class="c1">#     )    (_)_)_)  \_/`~-===-~`\_/  (_(_(_)    (</span>
-<span class="c1">#    (                                          )</span>
+<span class="c1">#    (                                           )</span>
 <span class="c1">#     )                Oriole-TEST              (</span>
-<span class="c1">#    (                  Eric.Zhou               )</span>
+<span class="c1">#    (                  Eric.Zhou                )</span>
 <span class="c1">#    &#39;-------------------------------------------&#39;</span>
 <span class="c1">#</span>
 
-<span class="kn">from</span> <span class="nn">oriole_service.db</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">dao</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">import</span> <span class="nn">mongomock</span>
 <span class="kn">from</span> <span class="nn">mock</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pytest</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">mockredis</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">nameko.testing.services</span> <span class="k">import</span> <span class="n">worker_factory</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="k">import</span> <span class="n">create_engine</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="k">import</span> <span class="n">sessionmaker</span>
-<span class="kn">from</span> <span class="nn">oriole_service.api</span> <span class="k">import</span> <span class="n">get_config</span>
+<span class="kn">from</span> <span class="nn">pytest</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="kn">from</span> <span class="nn">dao</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">oriole.fake</span> <span class="k">import</span> <span class="n">fake_db</span><span class="p">,</span> <span class="n">fake_mongo</span><span class="p">,</span> <span class="n">fake_redis</span>
 
 
 <div class="viewcode-block" id="app"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.test.app">[docs]</a><span class="nd">@fixture</span>
 <span class="k">def</span> <span class="nf">app</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">):</span>
-    <span class="k">class</span> <span class="nc">_Base</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; App interface &quot;&quot;&quot;</span>
+    <span class="k">class</span> <span class="nc">_App</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fake</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fake</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">setattr</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_db</span> <span class="o">=</span> <span class="n">fake_db</span><span class="p">(</span><span class="n">Base</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dbs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="p">]</span>
 
-        <span class="k">def</span> <span class="nf">duck</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">patch</span><span class="p">):</span>
-            <span class="n">app_base</span> <span class="o">=</span> <span class="s2">&quot;oriole_service.app.App.&quot;</span>
-            <span class="n">log_base</span> <span class="o">=</span> <span class="s2">&quot;oriole_service.log.Log.&quot;</span>
-            <span class="n">log_method</span> <span class="o">=</span> <span class="s2">&quot;get&quot;</span>
-            <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;rs&quot;</span><span class="p">,</span> <span class="s2">&quot;db&quot;</span><span class="p">,</span> <span class="s2">&quot;init&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span>
+                <span class="s2">&quot;oriole_service.app.App.rs&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;oriole_service.app.App.db&quot;</span><span class="p">,</span>
+            <span class="p">),</span> <span class="p">(</span><span class="n">fake_redis</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">get</span><span class="p">())):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fake</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>
 
-            <span class="k">for</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">methods</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">]):</span>
-                <span class="n">patch</span><span class="o">.</span><span class="n">setattr</span><span class="p">(</span><span class="n">app_base</span> <span class="o">+</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">())</span>
-            <span class="n">patch</span><span class="o">.</span><span class="n">setattr</span><span class="p">(</span><span class="n">log_base</span> <span class="o">+</span> <span class="n">log_method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">db</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbs</span><span class="p">:</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
         <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">worker_factory</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-    <span class="k">class</span> <span class="nc">App</span><span class="p">(</span><span class="n">_Base</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Supply database &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">add_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;db&#39;</span><span class="p">,</span> <span class="n">uri</span><span class="o">=</span><span class="s1">&#39;test_database&#39;</span><span class="p">):</span>
+            <span class="n">db</span> <span class="o">=</span> <span class="n">fake_db</span><span class="p">(</span><span class="n">Base</span><span class="p">,</span> <span class="n">uri</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fake</span><span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
 
-        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">patch</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">duck</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span>
-
-        <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="kc">None</span>
-
-        <span class="k">def</span> <span class="nf">mongo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">mongomock</span><span class="o">.</span><span class="n">MongoClient</span><span class="p">()</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">collection</span>
-
-        <span class="k">def</span> <span class="nf">rs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">mock_redis_client</span><span class="p">()</span>
-
-        <span class="k">def</span> <span class="nf">db</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">bind</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">get_config</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;test_database&quot;</span><span class="p">))</span>
-            <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">)</span>
-            <span class="n">session_cls</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session_cls</span><span class="p">()</span>
-
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span>
-
-        <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-            <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">drop_all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="o">.</span><span class="n">dispose</span><span class="p">()</span>
+        <span class="k">def</span> <span class="nf">add_mongo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;db_log&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fake</span><span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">fake_mongo</span><span class="p">())</span>
 
     <span class="c1"># Supply database and redis to test.</span>
-    <span class="n">_app</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">)</span>
+    <span class="n">_app</span> <span class="o">=</span> <span class="n">_App</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">)</span>
 
     <span class="c1"># Only supply app to create service.</span>
     <span class="c1"># Don&#39;t create service by class directly, it&#39;s wrong.</span>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>oriole_service.api &#8212; Oriole-service 8.2.0 documentation</title>
+    <title>oriole_service.api &#8212; Oriole-service 8.4.0 documentation</title>
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '8.2.0',
+        VERSION:     '8.4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -28,7 +28,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="../../index.html">Oriole-service 8.2.0 documentation</a></div>
+          href="../../index.html">Oriole-service 8.4.0 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -63,123 +63,40 @@
 <span class="c1">#    &#39;-------------------------------------------&#39;</span>
 <span class="c1">#</span>
 
-<span class="kn">import</span> <span class="nn">argparse</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">from</span> <span class="nn">logging</span> <span class="k">import</span> <span class="p">(</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">ERROR</span><span class="p">,</span> <span class="n">INFO</span><span class="p">,</span> <span class="n">WARNING</span><span class="p">,</span> <span class="n">FileHandler</span><span class="p">,</span> <span class="n">Formatter</span><span class="p">,</span>
-                     <span class="n">StreamHandler</span><span class="p">,</span> <span class="n">getLogger</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span> <span class="k">as</span> <span class="n">opath</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">getcwd</span><span class="p">,</span> <span class="n">pardir</span><span class="p">,</span> <span class="n">walk</span>
-<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">basename</span><span class="p">,</span> <span class="n">splitext</span>
-<span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">run</span> <span class="k">as</span> <span class="n">sr</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">chdir</span>
 <span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">PIPE</span><span class="p">,</span> <span class="n">Popen</span>
-<span class="kn">from</span> <span class="nn">sys</span> <span class="k">import</span> <span class="n">path</span> <span class="k">as</span> <span class="n">spath</span>
 
-<span class="kn">import</span> <span class="nn">yaml</span>
-<span class="kn">from</span> <span class="nn">jinja2</span> <span class="k">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">StrictUndefined</span>
 <span class="kn">from</span> <span class="nn">nameko.standalone.rpc</span> <span class="k">import</span> <span class="n">ClusterRpcProxy</span>
-<span class="kn">from</span> <span class="nn">pyetcd.client</span> <span class="k">import</span> <span class="n">Client</span>
+
+<span class="kn">from</span> <span class="nn">oriole.log</span> <span class="k">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">oriole.ops</span> <span class="k">import</span> <span class="n">open_shell</span>
+<span class="kn">from</span> <span class="nn">oriole.vos</span> <span class="k">import</span> <span class="n">exe</span><span class="p">,</span> <span class="n">get_config</span><span class="p">,</span> <span class="n">get_first</span><span class="p">,</span> <span class="n">get_loc</span><span class="p">,</span> <span class="n">get_path</span>
+<span class="kn">from</span> <span class="nn">oriole.yml</span> <span class="k">import</span> <span class="n">get_yml</span>
 
 
-<div class="viewcode-block" id="exe"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.exe">[docs]</a><span class="k">def</span> <span class="nf">exe</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">sr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="mexe"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.mexe">[docs]</a><span class="k">def</span> <span class="nf">mexe</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span></div>
-
-
-<div class="viewcode-block" id="cwd"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.cwd">[docs]</a><span class="k">def</span> <span class="nf">cwd</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">getcwd</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="get_first"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_first">[docs]</a><span class="k">def</span> <span class="nf">get_first</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
-
-
-<span class="k">def</span> <span class="nf">_replace_env_var</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
-    <span class="n">env_var</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
-
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">env_var</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_env_var_constructor</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-    <span class="n">var</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\$\{([^}:\s]+):?([^}]+)?\}&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
-    <span class="n">value</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">construct_scalar</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">var</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">_replace_env_var</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-
-
-<div class="viewcode-block" id="setup_yaml_parser"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.setup_yaml_parser">[docs]</a><span class="k">def</span> <span class="nf">setup_yaml_parser</span><span class="p">():</span>
-    <span class="n">var</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;.*\$\{.*\}.*&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
-    <span class="n">yaml</span><span class="o">.</span><span class="n">add_constructor</span><span class="p">(</span><span class="s1">&#39;!env_var&#39;</span><span class="p">,</span> <span class="n">_env_var_constructor</span><span class="p">)</span>
-    <span class="n">yaml</span><span class="o">.</span><span class="n">add_implicit_resolver</span><span class="p">(</span><span class="s1">&#39;!env_var&#39;</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="get_config"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_config">[docs]</a><span class="k">def</span> <span class="nf">get_config</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="s2">&quot;services.cfg&quot;</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">get_yml</span><span class="p">(</span><span class="n">get_loc</span><span class="p">(</span><span class="n">f</span><span class="p">))</span></div>
-
-
-<div class="viewcode-block" id="get_yml"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_yml">[docs]</a><span class="k">def</span> <span class="nf">get_yml</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="n">setup_yaml_parser</span><span class="p">()</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">as</span> <span class="n">filename</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="get_loc"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_loc">[docs]</a><span class="k">def</span> <span class="nf">get_loc</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">ftype</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="n">loc</span> <span class="o">=</span> <span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/tests/&#39;</span><span class="p">,</span> <span class="s1">&#39;/services/&#39;</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">opath</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">ftype</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">opath</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">config</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">opath</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">loc</span>
-
-        <span class="n">loc</span> <span class="o">=</span> <span class="n">opath</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">pardir</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="set_loc"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.set_loc">[docs]</a><span class="k">def</span> <span class="nf">set_loc</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="s1">&#39;dao&#39;</span><span class="p">):</span>
-    <span class="n">loc</span> <span class="o">=</span> <span class="n">get_loc</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">loc</span> <span class="ow">and</span> <span class="n">loc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">spath</span><span class="p">:</span>
-        <span class="n">spath</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="get_path"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_path">[docs]</a><span class="k">def</span> <span class="nf">get_path</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">loc</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">fpath</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">fs</span> <span class="ow">in</span> <span class="n">walk</span><span class="p">(</span><span class="n">loc</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fs</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">fpath</span></div>
+<div class="viewcode-block" id="remote_test"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.remote_test">[docs]</a><span class="k">def</span> <span class="nf">remote_test</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">ClusterRpcProxy</span><span class="p">(</span><span class="n">get_yml</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="n">open_shell</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="run"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">service</span><span class="p">):</span>
-    <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;nameko run </span><span class="si">%s</span><span class="s2"> --config </span><span class="si">%s</span><span class="s2">&quot;</span>
-    <span class="n">fpath</span> <span class="o">=</span> <span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.py&quot;</span> <span class="o">%</span> <span class="n">service</span><span class="p">,</span> <span class="s2">&quot;services&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">fpath</span><span class="p">:</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">get_loc</span><span class="p">(</span><span class="s2">&quot;services.cfg&quot;</span><span class="p">)</span>
-        <span class="n">exe</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="n">config</span><span class="p">))</span></div>
+    <span class="n">chdir</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.py&quot;</span> <span class="o">%</span> <span class="n">service</span><span class="p">,</span> <span class="s2">&quot;services&quot;</span><span class="p">))</span>
+    <span class="n">exe</span><span class="p">(</span><span class="s2">&quot;nameko run </span><span class="si">%s</span><span class="s2"> --config </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="n">service</span><span class="p">,</span> <span class="n">get_loc</span><span class="p">())</span>
+        <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="build"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.build">[docs]</a><span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="n">service</span><span class="p">):</span>
-    <span class="n">loc</span> <span class="o">=</span> <span class="s2">&quot;/service&quot;</span>
-    <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;docker build -t </span><span class="si">{}</span><span class="s2">_service -f </span><span class="si">{}</span><span class="s2"> .&quot;</span>
-    <span class="n">tmp</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">cf</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
-        <span class="n">image</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="s1">&#39;zhouxiaoxiang/service&#39;</span><span class="p">)</span>
-        <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;FROM </span><span class="si">{0}</span><span class="se">\n</span><span class="s2">COPY . </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">WORKDIR </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">RUN make</span><span class="se">\n</span><span class="s2">CMD o r </span><span class="si">{2}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">image</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">service</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
-        <span class="n">tmp</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">exe</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="n">tmp</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
-    <span class="k">finally</span><span class="p">:</span>
-        <span class="n">tmp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+<div class="viewcode-block" id="test"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">service</span><span class="p">):</span>
+    <span class="n">chdir</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;test_</span><span class="si">%s</span><span class="s2">.py&quot;</span> <span class="o">%</span> <span class="n">service</span><span class="p">,</span> <span class="s2">&quot;tests&quot;</span><span class="p">))</span>
+    <span class="n">exe</span><span class="p">(</span><span class="s2">&quot;py.test&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_logger"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_logger">[docs]</a><span class="k">def</span> <span class="nf">get_logger</span><span class="p">():</span>
+    <span class="n">cf</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
+    <span class="n">level</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;log_level&quot;</span><span class="p">,</span> <span class="s2">&quot;DEBUG&quot;</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;log_name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">logger</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="halt"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.halt">[docs]</a><span class="k">def</span> <span class="nf">halt</span><span class="p">(</span><span class="n">service</span><span class="p">):</span>
@@ -201,124 +118,6 @@
             <span class="n">exe</span><span class="p">(</span><span class="s2">&quot;kill </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pid</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Error: cannot kill </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="n">service</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="remote_test"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.remote_test">[docs]</a><span class="k">def</span> <span class="nf">remote_test</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">ClusterRpcProxy</span><span class="p">(</span><span class="n">get_yml</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">IPython</span> <span class="k">import</span> <span class="n">embed</span>
-            <span class="n">embed</span><span class="p">()</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="n">scope</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
-            <span class="kn">import</span> <span class="nn">code</span>
-            <span class="n">code</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="test"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">service</span><span class="p">):</span>
-    <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;py.test&quot;</span>
-    <span class="n">fpath</span> <span class="o">=</span> <span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;test_</span><span class="si">%s</span><span class="s2">.py&quot;</span> <span class="o">%</span> <span class="n">service</span><span class="p">,</span> <span class="s2">&quot;tests&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">fpath</span><span class="p">:</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span>
-        <span class="n">exe</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.Config">[docs]</a><span class="k">def</span> <span class="nf">Config</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;services.cfg&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Obsoleted &quot;&quot;&quot;</span>
-
-    <span class="k">return</span> <span class="n">get_config</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="logger"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.logger">[docs]</a><span class="k">def</span> <span class="nf">logger</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-    <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;[</span><span class="si">%(module)s</span><span class="s1">] </span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)-7.7s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
-    <span class="n">dfmt</span> <span class="o">=</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span>
-    <span class="n">level</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">DEBUG</span><span class="p">)</span>
-
-    <span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;services&#39;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
-    <span class="n">fmter</span> <span class="o">=</span> <span class="n">Formatter</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">dfmt</span><span class="p">)</span>
-    <span class="k">del</span> <span class="n">logger</span><span class="o">.</span><span class="n">handlers</span><span class="p">[:]</span>
-
-    <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
-        <span class="n">fh</span> <span class="o">=</span> <span class="n">FileHandler</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">fh</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
-        <span class="n">fh</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">fmter</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
-
-    <span class="n">ch</span> <span class="o">=</span> <span class="n">StreamHandler</span><span class="p">()</span>
-    <span class="n">ch</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
-    <span class="n">ch</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">fmter</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">propagate</span> <span class="o">=</span> <span class="kc">False</span>
-
-    <span class="k">return</span> <span class="n">logger</span></div>
-
-
-<div class="viewcode-block" id="get_logger"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_logger">[docs]</a><span class="k">def</span> <span class="nf">get_logger</span><span class="p">():</span>
-    <span class="n">cf</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
-    <span class="n">level</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;log_level&quot;</span><span class="p">,</span> <span class="s2">&quot;DEBUG&quot;</span><span class="p">)</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;log_name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">logger</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="comp"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.comp">[docs]</a><span class="k">def</span> <span class="nf">comp</span><span class="p">(</span><span class="n">shell</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&#39;&#39;#!/bin/bash</span>
-<span class="s1">    # In your bash, run:</span>
-<span class="s1">    # eval &quot;$(o c)&quot;</span>
-
-<span class="s1">    function _comp() {</span>
-<span class="s1">        local cur=&quot;$</span><span class="si">{COMP_WORDS[COMP_CWORD]}</span><span class="s1">&quot;</span>
-<span class="s1">        local add=&quot;$(o -h|awk &#39;/usage/{print $4}&#39;|grep -Eo &#39;\b[[:alpha:]]\b&#39;)&quot;</span>
-<span class="s1">        COMPREPLY=($(compgen -W &quot;$add&quot; -- &quot;$cur&quot;))</span>
-<span class="s1">    }</span>
-
-<span class="s1">    complete -o default -F _comp o</span>
-<span class="s1">    &#39;&#39;&#39;</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Loader"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.Loader">[docs]</a><span class="k">class</span> <span class="nc">Loader</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Please contact with administrator.&#39;</span><span class="p">)</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;oriole_service.ext.CfExtension&#39;</span><span class="p">],</span>
-            <span class="o">**</span><span class="n">kwargs</span>
-        <span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="MsConfig"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.MsConfig">[docs]</a><span class="k">class</span> <span class="nc">MsConfig</span><span class="p">(</span><span class="n">Loader</span><span class="p">,</span> <span class="n">Environment</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">undefined</span><span class="o">=</span><span class="n">StrictUndefined</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span>
-        <span class="p">)</span>
-
-<div class="viewcode-block" id="MsConfig.read"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.MsConfig.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">+</span> <span class="n">k</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Please contact with administrator.&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span></div>
-
-<div class="viewcode-block" id="MsConfig.write"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.MsConfig.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">infile</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
-
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">cfg</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
-            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
-
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span></div></div>
-
-
-<div class="viewcode-block" id="service_name"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.service_name">[docs]</a><span class="k">def</span> <span class="nf">service_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;service&#39;</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">splitext</span><span class="p">(</span><span class="n">basename</span><span class="p">(</span><span class="n">name</span><span class="p">))[</span><span class="mi">0</span><span class="p">],</span> <span class="n">unit</span><span class="p">))</span></div>
 </pre></div>
 
           </div>

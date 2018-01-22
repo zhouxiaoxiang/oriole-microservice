@@ -22,7 +22,9 @@ from nameko.events import EventDispatcher, event_handler
 from nameko.rpc import RpcProxy, rpc
 
 from dao import *
-from oriole_service.api import cwd, get_config, get_logger, service_name
+from oriole.vos import cwd, get_config, service_name
+from oriole_service import *
+from oriole_service.api import get_logger
 from oriole_service.db import *
 
 

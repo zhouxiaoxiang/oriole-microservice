@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>oriole_service.log &#8212; Oriole-service 8.2.0 documentation</title>
+    <title>oriole_service.log &#8212; Oriole-service 8.4.0 documentation</title>
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '8.2.0',
+        VERSION:     '8.4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -28,7 +28,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="../../index.html">Oriole-service 8.2.0 documentation</a></div>
+          href="../../index.html">Oriole-service 8.4.0 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -57,30 +57,33 @@
 <span class="c1">#           .-&quot;-.   \      |      /   .-&quot;-.</span>
 <span class="c1">#    .-----{     }--|  /,.-&#39;-.,\  |--{     }-----.</span>
 <span class="c1">#     )    (_)_)_)  \_/`~-===-~`\_/  (_(_(_)    (</span>
-<span class="c1">#    (                                          )</span>
+<span class="c1">#    (                                           )</span>
 <span class="c1">#     )                Oriole-LOG               (</span>
-<span class="c1">#    (                  Eric.Zhou               )</span>
+<span class="c1">#    (                  Eric.Zhou                )</span>
 <span class="c1">#    &#39;-------------------------------------------&#39;</span>
 <span class="c1">#</span>
 
 <span class="kn">import</span> <span class="nn">mogo</span>
-<span class="kn">from</span> <span class="nn">oriole_service.api</span> <span class="k">import</span> <span class="n">get_config</span>
+<span class="kn">from</span> <span class="nn">nameko.extensions</span> <span class="k">import</span> <span class="n">DependencyProvider</span>
+
+<span class="kn">from</span> <span class="nn">oriole.vos</span> <span class="k">import</span> <span class="n">get_config</span>
 
 
-<div class="viewcode-block" id="Log"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.log.Log">[docs]</a><span class="k">class</span> <span class="nc">Log</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Log"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.log.Log">[docs]</a><span class="k">class</span> <span class="nc">Log</span><span class="p">(</span><span class="n">DependencyProvider</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="n">conf</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()[</span><span class="s1">&#39;log&#39;</span><span class="p">][</span><span class="n">module</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tb</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;tb&#39;</span><span class="p">]</span>
 
+<div class="viewcode-block" id="Log.setup"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.log.Log.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">conn</span> <span class="o">=</span> <span class="n">mogo</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">tb</span><span class="p">]</span>
         <span class="k">except</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Error: Mongo is down.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Error: Mongo is down.&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Log.get"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.log.Log.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Log.get_dependency"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.log.Log.get_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">get_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker_ctx</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">log</span></div></div>
 </pre></div>
 

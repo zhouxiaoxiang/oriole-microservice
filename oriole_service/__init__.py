@@ -1,5 +1,5 @@
-from oriole_service.api import set_loc
+from oriole.vos import set_loc
 
-__version__ = '8.4.0'
+__version__ = '9.0.0'
 
 set_loc()

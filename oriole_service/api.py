@@ -14,123 +14,40 @@
 #    '-------------------------------------------'
 #
 
-import argparse
-import logging
-import os
-import re
-import tempfile
-from logging import (DEBUG, ERROR, INFO, WARNING, FileHandler, Formatter,
-                     StreamHandler, getLogger)
-from os import path as opath
-from os import getcwd, pardir, walk
-from os.path import basename, splitext
-from subprocess import run as sr
+from os import chdir
 from subprocess import PIPE, Popen
-from sys import path as spath
 
-import yaml
-from jinja2 import Environment, StrictUndefined
 from nameko.standalone.rpc import ClusterRpcProxy
-from pyetcd.client import Client
+
+from oriole.log import logger
+from oriole.ops import open_shell
+from oriole.vos import exe, get_config, get_first, get_loc, get_path
+from oriole.yml import get_yml
 
 
-def exe(s):
-    return sr(s, shell=True)
-
-
-def mexe(f, s):
-    return tuple(map(f, s))
-
-
-def cwd():
-    return getcwd()
-
-
-def get_first(s):
-    return s.strip().split()[0]
-
-
-def _replace_env_var(match):
-    env_var, default = match.groups()
-
-    return os.environ.get(env_var, default)
-
-
-def _env_var_constructor(loader, node):
-    var = re.compile(r"\$\{([^}:\s]+):?([^}]+)?\}", re.VERBOSE)
-    value = loader.construct_scalar(node)
-
-    return var.sub(_replace_env_var, value)
-
-
-def setup_yaml_parser():
-    var = re.compile(r".*\$\{.*\}.*", re.VERBOSE)
-    yaml.add_constructor('!env_var', _env_var_constructor)
-    yaml.add_implicit_resolver('!env_var', var)
-
-
-def get_config(f="services.cfg"):
-    return get_yml(get_loc(f))
-
-
-def get_yml(f):
-    setup_yaml_parser()
-    with open(f) as filename:
-        return yaml.load(filename)
-
-
-def get_loc(f, ftype=True):
-    loc = cwd().replace('/tests/', '/services/')
-
-    for _ in range(3):
-        config = opath.join(loc, f)
-
-        if ftype:
-            if opath.isfile(config):
-                return config
-        else:
-            if opath.isdir(config):
-                return loc
-
-        loc = opath.join(loc, pardir)
-
-
-def set_loc(f='dao'):
-    loc = get_loc(f, False)
-
-    if loc and loc not in spath:
-        spath.insert(0, loc)
-
-
-def get_path(f, loc):
-    for fpath, _, fs in walk(loc):
-        if f in fs:
-            return fpath
+def remote_test(f):
+    with ClusterRpcProxy(get_yml(f), timeout=3) as s:
+        open_shell(s)
 
 
 def run(service):
-    fmt = "nameko run %s --config %s"
-    fpath = get_path("%s.py" % service, "services")
-
-    if fpath:
-        os.chdir(fpath)
-        config = get_loc("services.cfg")
-        exe(fmt % (service, config))
+    chdir(get_path("%s.py" % service, "services"))
+    exe("nameko run %s --config %s" % (
+        service, get_loc())
+        )
 
 
-def build(service):
-    loc = "/service"
-    fmt = "docker build -t {}_service -f {} ."
-    tmp = tempfile.NamedTemporaryFile(dir=".")
-    try:
-        cf = get_config()
-        image = cf.get('image', 'zhouxiaoxiang/service')
-        tmp.write("FROM {0}\nCOPY . {1}\nWORKDIR {1}\nRUN make\nCMD o r {2}\n".format(
-            image, loc, service).encode())
-        tmp.seek(0)
-        exe(fmt.format(service, tmp.name))
-    finally:
-        tmp.close()
+def test(service):
+    chdir(get_path("test_%s.py" % service, "tests"))
+    exe("py.test")
+
+
+def get_logger():
+    cf = get_config()
+    level = cf.get("log_level", "DEBUG")
+    name = cf.get("log_name", "")
+
+    return logger(name, level)
 
 
 def halt(service):
@@ -152,121 +69,3 @@ def halt(service):
             exe("kill %s" % pid)
     except:
         raise RuntimeError("Error: cannot kill %s." % service)
-
-
-def remote_test(f):
-    with ClusterRpcProxy(get_yml(f), timeout=3) as s:
-        try:
-            from IPython import embed
-            embed()
-        except:
-            scope = dict(s=s)
-            import code
-            code.interact(None, None, scope)
-
-
-def test(service):
-    fmt = "py.test"
-    fpath = get_path("test_%s.py" % service, "tests")
-
-    if fpath:
-        os.chdir(fpath)
-        exe(fmt)
-
-
-def Config(name="services.cfg"):
-    """ Obsoleted """
-
-    return get_config(name)
-
-
-def logger(level='DEBUG', name=""):
-    fmt = '[%(module)s] %(asctime)s %(levelname)-7.7s %(message)s'
-    dfmt = '%Y-%m-%d %H:%M:%S'
-    level = getattr(logging, level, DEBUG)
-
-    logger = getLogger('services')
-    logger.setLevel(level)
-    fmter = Formatter(fmt, dfmt)
-    del logger.handlers[:]
-
-    if name:
-        fh = FileHandler(name)
-        fh.setLevel(level)
-        fh.setFormatter(fmter)
-        logger.addHandler(fh)
-
-    ch = StreamHandler()
-    ch.setLevel(level)
-    ch.setFormatter(fmter)
-    logger.addHandler(ch)
-    logger.propagate = False
-
-    return logger
-
-
-def get_logger():
-    cf = get_config()
-    level = cf.get("log_level", "DEBUG")
-    name = cf.get("log_name", "")
-
-    return logger(level, name)
-
-
-def comp(shell):
-    print(r'''#!/bin/bash
-    # In your bash, run:
-    # eval "$(o c)"
-
-    function _comp() {
-        local cur="${COMP_WORDS[COMP_CWORD]}"
-        local add="$(o -h|awk '/usage/{print $4}'|grep -Eo '\b[[:alpha:]]\b')"
-        COMPREPLY=($(compgen -W "$add" -- "$cur"))
-    }
-
-    complete -o default -F _comp o
-    ''')
-
-
-class Loader:
-    def __init__(self, **kwargs):
-        try:
-            self.client = Client()
-        except Exception as e:
-            raise RuntimeError('Please contact with administrator.')
-
-        super().__init__(
-            extensions=['oriole_service.ext.CfExtension'],
-            **kwargs
-        )
-
-
-class MsConfig(Loader, Environment):
-    def __init__(self, **kwargs):
-        super().__init__(
-            undefined=StrictUndefined,
-            **kwargs
-        )
-
-    def read(self, k):
-        try:
-            data = self.client.read(self.directory + k)
-        except Exception as e:
-            raise RuntimeError('Please contact with administrator.')
-        else:
-            return data.node['value']
-
-    def write(self, directory, outfile, infile):
-        self.directory = directory
-
-        with open(infile, 'rb') as f:
-            cfg = f.read().decode()
-            out = self.from_string(cfg).render()
-
-        with open(outfile, 'wb') as f:
-            f.write(out.encode())
-
-
-def service_name(name, unit='service'):
-    if name:
-        return '_'.join((splitext(basename(name))[0], unit))
