@@ -15,13 +15,13 @@
 #    '-------------------------------------------'
 #
 
-from oriole_service import api
+from oriole.vos import exe, mexe
 
 
 def main(args):
     cmds = ("sphinx-apidoc -f -o docs services",
             "sphinx-build -b %s docs docs/build/html" % args.format)
-    api.mexe(api.exe, cmds)
+    mexe(exe, cmds)
 
 
 def init_parser(parser):
