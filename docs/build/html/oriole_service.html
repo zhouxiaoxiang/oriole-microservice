@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>oriole_service package &#8212; Oriole-service 9.0.1 documentation</title>
+    <title>oriole_service package &#8212; Oriole-service 9.1.0 documentation</title>
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '9.0.1',
+        VERSION:     '9.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -30,7 +30,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="index.html">Oriole-service 9.0.1 documentation</a></div>
+          href="index.html">Oriole-service 9.1.0 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="modules.html" title="oriole_service"
              accesskey="P">previous</a> |
@@ -79,6 +79,16 @@
 <div class="section" id="module-oriole_service.api">
 <span id="oriole-service-api-module"></span><h2>oriole_service.api module<a class="headerlink" href="#module-oriole_service.api" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
+<dt id="oriole_service.api.add_one_service">
+<code class="descclassname">oriole_service.api.</code><code class="descname">add_one_service</code><span class="sig-paren">(</span><em>all</em>, <em>s</em>, <em>v</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#add_one_service"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.add_one_service" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="oriole_service.api.get_all_services">
+<code class="descclassname">oriole_service.api.</code><code class="descname">get_all_services</code><span class="sig-paren">(</span><em>all</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#get_all_services"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.get_all_services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="oriole_service.api.get_logger">
 <code class="descclassname">oriole_service.api.</code><code class="descname">get_logger</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#get_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.get_logger" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -99,6 +109,11 @@
 <dd></dd></dl>
 
 <dl class="function">
+<dt id="oriole_service.api.run_client">
+<code class="descclassname">oriole_service.api.</code><code class="descname">run_client</code><span class="sig-paren">(</span><em>cfg</em>, <em>timeout</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#run_client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.run_client" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="oriole_service.api.test">
 <code class="descclassname">oriole_service.api.</code><code class="descname">test</code><span class="sig-paren">(</span><em>service</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/api.html#test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.api.test" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -115,6 +130,16 @@
 <dl class="attribute">
 <dt id="oriole_service.app.App.db">
 <code class="descname">db</code><em class="property"> = &lt;Db [unbound]&gt;</em><a class="headerlink" href="#oriole_service.app.App.db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="oriole_service.app.App.dispatch">
+<code class="descname">dispatch</code><em class="property"> = &lt;EventDispatcher [unbound]&gt;</em><a class="headerlink" href="#oriole_service.app.App.dispatch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="oriole_service.app.App.handle_ping">
+<code class="descname">handle_ping</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/app.html#App.handle_ping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.app.App.handle_ping" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -141,7 +166,12 @@
 
 <dl class="method">
 <dt id="oriole_service.app.App.ping">
-<code class="descname">ping</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/app.html#App.ping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.app.App.ping" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ping</code><span class="sig-paren">(</span><em>name='supervisor_thread'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/app.html#App.ping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.app.App.ping" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="oriole_service.app.App.ping_result">
+<code class="descname">ping_result</code><span class="sig-paren">(</span><em>name='supervisor_thread'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/app.html#App.ping_result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.app.App.ping_result" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">

@@ -17,17 +17,77 @@
 from os import chdir
 from subprocess import PIPE, Popen
 
+from nameko.exceptions import RpcTimeout
 from nameko.standalone.rpc import ClusterRpcProxy
 
 from oriole.log import logger
 from oriole.ops import open_shell
-from oriole.vos import exe, get_config, get_first, get_loc, get_path
+from oriole.vos import exe, get_config, get_first, get_loc, get_path, sleep
 from oriole.yml import get_yml
+
+__all_services = 'services:all'
+
+
+def run_client(cfg, timeout):
+    with ClusterRpcProxy(cfg, timeout=timeout) as s:
+        ms = s.supervisor_thread
+        ms.ping()
+        sleep(timeout)
+        services = ms.ping_result()
+
+        if not services:
+            raise ValueError('No service.')
+        else:
+            print("Available services:")
+
+            no = 1
+            fmt = '%5d. %-30s => %-20s'
+
+            for k, v in services.items():
+                print(fmt % (no, k, v))
+                no += 1
+
+            all = dict(s=s)
+            all.update({k: s[k] for k in services.keys()})
+
+            open_shell(all)
 
 
 def remote_test(f):
-    with ClusterRpcProxy(get_yml(f), timeout=3) as s:
-        open_shell(s)
+    print("\n".join([
+        "                                        ",
+        "----------------------------------------",
+        "             __  _                      ",
+        "        |\/|(_  |_) _ _  o _  __|_      ",
+        "        |  |__) |  | (_) |(/_(_ |_      ",
+        "                        _|              ",
+        "        Usage:                          ",
+        "               service.method()         ",
+        "----------------------------------------",
+        "                                        ",
+    ]))
+    print("Checking all available services now...")
+
+    try:
+        run_client(get_yml(f), timeout=3)
+    except FileNotFoundError:
+        print("Error: you must goto correct directory.")
+    except RpcTimeout:
+        print("Error: can not connect to microservice.")
+    except Exception as e:
+        print("Error: no available services in ms now.")
+
+
+def add_one_service(all, s, v):
+    all.hset(__all_services, s, v)
+    all.expire(__all_services, 60)
+
+
+def get_all_services(all):
+    services = all.hgetall(__all_services)
+
+    if services:
+        return {s.decode(): v.decode() for s, v in services.items()}
 
 
 def run(service):

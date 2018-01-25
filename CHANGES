@@ -1,5 +1,9 @@
 # Release Notes
 
+# 10.0.0
+
+2018-1-25 Add service discovery.
+
 # 9.1.0
 
 2018-1-23 Only use wheel.

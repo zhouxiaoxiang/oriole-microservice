@@ -24,7 +24,7 @@ from nameko.rpc import RpcProxy, rpc
 from dao import *
 from oriole.vos import cwd, get_config, service_name
 from oriole_service import *
-from oriole_service.api import get_logger
+from oriole_service.api import add_one_service, get_all_services, get_logger
 from oriole_service.db import *
 
 
@@ -39,13 +39,27 @@ class App:
     log = get_logger()
     ver = "1.0.0"
     name = "supervisor_thread"
+    dispatch = EventDispatcher()
 
     def init(self):
         ''' Noop '''
 
     @rpc
-    def ping(self):
+    def ping(self, name=name):
+        if name == self.name:
+            self.dispatch(name, name)
+
         return True
+
+    @rpc
+    def ping_result(self, name=name):
+        if name == self.name:
+            return get_all_services(self.rs)
+
+    @event_handler(name, name)
+    def handle_ping(self, name):
+        if name != self.name:
+            add_one_service(self.rs, self.name, self.ver)
 
     @rpc
     def version(self):

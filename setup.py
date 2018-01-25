@@ -15,17 +15,10 @@ with open('oriole_service/__init__.py', 'rb') as f:
     version = str(literal_eval(_ver.search(f.read().decode()).group(1)))
 
 install_requires = [
-    "oriole>=5.0.0",
+    "oriole>=5.5.0",
     "nameko==2.7.0",
-    "SQLAlchemy==1.1.14",
     "mogo==0.4.0",
     "redis==2.10.6",
-    "Jinja2==2.10",
-    "PyMySQL==0.7.11",
-    "mysqlclient==1.3.12",
-    "pytest==3.2.3",
-    "pytest-html==1.16.0",
-    "Sphinx==1.6.5",
 ]
 
 here = os.path.abspath(os.path.dirname(__file__))
