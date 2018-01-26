@@ -57,7 +57,7 @@ class App:
             return get_all_services(self.rs)
 
     @event_handler(name, name)
-    def handle_ping(self, name):
+    def handler(self, name):
         if name != self.name:
             add_one_service(self.rs, self.name, self.ver)
 

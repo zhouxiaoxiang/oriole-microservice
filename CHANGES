@@ -1,5 +1,9 @@
 # Release Notes
 
+# 10.0.1
+
+2018-1-26 Fix method naming.
+
 # 10.0.0
 
 2018-1-25 Add service discovery.
