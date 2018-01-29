@@ -69,37 +69,31 @@
 <span class="kn">from</span> <span class="nn">nameko.exceptions</span> <span class="k">import</span> <span class="n">RpcTimeout</span>
 <span class="kn">from</span> <span class="nn">nameko.standalone.rpc</span> <span class="k">import</span> <span class="n">ClusterRpcProxy</span>
 
+<span class="kn">from</span> <span class="nn">oriole.db</span> <span class="k">import</span> <span class="n">get_redis</span>
 <span class="kn">from</span> <span class="nn">oriole.log</span> <span class="k">import</span> <span class="n">logger</span>
 <span class="kn">from</span> <span class="nn">oriole.ops</span> <span class="k">import</span> <span class="n">open_shell</span>
 <span class="kn">from</span> <span class="nn">oriole.vos</span> <span class="k">import</span> <span class="n">exe</span><span class="p">,</span> <span class="n">get_config</span><span class="p">,</span> <span class="n">get_first</span><span class="p">,</span> <span class="n">get_loc</span><span class="p">,</span> <span class="n">get_path</span><span class="p">,</span> <span class="n">sleep</span>
 <span class="kn">from</span> <span class="nn">oriole.yml</span> <span class="k">import</span> <span class="n">get_yml</span>
 
-<span class="n">__all_services</span> <span class="o">=</span> <span class="s1">&#39;services:all&#39;</span>
 
+<span class="k">def</span> <span class="nf">_open_shell</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">cfg</span><span class="p">):</span>
+    <span class="n">service_no</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%5d</span><span class="s1">. </span><span class="si">%-30s</span><span class="s1"> =&gt; </span><span class="si">%-20s</span><span class="s1">&#39;</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">services</span> <span class="o">=</span> <span class="n">get_all_services</span><span class="p">(</span><span class="n">get_redis</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;datasets&#39;</span><span class="p">)))</span>
 
-<div class="viewcode-block" id="run_client"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.run_client">[docs]</a><span class="k">def</span> <span class="nf">run_client</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">ClusterRpcProxy</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
-        <span class="n">ms</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">supervisor_thread</span>
-        <span class="n">ms</span><span class="o">.</span><span class="n">ping</span><span class="p">()</span>
-        <span class="n">sleep</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
-        <span class="n">services</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">ping_result</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">services</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No service.&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Available services:&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">services</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No service.&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Available services:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">services</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">service_no</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+            <span class="n">service_no</span> <span class="o">+=</span> <span class="mi">1</span>
 
-            <span class="n">no</span> <span class="o">=</span> <span class="mi">1</span>
-            <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%5d</span><span class="s1">. </span><span class="si">%-30s</span><span class="s1"> =&gt; </span><span class="si">%-20s</span><span class="s1">&#39;</span>
-
-            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">services</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">no</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
-                <span class="n">no</span> <span class="o">+=</span> <span class="mi">1</span>
-
-            <span class="nb">all</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
-            <span class="nb">all</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">services</span><span class="o">.</span><span class="n">keys</span><span class="p">()})</span>
-
-            <span class="n">open_shell</span><span class="p">(</span><span class="nb">all</span><span class="p">)</span></div>
+        <span class="nb">all</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
+        <span class="nb">all</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">services</span><span class="o">.</span><span class="n">keys</span><span class="p">()})</span>
+        <span class="n">open_shell</span><span class="p">(</span><span class="nb">all</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="remote_test"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.remote_test">[docs]</a><span class="k">def</span> <span class="nf">remote_test</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
@@ -107,10 +101,10 @@
         <span class="s2">&quot;                                        &quot;</span><span class="p">,</span>
         <span class="s2">&quot;----------------------------------------&quot;</span><span class="p">,</span>
         <span class="s2">&quot;                                        &quot;</span><span class="p">,</span>
-        <span class="s2">&quot;             __  _                      &quot;</span><span class="p">,</span>
-        <span class="s2">&quot;        |\/|(_  |_) _ _  o _  __|_      &quot;</span><span class="p">,</span>
-        <span class="s2">&quot;        |  |__) |  | (_) |(/_(_ |_      &quot;</span><span class="p">,</span>
-        <span class="s2">&quot;                        _|              &quot;</span><span class="p">,</span>
+        <span class="s2">&quot;            __  _                       &quot;</span><span class="p">,</span>
+        <span class="s2">&quot;       |\/|(_  |_) _ _  o _  __|_       &quot;</span><span class="p">,</span>
+        <span class="s2">&quot;       |  |__) |  | (_) |(/_(_ |_       &quot;</span><span class="p">,</span>
+        <span class="s2">&quot;                       _|               &quot;</span><span class="p">,</span>
         <span class="s2">&quot;                                        &quot;</span><span class="p">,</span>
         <span class="s2">&quot;----------------------------------------&quot;</span><span class="p">,</span>
         <span class="s2">&quot;                                        &quot;</span><span class="p">,</span>
@@ -118,7 +112,10 @@
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Checking all available services now...&quot;</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">run_client</span><span class="p">(</span><span class="n">get_yml</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">get_yml</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">ClusterRpcProxy</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+            <span class="n">_open_shell</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+
     <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: you must goto correct directory.&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">RpcTimeout</span><span class="p">:</span>
@@ -128,15 +125,31 @@
 
 
 <div class="viewcode-block" id="add_one_service"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.add_one_service">[docs]</a><span class="k">def</span> <span class="nf">add_one_service</span><span class="p">(</span><span class="nb">all</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-    <span class="nb">all</span><span class="o">.</span><span class="n">hset</span><span class="p">(</span><span class="n">__all_services</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-    <span class="nb">all</span><span class="o">.</span><span class="n">expire</span><span class="p">(</span><span class="n">__all_services</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span></div>
+    <span class="n">expire</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="nb">all</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="s1">&#39;services&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+    <span class="nb">all</span><span class="o">.</span><span class="n">expire</span><span class="p">(</span><span class="s1">&#39;services&#39;</span><span class="p">,</span> <span class="n">expire</span><span class="p">)</span>
+    <span class="nb">all</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;services:&#39;</span> <span class="o">+</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">expire</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_all_services"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_all_services">[docs]</a><span class="k">def</span> <span class="nf">get_all_services</span><span class="p">(</span><span class="nb">all</span><span class="p">):</span>
-    <span class="n">services</span> <span class="o">=</span> <span class="nb">all</span><span class="o">.</span><span class="n">hgetall</span><span class="p">(</span><span class="n">__all_services</span><span class="p">)</span>
+    <span class="n">services_all</span> <span class="o">=</span> <span class="nb">all</span><span class="o">.</span><span class="n">smembers</span><span class="p">(</span><span class="s1">&#39;services&#39;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">services</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">():</span> <span class="n">v</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">services</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div>
+    <span class="k">if</span> <span class="n">services_all</span><span class="p">:</span>
+        <span class="n">services_all</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">services_all</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">get_all_available_services</span><span class="p">(</span><span class="nb">all</span><span class="p">,</span> <span class="n">services_all</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_all_available_services"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_all_available_services">[docs]</a><span class="k">def</span> <span class="nf">get_all_available_services</span><span class="p">(</span><span class="nb">all</span><span class="p">,</span> <span class="n">services_all</span><span class="p">):</span>
+    <span class="n">available_services</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">services_all</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="nb">all</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;services:&#39;</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+            <span class="n">available_services</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">available_services</span></div>
 
 
 <div class="viewcode-block" id="run"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">service</span><span class="p">):</span>

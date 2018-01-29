@@ -14,9 +14,9 @@
 #    '-------------------------------------------'
 #
 
-import mogo
 from nameko.extensions import DependencyProvider
 
+from oriole.db import get_mongo
 from oriole.vos import get_config
 
 
@@ -29,7 +29,7 @@ class Log(DependencyProvider):
 
     def setup(self):
         try:
-            self.conn = mogo.connect(self.db, self.host)
+            self.conn = get_mongo(self.db, self.host)
             self.log = self.conn[self.db][self.tb]
         except:
             raise RuntimeError("Error: Mongo is down.")

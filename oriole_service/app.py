@@ -20,11 +20,12 @@ from decimal import Decimal
 
 from nameko.events import EventDispatcher, event_handler
 from nameko.rpc import RpcProxy, rpc
+from nameko.timer import timer
 
 from dao import *
 from oriole.vos import cwd, get_config, service_name
 from oriole_service import *
-from oriole_service.api import add_one_service, get_all_services, get_logger
+from oriole_service.api import add_one_service, get_logger
 from oriole_service.db import *
 
 
@@ -39,31 +40,22 @@ class App:
     log = get_logger()
     ver = "1.0.0"
     name = "supervisor_thread"
-    dispatch = EventDispatcher()
 
     def init(self):
         ''' Noop '''
 
     @rpc
     def ping(self, name=name):
-        if name == self.name:
-            self.dispatch(name, name)
-
         return True
-
-    @rpc
-    def ping_result(self, name=name):
-        if name == self.name:
-            return get_all_services(self.rs)
-
-    @event_handler(name, name)
-    def handler(self, name):
-        if name != self.name:
-            add_one_service(self.rs, self.name, self.ver)
 
     @rpc
     def version(self):
         return self.ver
+
+    @timer(10)
+    def update_service(self):
+        if self.name != 'supervisor_thread':
+            add_one_service(self.rs, self.name, self.ver)
 
     #
     # These methods are used in services.

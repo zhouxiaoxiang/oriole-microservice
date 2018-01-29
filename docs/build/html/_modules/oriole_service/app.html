@@ -69,11 +69,12 @@
 
 <span class="kn">from</span> <span class="nn">nameko.events</span> <span class="k">import</span> <span class="n">EventDispatcher</span><span class="p">,</span> <span class="n">event_handler</span>
 <span class="kn">from</span> <span class="nn">nameko.rpc</span> <span class="k">import</span> <span class="n">RpcProxy</span><span class="p">,</span> <span class="n">rpc</span>
+<span class="kn">from</span> <span class="nn">nameko.timer</span> <span class="k">import</span> <span class="n">timer</span>
 
 <span class="kn">from</span> <span class="nn">dao</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">oriole.vos</span> <span class="k">import</span> <span class="n">cwd</span><span class="p">,</span> <span class="n">get_config</span><span class="p">,</span> <span class="n">service_name</span>
 <span class="kn">from</span> <span class="nn">oriole_service</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">oriole_service.api</span> <span class="k">import</span> <span class="n">add_one_service</span><span class="p">,</span> <span class="n">get_all_services</span><span class="p">,</span> <span class="n">get_logger</span>
+<span class="kn">from</span> <span class="nn">oriole_service.api</span> <span class="k">import</span> <span class="n">add_one_service</span><span class="p">,</span> <span class="n">get_logger</span>
 <span class="kn">from</span> <span class="nn">oriole_service.db</span> <span class="k">import</span> <span class="o">*</span>
 
 
@@ -88,31 +89,22 @@
     <span class="n">log</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
     <span class="n">ver</span> <span class="o">=</span> <span class="s2">&quot;1.0.0&quot;</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;supervisor_thread&quot;</span>
-    <span class="n">dispatch</span> <span class="o">=</span> <span class="n">EventDispatcher</span><span class="p">()</span>
 
 <div class="viewcode-block" id="App.init"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.App.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Noop &#39;&#39;&#39;</span></div>
 
 <div class="viewcode-block" id="App.ping"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.App.ping">[docs]</a>    <span class="nd">@rpc</span>
     <span class="k">def</span> <span class="nf">ping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-
         <span class="k">return</span> <span class="kc">True</span></div>
-
-<div class="viewcode-block" id="App.ping_result"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.App.ping_result">[docs]</a>    <span class="nd">@rpc</span>
-    <span class="k">def</span> <span class="nf">ping_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">get_all_services</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rs</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="App.handler"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.App.handler">[docs]</a>    <span class="nd">@event_handler</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
-            <span class="n">add_one_service</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ver</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="App.version"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.App.version">[docs]</a>    <span class="nd">@rpc</span>
     <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ver</span></div>
+
+<div class="viewcode-block" id="App.update_service"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.App.update_service">[docs]</a>    <span class="nd">@timer</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">update_service</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;supervisor_thread&#39;</span><span class="p">:</span>
+            <span class="n">add_one_service</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ver</span><span class="p">)</span></div>
 
     <span class="c1">#</span>
     <span class="c1"># These methods are used in services.</span>

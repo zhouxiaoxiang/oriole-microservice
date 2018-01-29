@@ -20,37 +20,31 @@ from subprocess import PIPE, Popen
 from nameko.exceptions import RpcTimeout
 from nameko.standalone.rpc import ClusterRpcProxy
 
+from oriole.db import get_redis
 from oriole.log import logger
 from oriole.ops import open_shell
 from oriole.vos import exe, get_config, get_first, get_loc, get_path, sleep
 from oriole.yml import get_yml
 
-__all_services = 'services:all'
 
+def _open_shell(s, cfg):
+    service_no = 1
+    fmt = '%5d. %-30s => %-20s'
+    sleep(1)
+    services = get_all_services(get_redis(cfg.get('datasets')))
 
-def run_client(cfg, timeout):
-    with ClusterRpcProxy(cfg, timeout=timeout) as s:
-        ms = s.supervisor_thread
-        ms.ping()
-        sleep(timeout)
-        services = ms.ping_result()
+    if not services:
+        raise ValueError('No service.')
+    else:
+        print("Available services:")
 
-        if not services:
-            raise ValueError('No service.')
-        else:
-            print("Available services:")
+        for k, v in services.items():
+            print(fmt % (service_no, k, v))
+            service_no += 1
 
-            no = 1
-            fmt = '%5d. %-30s => %-20s'
-
-            for k, v in services.items():
-                print(fmt % (no, k, v))
-                no += 1
-
-            all = dict(s=s)
-            all.update({k: s[k] for k in services.keys()})
-
-            open_shell(all)
+        all = dict(s=s)
+        all.update({k: s[k] for k in services.keys()})
+        open_shell(all)
 
 
 def remote_test(f):
@@ -58,10 +52,10 @@ def remote_test(f):
         "                                        ",
         "----------------------------------------",
         "                                        ",
-        "             __  _                      ",
-        "        |\/|(_  |_) _ _  o _  __|_      ",
-        "        |  |__) |  | (_) |(/_(_ |_      ",
-        "                        _|              ",
+        "            __  _                       ",
+        "       |\/|(_  |_) _ _  o _  __|_       ",
+        "       |  |__) |  | (_) |(/_(_ |_       ",
+        "                       _|               ",
         "                                        ",
         "----------------------------------------",
         "                                        ",
@@ -69,7 +63,10 @@ def remote_test(f):
     print("Checking all available services now...")
 
     try:
-        run_client(get_yml(f), timeout=3)
+        cfg = get_yml(f)
+        with ClusterRpcProxy(cfg, timeout=5) as s:
+            _open_shell(s, cfg)
+
     except FileNotFoundError:
         print("Error: you must goto correct directory.")
     except RpcTimeout:
@@ -79,15 +76,31 @@ def remote_test(f):
 
 
 def add_one_service(all, s, v):
-    all.hset(__all_services, s, v)
-    all.expire(__all_services, 60)
+    expire = 30
+    all.sadd('services', s)
+    all.expire('services', expire)
+    all.set('services:' + s, v, expire)
 
 
 def get_all_services(all):
-    services = all.hgetall(__all_services)
+    services_all = all.smembers('services')
 
-    if services:
-        return {s.decode(): v.decode() for s, v in services.items()}
+    if services_all:
+        services_all = {s.decode() for s in services_all}
+
+        return get_all_available_services(all, services_all)
+
+
+def get_all_available_services(all, services_all):
+    available_services = {}
+
+    for s in services_all:
+        v = all.get('services:' + s)
+
+        if v:
+            available_services[s] = v.decode()
+
+    return available_services
 
 
 def run(service):
