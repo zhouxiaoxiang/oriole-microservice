@@ -27,24 +27,27 @@ from oriole.vos import exe, get_config, get_first, get_loc, get_path, sleep
 from oriole.yml import get_yml
 
 
-def _open_shell(s, cfg):
-    service_no = 1
-    fmt = '%5d. %-30s => %-20s'
+def _ls(s, rs, retry=False):
+    print("Checking all available services now...")
     sleep(1)
-    services = get_all_services(get_redis(cfg.get('datasets')))
+    services = get_all_services(get_redis(rs))
 
     if not services:
-        raise ValueError('No service.')
+        print('Error: no available services in ms now.')
     else:
         print("Available services:")
+        service_no = 1
+        fmt = '%5d. %-30s => %-20s'
 
         for k, v in services.items():
             print(fmt % (service_no, k, v))
             service_no += 1
 
-        all = dict(s=s)
+        all = dict(s=s, ls=lambda: _ls(s, rs, True))
         all.update({k: s[k] for k in services.keys()})
-        open_shell(all)
+
+        if not retry:
+            return all
 
 
 def remote_test(f):
@@ -60,19 +63,19 @@ def remote_test(f):
         "----------------------------------------",
         "                                        ",
     ]))
-    print("Checking all available services now...")
 
     try:
         cfg = get_yml(f)
         with ClusterRpcProxy(cfg, timeout=5) as s:
-            _open_shell(s, cfg)
+            all = _ls(s, cfg.get('datasets'))
+
+            if all:
+                open_shell(all)
 
     except FileNotFoundError:
         print("Error: you must goto correct directory.")
     except RpcTimeout:
         print("Error: can not connect to microservice.")
-    except Exception as e:
-        print("Error: no available services in ms now.")
 
 
 def add_one_service(all, s, v):
