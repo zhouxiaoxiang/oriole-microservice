@@ -43,8 +43,8 @@ def app(monkeypatch):
         def create(self, name):
             return worker_factory(name)
 
-        def add_db(self, service, name='db', uri='test_database'):
-            db = fake_db(Base, uri)
+        def add_db(self, service, name='db', uri='test_database', base=Base):
+            db = fake_db(base, uri)
             self.dbs.append(db)
             self.fake(service, name, db.get())
 
