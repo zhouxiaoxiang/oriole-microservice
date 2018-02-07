@@ -33,11 +33,6 @@
 
   [services/log.py](https://github.com/zhouxiaoxiang/oriole-service/wiki/log.py)
 
-## Test log service
-```
-  o t log
-```
-
 ## Run log service
 ```
   o r log
