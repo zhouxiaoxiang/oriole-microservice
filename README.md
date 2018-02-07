@@ -8,7 +8,7 @@
 
 [【Code】](https://github.com/zhouxiaoxiang/oriole-service)
 
-**Rapidly create services.**
+**The Zen of oriole: speed defines the winner.**
 
 ## Prerequisites
 
