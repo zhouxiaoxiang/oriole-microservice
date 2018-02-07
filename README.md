@@ -1,6 +1,8 @@
-# Oriole-Service
+# Oriole-Service 
 
 [![](https://badges.gitter.im/zhouxiaoxiang/oriole-service.svg)](https://gitter.im/oriole-service/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link) [![](https://travis-ci.org/zhouxiaoxiang/oriole-service.svg?branch=master)](https://travis-ci.org/zhouxiaoxiang/oriole-service)
+
+[Chinese readme](https://github.com/zhouxiaoxiang/oriole-service/wiki)
 
 ** Rapidly create services. **
 
