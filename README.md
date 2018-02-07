@@ -1,12 +1,12 @@
 # Oriole-Service
 
-[![Join project](https://badges.gitter.im/zhouxiaoxiang/oriole-service.svg)](https://gitter.im/oriole-service/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link) [![Let's go](https://travis-ci.org/zhouxiaoxiang/oriole-service.svg?branch=master)](https://travis-ci.org/zhouxiaoxiang/oriole-service)
+[![](https://badges.gitter.im/zhouxiaoxiang/oriole-service.svg)](https://gitter.im/oriole-service/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link) [![](https://travis-ci.org/zhouxiaoxiang/oriole-service.svg?branch=master)](https://travis-ci.org/zhouxiaoxiang/oriole-service)
 
-**Rapidly create services.**
+** Rapidly create services. **
 
 ## Prerequisites
 
-1. Install following packages.
+1. Install following packages
 
  - python >= 3.6
  - mongodb
@@ -14,45 +14,47 @@
  - rabbitmq
  - redis
 
-2. Modify services.cfg in your project.
-
+2. Install riole-service
 ```
-AMQP_URI:      ${RABBIT:pyamqp://test:test@127.0.0.1}                                 
-database:      ${MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
-test_database: ${TEST_MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
-datasets:      ${REDIS:redis://127.0.0.1/0}
+  pip install oriole-service
 ```
 
-## Install
+## Add services.cfg
 
-  cd <project>
+  [services/log.py](https://github.com/zhouxiaoxiang/oriole-service/wiki/services.cfg)
 
-  make
+## Add services/log.py
 
-## Unit test
+  [services/log.py](https://github.com/zhouxiaoxiang/oriole-service/wiki/log.py)
 
-  o t <service>
+## Test log service
+```
+  o t log
+```
 
-## Run service
-
-  o r <service>
+## Run log service
+```
+  o r log
+```
 
 ## Run console
-
+```
   o s
-
+```
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif)
 
-## Halt service
+## Halt log service
+```
+  o h log
+```
 
-  o h <service>
-
-## Create docs
-
+## Create documents.
+```
   o d
+```
 
-## Publish project
+## Publish log service
 
-## Check
+## Check online services
 
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif)
