@@ -6,7 +6,7 @@
 
 ## Prerequisites
 
-1. Install and run these servers.
+1. Install following packages.
 
  - python >= 3.6
  - mongodb
@@ -21,29 +21,37 @@ AMQP_URI:      ${RABBIT:pyamqp://test:test@127.0.0.1}
 database:      ${MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
 test_database: ${TEST_MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
 datasets:      ${REDIS:redis://127.0.0.1/0}
-max_workers:   ${WORKER:1}
-log_level:     ${LEVEL:DEBUG}
 ```
 
 ## Install
 
-  cd (`nameko` project)
+  cd <project>
 
   make
 
-## Run
+## Unit test
+
+  o t <service>
+
+## Run service
 
   o r <service>
 
-## Apply
+## Run console
 
   o s
 
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif)
 
-## Halt
+## Halt service
 
   o h <service>
+
+## Create docs
+
+  o d
+
+## Publish project
 
 ## Check
 

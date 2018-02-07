@@ -8,7 +8,7 @@ Oriole-Service
 Prerequisites
 -------------
 
-1. Install and run these servers.
+1. Install following packages.
 
 -  python >= 3.6
 -  mongodb
@@ -24,33 +24,44 @@ Prerequisites
     database:      ${MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
     test_database: ${TEST_MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
     datasets:      ${REDIS:redis://127.0.0.1/0}
-    max_workers:   ${WORKER:1}
-    log_level:     ${LEVEL:DEBUG}
 
 Install
 -------
 
-cd (``nameko`` project)
+cd
 
 make
 
-Run
----
+Unit test
+---------
+
+o t
+
+Run service
+-----------
 
 o r
 
-Apply
------
+Run console
+-----------
 
 o s
 
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif
    :alt: 
 
-Halt
-----
+Halt service
+------------
 
 o h
+
+Create docs
+-----------
+
+o d
+
+Publish project
+---------------
 
 Check
 -----
