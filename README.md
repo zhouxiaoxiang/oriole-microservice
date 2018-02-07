@@ -4,7 +4,7 @@
 
 [Chinese readme](https://github.com/zhouxiaoxiang/oriole-service/wiki)
 
-** Rapidly create services. **
+**Rapidly create services.**
 
 ## Prerequisites
 
