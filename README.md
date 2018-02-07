@@ -23,7 +23,7 @@
 
 ## Add services.cfg
 
-  [services/log.py](https://github.com/zhouxiaoxiang/oriole-service/wiki/services.cfg)
+  [services.cfg](https://github.com/zhouxiaoxiang/oriole-service/wiki/services.cfg)
 
 ## Add services/log.py
 
