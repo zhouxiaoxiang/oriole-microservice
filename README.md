@@ -16,7 +16,7 @@
  - rabbitmq
  - redis
 
-2. Install riole-service
+2. Install oriole-service
 ```
   pip install oriole-service
 ```
