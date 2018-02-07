@@ -1,14 +1,17 @@
 Oriole-Service
 ==============
 
-|Join project| |Let's go|
+|image0| |image1|
 
-**Rapidly create services.**
+`Chinese
+readme <https://github.com/zhouxiaoxiang/oriole-service/wiki>`__
+
+\*\* Rapidly create services. \*\*
 
 Prerequisites
 -------------
 
-1. Install following packages.
+1. Install following packages
 
 -  python >= 3.6
 -  mongodb
@@ -16,60 +19,70 @@ Prerequisites
 -  rabbitmq
 -  redis
 
-2. Modify services.cfg in your project.
+2. Install oriole-service
+
+   ::
+
+         pip install oriole-service
+
+Add services.cfg
+----------------
+
+`services.cfg <https://github.com/zhouxiaoxiang/oriole-service/wiki/services.cfg>`__
+
+Add services/log.py
+-------------------
+
+`services/log.py <https://github.com/zhouxiaoxiang/oriole-service/wiki/log.py>`__
+
+Test log service
+----------------
 
 ::
 
-    AMQP_URI:      ${RABBIT:pyamqp://test:test@127.0.0.1}                                 
-    database:      ${MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
-    test_database: ${TEST_MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
-    datasets:      ${REDIS:redis://127.0.0.1/0}
+      o t log
 
-Install
--------
+Run log service
+---------------
 
-cd
+::
 
-make
-
-Unit test
----------
-
-o t
-
-Run service
------------
-
-o r
+      o r log
 
 Run console
 -----------
 
-o s
+::
+
+      o s
 
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif
    :alt: 
 
-Halt service
-------------
+Halt log service
+----------------
 
-o h
+::
 
-Create docs
------------
+      o h log
 
-o d
+Create documents.
+-----------------
 
-Publish project
----------------
+::
 
-Check
------
+      o d
+
+Publish log service
+-------------------
+
+Check online services
+---------------------
 
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif
    :alt: 
 
-.. |Join project| image:: https://badges.gitter.im/zhouxiaoxiang/oriole-service.svg
+.. |image0| image:: https://badges.gitter.im/zhouxiaoxiang/oriole-service.svg
    :target: https://gitter.im/oriole-service/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link
-.. |Let's go| image:: https://travis-ci.org/zhouxiaoxiang/oriole-service.svg?branch=master
+.. |image1| image:: https://travis-ci.org/zhouxiaoxiang/oriole-service.svg?branch=master
    :target: https://travis-ci.org/zhouxiaoxiang/oriole-service
