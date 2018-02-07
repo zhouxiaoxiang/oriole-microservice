@@ -58,4 +58,6 @@
 
 ## Check online services
 
+  You can run `o s` to do the same thing.
+
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif)
