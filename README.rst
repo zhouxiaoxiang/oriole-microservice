@@ -3,10 +3,15 @@ Oriole-Service
 
 |image0| |image1|
 
-`Chinese
-readme <https://github.com/zhouxiaoxiang/oriole-service/wiki>`__
+`【Chinese
+readme】 <https://github.com/zhouxiaoxiang/oriole-service/wiki>`__
 
-\*\* Rapidly create services. \*\*
+`【English
+readme】 <https://github.com/zhouxiaoxiang/oriole-service/blob/master/README.md>`__
+
+`【Code】 <https://github.com/zhouxiaoxiang/oriole-service>`__
+
+**The Zen of oriole: speed defines the winner.**
 
 Prerequisites
 -------------
@@ -34,13 +39,6 @@ Add services/log.py
 -------------------
 
 `services/log.py <https://github.com/zhouxiaoxiang/oriole-service/wiki/log.py>`__
-
-Test log service
-----------------
-
-::
-
-      o t log
 
 Run log service
 ---------------
@@ -78,6 +76,8 @@ Publish log service
 
 Check online services
 ---------------------
+
+ You can run ``o s`` to do the same thing.
 
 .. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif
    :alt: 
