@@ -49,8 +49,11 @@ class Db(DependencyProvider):
 
 
 class Rs(DependencyProvider):
+    def __init__(self, uri="datasets"):
+        self.uri = uri
+
     def setup(self):
-        self.rs = get_redis(self.container.config.get("datasets"))
+        self.rs = get_redis(self.container.config.get(self.uri))
 
     def get_dependency(self, worker_ctx):
         return self.rs

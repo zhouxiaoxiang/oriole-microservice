@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>oriole_service.db &#8212; Oriole-service 10.2.1 documentation</title>
+    <title>oriole_service.db &#8212; Oriole-service 10.3.1 documentation</title>
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '10.2.1',
+        VERSION:     '10.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -28,7 +28,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="../../index.html">Oriole-service 10.2.1 documentation</a></div>
+          href="../../index.html">Oriole-service 10.3.1 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -98,8 +98,11 @@
 
 
 <div class="viewcode-block" id="Rs"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Rs">[docs]</a><span class="k">class</span> <span class="nc">Rs</span><span class="p">(</span><span class="n">DependencyProvider</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="o">=</span><span class="s2">&quot;datasets&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="n">uri</span>
+
 <div class="viewcode-block" id="Rs.setup"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Rs.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rs</span> <span class="o">=</span> <span class="n">get_redis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;datasets&quot;</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rs</span> <span class="o">=</span> <span class="n">get_redis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Rs.get_dependency"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Rs.get_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">get_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker_ctx</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rs</span></div></div>
