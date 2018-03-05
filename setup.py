@@ -15,8 +15,8 @@ with open('oriole_service/__init__.py', 'rb') as f:
     version = str(literal_eval(_ver.search(f.read().decode()).group(1)))
 
 install_requires = [
-    "oriole>=5.6.0",
-    "nameko>=2.7.0",
+    "oriole==5.6.1",
+    "nameko==2.8.4",
 ]
 
 here = os.path.abspath(os.path.dirname(__file__))
