@@ -36,6 +36,14 @@ oriole\_service\.modules\.halt module
     :undoc-members:
     :show-inheritance:
 
+oriole\_service\.modules\.i18n module
+-------------------------------------
+
+.. automodule:: oriole_service.modules.i18n
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 oriole\_service\.modules\.run module
 ------------------------------------
 

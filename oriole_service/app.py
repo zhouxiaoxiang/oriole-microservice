@@ -25,8 +25,10 @@ from nameko.timer import timer
 from dao import *
 from oriole.vos import cwd, get_config, service_name
 from oriole_service import *
-from oriole_service.api import add_one_service, get_logger
+from oriole_service.api import add_one_service, get_logger, change_lang
 from oriole_service.db import *
+
+change_lang('en')
 
 
 class App:

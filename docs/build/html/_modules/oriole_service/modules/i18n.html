@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>oriole_service.modules.comp &#8212; Oriole-service 10.3.2 documentation</title>
+    <title>oriole_service.modules.i18n &#8212; Oriole-service 10.3.2 documentation</title>
     <link rel="stylesheet" href="../../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -46,7 +46,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for oriole_service.modules.comp</h1><div class="highlight"><pre>
+  <h1>Source code for oriole_service.modules.i18n</h1><div class="highlight"><pre>
 <span></span><span class="c1">#</span>
 <span class="c1">#                __   _,--=&quot;=--,_   __</span>
 <span class="c1">#               /  \.&quot;    .-.    &quot;./  \</span>
@@ -57,22 +57,22 @@
 <span class="c1">#           .-&quot;-.   \      |      /   .-&quot;-.</span>
 <span class="c1">#    .-----{     }--|  /,.-&#39;-.,\  |--{     }-----.</span>
 <span class="c1">#     )    (_)_)_)  \_/`~-===-~`\_/  (_(_(_)    (</span>
-<span class="c1">#    (                                          )</span>
+<span class="c1">#    (                                           )</span>
 <span class="c1">#     )                Oriole-CLI               (</span>
-<span class="c1">#    (                  Eric.Zhou               )</span>
-<span class="c1">#    )         Enable completion for oriole     (</span>
+<span class="c1">#    (                  Eric.Zhou                )</span>
+<span class="c1">#    )           Update i18n of services        (</span>
 <span class="c1">#    &#39;-------------------------------------------&#39;</span>
 <span class="c1">#</span>
 
-<span class="kn">from</span> <span class="nn">oriole_service</span> <span class="k">import</span> <span class="n">api</span>
+<span class="kn">from</span> <span class="nn">oriole.vos</span> <span class="k">import</span> <span class="n">exe</span>
 
 
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../oriole_service.modules.html#oriole_service.modules.comp.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
-    <span class="n">api</span><span class="o">.</span><span class="n">comp</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">shell</span><span class="p">)</span></div>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../oriole_service.modules.html#oriole_service.modules.i18n.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="n">exe</span><span class="p">(</span><span class="s2">&quot;make trans&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="init_parser"><a class="viewcode-back" href="../../../oriole_service.modules.html#oriole_service.modules.comp.init_parser">[docs]</a><span class="k">def</span> <span class="nf">init_parser</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--shell&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;bash&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Specify your shell.&#39;</span><span class="p">)</span></div>
+<div class="viewcode-block" id="init_parser"><a class="viewcode-back" href="../../../oriole_service.modules.html#oriole_service.modules.i18n.init_parser">[docs]</a><span class="k">def</span> <span class="nf">init_parser</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>
+    <span class="k">pass</span></div>
 </pre></div>
 
           </div>

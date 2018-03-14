@@ -15,6 +15,7 @@
 #
 
 from os import chdir
+from os import path
 from subprocess import PIPE, Popen
 
 from nameko.exceptions import RpcTimeout
@@ -23,7 +24,7 @@ from nameko.standalone.rpc import ClusterRpcProxy
 from oriole.db import get_redis
 from oriole.log import logger
 from oriole.ops import open_shell
-from oriole.vos import exe, get_config, get_first, get_loc, get_path, sleep
+from oriole.vos import exe, get_config, get_first, get_loc, get_path, sleep, switch_lang
 from oriole.yml import get_yml
 
 
@@ -145,3 +146,11 @@ def halt(service):
             exe("kill %s" % pid)
     except:
         raise RuntimeError("Error: cannot kill %s." % service)
+
+
+def change_lang(lang='zh'):
+    loc = 'i18n'
+    i18n_loc = get_loc(loc, False)
+    if i18n_loc:
+        loc = path.join(i18n_loc, loc)
+        switch_lang(lang, loc)

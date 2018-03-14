@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>oriole_service.api &#8212; Oriole-service 10.3.1 documentation</title>
+    <title>oriole_service.api &#8212; Oriole-service 10.3.2 documentation</title>
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '10.3.1',
+        VERSION:     '10.3.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -28,7 +28,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="../../index.html">Oriole-service 10.3.1 documentation</a></div>
+          href="../../index.html">Oriole-service 10.3.2 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -64,6 +64,7 @@
 <span class="c1">#</span>
 
 <span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">chdir</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span>
 <span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">PIPE</span><span class="p">,</span> <span class="n">Popen</span>
 
 <span class="kn">from</span> <span class="nn">nameko.exceptions</span> <span class="k">import</span> <span class="n">RpcTimeout</span>
@@ -72,7 +73,7 @@
 <span class="kn">from</span> <span class="nn">oriole.db</span> <span class="k">import</span> <span class="n">get_redis</span>
 <span class="kn">from</span> <span class="nn">oriole.log</span> <span class="k">import</span> <span class="n">logger</span>
 <span class="kn">from</span> <span class="nn">oriole.ops</span> <span class="k">import</span> <span class="n">open_shell</span>
-<span class="kn">from</span> <span class="nn">oriole.vos</span> <span class="k">import</span> <span class="n">exe</span><span class="p">,</span> <span class="n">get_config</span><span class="p">,</span> <span class="n">get_first</span><span class="p">,</span> <span class="n">get_loc</span><span class="p">,</span> <span class="n">get_path</span><span class="p">,</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">oriole.vos</span> <span class="k">import</span> <span class="n">exe</span><span class="p">,</span> <span class="n">get_config</span><span class="p">,</span> <span class="n">get_first</span><span class="p">,</span> <span class="n">get_loc</span><span class="p">,</span> <span class="n">get_path</span><span class="p">,</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">switch_lang</span>
 <span class="kn">from</span> <span class="nn">oriole.yml</span> <span class="k">import</span> <span class="n">get_yml</span>
 
 
@@ -194,6 +195,14 @@
             <span class="n">exe</span><span class="p">(</span><span class="s2">&quot;kill </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pid</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Error: cannot kill </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="n">service</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="change_lang"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.change_lang">[docs]</a><span class="k">def</span> <span class="nf">change_lang</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="s1">&#39;zh&#39;</span><span class="p">):</span>
+    <span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;i18n&#39;</span>
+    <span class="n">i18n_loc</span> <span class="o">=</span> <span class="n">get_loc</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i18n_loc</span><span class="p">:</span>
+        <span class="n">loc</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">i18n_loc</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
+        <span class="n">switch_lang</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

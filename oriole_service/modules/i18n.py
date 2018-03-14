@@ -11,18 +11,16 @@
 #    (                                           )
 #     )                Oriole-CLI               (
 #    (                  Eric.Zhou                )
-#    )        Create documents of services      (
+#    )           Update i18n of services        (
 #    '-------------------------------------------'
 #
 
-from oriole.vos import exe, mexe
+from oriole.vos import exe
 
 
 def main(args):
-    cmds = ("sphinx-apidoc -f -o docs services",
-            "sphinx-build -b %s docs docs/build/html" % args.format)
-    mexe(exe, cmds)
+    exe("make trans")
 
 
 def init_parser(parser):
-    parser.add_argument('--format', default='html', help='Format')
+    pass
