@@ -90,15 +90,21 @@ def get_all_available_services(all, services_all):
 
 
 def run(service):
-    chdir(get_path("%s.py" % service, "services"))
-    exe("nameko run %s --config %s" % (
-        service, get_loc())
-        )
+    try:
+        chdir(get_path("%s.py" % service, "services"))
+        exe("nameko run %s --config %s" % (
+            service, get_loc())
+            )
+    except:
+        raise RuntimeError("Error: cannot find service.")
 
 
 def test(service):
-    chdir(get_path("test_%s.py" % service, "tests"))
-    exe("py.test")
+    try:
+        chdir(get_path("test_%s.py" % service, "tests"))
+        exe("py.test")
+    except:
+        raise RuntimeError("Error: cannot find test.")
 
 
 def get_logger():
