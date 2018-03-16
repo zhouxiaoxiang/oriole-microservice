@@ -23,12 +23,13 @@ from nameko.rpc import RpcProxy, rpc
 from nameko.timer import timer
 
 from dao import *
-from oriole.vos import cwd, get_config, service_name
+from oriole.vos import cwd, get_config, service_name, get_node
 from oriole_service import *
 from oriole_service.api import add_one_service, get_logger, change_lang
 from oriole_service.db import *
 
 change_lang('en')
+SUPER_THREAD = 'super_thread'
 
 
 class App:
@@ -41,7 +42,7 @@ class App:
     rs = Rs()
     log = get_logger()
     ver = "1.0.0"
-    name = "supervisor_thread"
+    name = SUPER_THREAD
 
     def init(self):
         ''' Noop '''
@@ -56,12 +57,12 @@ class App:
 
     @timer(10)
     def update_service(self):
-        if self.name != 'supervisor_thread':
-            add_one_service(self.rs, self.name, self.ver)
+        if self.name != SUPER_THREAD:
+            add_one_service(self.rs, self.name, self.ver, get_node())
 
     #
     # These methods are used in services.
-    # NOT use in oriole-service anytime.
+    # NOT use in oriole code anytime.
     #
 
     def _(self, item):

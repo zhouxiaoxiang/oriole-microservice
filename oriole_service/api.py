@@ -19,7 +19,7 @@ from os import path
 from subprocess import PIPE, Popen
 
 from nameko.exceptions import RpcTimeout
-from nameko.standalone.rpc import ClusterRpcProxy
+from nameko.standalone.rpc import ClusterRpcProxy as cluster
 
 from oriole.db import get_redis
 from oriole.log import logger
@@ -27,84 +27,66 @@ from oriole.ops import open_shell
 from oriole.vos import exe, get_config, get_first, get_loc, get_path, sleep, switch_lang
 from oriole.yml import get_yml
 
+_SERVICE_CK = 'Check all online services...'
+_SERVICE_NO = 'No Available services, Try ls() later.'
+_SERVICE_OK = 'All available online services:'
+_SERVICE_CS = '%-30s => %-20s'
+_SERVICE_CF = "Error: you must goto correct directory."
+_SERVICE_TM = "Error: can not connect to microservice."
 
-def _ls(s, rs, retry=False):
-    print("Checking all available services now...")
+
+def _ls(s, rs, sh):
+    print(_SERVICE_CK)
     sleep(1)
-    services = get_all_services(get_redis(rs))
+    services = get_all_services(rs)
 
     if not services:
-        print('Error: no available services in ms now.')
+        print(_SERVICE_NO)
     else:
-        print("Available services:")
-        service_no = 1
-        fmt = '%5d. %-30s => %-20s'
-
+        print(_SERVICE_OK)
         for k, v in services.items():
-            print(fmt % (service_no, k, v))
-            service_no += 1
-
-        all = dict(s=s, ls=lambda: _ls(s, rs, True))
-        all.update({k: s[k] for k in services.keys()})
-
-        if not retry:
-            return all
+            print(_SERVICE_CS % (k, v))
+        sh.update({k: s[k] for k in services.keys()})
 
 
-def remote_test(f):
-    print("\n".join([
-        "                                        ",
-        "----------------------------------------",
-        "                                        ",
-        "            __  _                       ",
-        "       |\/|(_  |_) _ _  o _  __|_       ",
-        "       |  |__) |  | (_) |(/_(_ |_       ",
-        "                       _|               ",
-        "                                        ",
-        "----------------------------------------",
-        "                                        ",
-    ]))
-
+def remote_test(f, time=5):
     try:
         cfg = get_yml(f)
-        with ClusterRpcProxy(cfg, timeout=5) as s:
-            all = _ls(s, cfg.get('datasets'))
-
-            if all:
-                open_shell(all)
+        with cluster(cfg, timeout=time) as s:
+            sh = {}
+            rs = get_redis(cfg.get('datasets'))
+            sh.update(dict(ls=lambda: _ls(s, rs, sh)))
+            _ls(s, rs, sh)
+            open_shell(sh)
 
     except FileNotFoundError:
-        print("Error: you must goto correct directory.")
+        print(_SERVICE_CF)
     except RpcTimeout:
-        print("Error: can not connect to microservice.")
+        print(_SERVICE_TM)
 
 
-def add_one_service(all, s, v):
-    expire = 30
+def add_one_service(all, s, v, n, expire=30):
     all.sadd('services', s)
     all.expire('services', expire)
-    all.set('services:' + s, v, expire)
+    all.set('services:' + s, '%s|%s' % (n, v), expire)
 
 
 def get_all_services(all):
-    services_all = all.smembers('services')
-
-    if services_all:
-        services_all = {s.decode() for s in services_all}
-
-        return get_all_available_services(all, services_all)
+    services = all.smembers('services')
+    if services:
+        services = {s.decode() for s in services}
+        return get_all_available_services(all, services)
 
 
 def get_all_available_services(all, services_all):
-    available_services = {}
+    services = {}
 
     for s in services_all:
         v = all.get('services:' + s)
-
         if v:
-            available_services[s] = v.decode()
+            services[s] = v.decode()
 
-    return available_services
+    return services
 
 
 def run(service):

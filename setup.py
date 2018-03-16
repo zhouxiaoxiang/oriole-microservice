@@ -15,7 +15,7 @@ with open('oriole_service/__init__.py', 'rb') as f:
     version = str(literal_eval(_ver.search(f.read().decode()).group(1)))
 
 install_requires = [
-    "oriole>=6.1.0",
+    "oriole>=6.2.0",
     "nameko>=2.8.4",
 ]
 
