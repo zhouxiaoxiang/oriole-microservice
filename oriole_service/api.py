@@ -27,12 +27,16 @@ from oriole.ops import open_shell
 from oriole.vos import exe, get_config, get_first, get_loc, get_path, sleep, switch_lang
 from oriole.yml import get_yml
 
-_SERVICE_CK = 'Check all online services...'
-_SERVICE_NO = 'No Available services, Try ls() later.'
-_SERVICE_OK = 'All available online services:'
+_SERVICE_CK = 'Check all online micro services....'
+_SERVICE_NO = 'No online services, Try ls() later.'
+_SERVICE_OK = 'All online services:'
 _SERVICE_CS = '%-30s => %-20s'
-_SERVICE_CF = "Error: you must goto correct directory."
-_SERVICE_TM = "Error: can not connect to microservice."
+_SERVICE_EX = 'nameko run %s --config %s'
+_SERVICE_CF = 'Error: you must goto correct directory.'
+_SERVICE_TM = 'Error: can not connect to microservice.'
+_SERVICE_PY = 'Error: can not find service in project.'
+_SERVICE_TS = 'Error: can not find test in project.'
+_SERVICE_PK = 'Error: can not kill %s.'
 
 
 def _ls(s, rs, sh):
@@ -65,7 +69,7 @@ def remote_test(f, time=5):
         print(_SERVICE_TM)
 
 
-def add_one_service(all, s, v, n, expire=30):
+def add_service(all, s, v, n, expire=30):
     all.sadd('services', s)
     all.expire('services', expire)
     all.set('services:' + s, '%s|%s' % (n, v), expire)
@@ -92,11 +96,9 @@ def get_all_available_services(all, services_all):
 def run(service):
     try:
         chdir(get_path("%s.py" % service, "services"))
-        exe("nameko run %s --config %s" % (
-            service, get_loc())
-            )
+        exe(_SERVICE_EX % (service, get_loc()))
     except:
-        raise RuntimeError("Error: cannot find service.")
+        raise RuntimeError(_SERVICE_PY)
 
 
 def test(service):
@@ -104,7 +106,7 @@ def test(service):
         chdir(get_path("test_%s.py" % service, "tests"))
         exe("py.test")
     except:
-        raise RuntimeError("Error: cannot find test.")
+        raise RuntimeError(_SERVICE_TS)
 
 
 def get_logger():
@@ -133,7 +135,7 @@ def halt(service):
             pid = int(get_first(proc))
             exe("kill %s" % pid)
     except:
-        raise RuntimeError("Error: cannot kill %s." % service)
+        raise RuntimeError(_SERVICE_PK % service)
 
 
 def change_lang(lang='zh'):

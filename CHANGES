@@ -1,85 +1,88 @@
 # Release Notes
 
-#10.5.0
+## 10.6.0
+2018-3-19 Unify prompt info.
+
+## 10.5.0
 2018-3-16 Show server node.
 
-# 10.4.0
+## 10.4.0
 
 2018-3-14 Support i18n.
 
-# 10.3.2
+## 10.3.2
 
 2018-3-5 Pin dependencies.
 
-# 10.3.1
+## 10.3.1
 
 2018-2-27 Support additional redis uri.
 
-# 10.3.0
+## 10.3.0
 
 2018-2-7 Update document.
 
-# 10.2.1
+## 10.2.1
 
 2018-2-6 Support other's base.
 
-# 10.2.0
+## 10.2.0
 
 2018-1-30 Add ls in o s.
 
-# 10.1.1
+## 10.1.1
 
 2018-1-29 Refact o s.
 
-# 10.0.1
+## 10.0.1
 
 2018-1-26 Fix method naming.
 
-# 10.0.0
+## 10.0.0
 
 2018-1-25 Add service discovery.
 
-# 9.1.0
+## 9.1.0
 
 2018-1-23 Only use wheel.
 
-# 9.0.1
+## 9.0.1
 
 2018-1-23 Fix doc.
 
-# 9.0.0
+## 9.0.0
 
 2018-1-22 Rewrite project.
 
-# 8.4.0
+## 8.4.0
 
 2018-1-18 Add diff cfg for test.
 
-# 8.3.0
+## 8.3.0
 
 2018-1-18 Import project at startup.
 
-# 8.2.0
+## 8.2.0
 
 2018-1-17 Add diff cfg.
 
-# 8.1.1
+## 8.1.1
 
 2018-1-9 Update doc.
 
-# 8.1.0
+## 8.1.0
 
 2018-1-8 Add o c as loader.
 
-# 8.0.0
+## 8.0.0
 
 2018-1-5 Add dynamic configuration.
 
-# 6.2.0
+## 6.2.0
 
 2017-12-8 Add timeout.
 
-# 6.1.0
+## 6.1.0
 
 2017-12-5 Change test details from oriole into project.
 

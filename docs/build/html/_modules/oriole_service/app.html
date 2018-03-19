@@ -74,7 +74,7 @@
 <span class="kn">from</span> <span class="nn">dao</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">oriole.vos</span> <span class="k">import</span> <span class="n">cwd</span><span class="p">,</span> <span class="n">get_config</span><span class="p">,</span> <span class="n">service_name</span><span class="p">,</span> <span class="n">get_node</span>
 <span class="kn">from</span> <span class="nn">oriole_service</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">oriole_service.api</span> <span class="k">import</span> <span class="n">add_one_service</span><span class="p">,</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">change_lang</span>
+<span class="kn">from</span> <span class="nn">oriole_service.api</span> <span class="k">import</span> <span class="n">add_service</span><span class="p">,</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">change_lang</span>
 <span class="kn">from</span> <span class="nn">oriole_service.db</span> <span class="k">import</span> <span class="o">*</span>
 
 <span class="n">change_lang</span><span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">)</span>
@@ -107,7 +107,7 @@
 <div class="viewcode-block" id="App.update_service"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.App.update_service">[docs]</a>    <span class="nd">@timer</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">update_service</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">SUPER_THREAD</span><span class="p">:</span>
-            <span class="n">add_one_service</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ver</span><span class="p">,</span> <span class="n">get_node</span><span class="p">())</span></div>
+            <span class="n">add_service</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ver</span><span class="p">,</span> <span class="n">get_node</span><span class="p">())</span></div>
 
     <span class="c1">#</span>
     <span class="c1"># These methods are used in services.</span>

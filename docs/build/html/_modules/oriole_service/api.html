@@ -76,12 +76,16 @@
 <span class="kn">from</span> <span class="nn">oriole.vos</span> <span class="k">import</span> <span class="n">exe</span><span class="p">,</span> <span class="n">get_config</span><span class="p">,</span> <span class="n">get_first</span><span class="p">,</span> <span class="n">get_loc</span><span class="p">,</span> <span class="n">get_path</span><span class="p">,</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">switch_lang</span>
 <span class="kn">from</span> <span class="nn">oriole.yml</span> <span class="k">import</span> <span class="n">get_yml</span>
 
-<span class="n">_SERVICE_CK</span> <span class="o">=</span> <span class="s1">&#39;Check all online services...&#39;</span>
-<span class="n">_SERVICE_NO</span> <span class="o">=</span> <span class="s1">&#39;No Available services, Try ls() later.&#39;</span>
-<span class="n">_SERVICE_OK</span> <span class="o">=</span> <span class="s1">&#39;All available online services:&#39;</span>
+<span class="n">_SERVICE_CK</span> <span class="o">=</span> <span class="s1">&#39;Check all online micro services....&#39;</span>
+<span class="n">_SERVICE_NO</span> <span class="o">=</span> <span class="s1">&#39;No online services, Try ls() later.&#39;</span>
+<span class="n">_SERVICE_OK</span> <span class="o">=</span> <span class="s1">&#39;All online services:&#39;</span>
 <span class="n">_SERVICE_CS</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%-30s</span><span class="s1"> =&gt; </span><span class="si">%-20s</span><span class="s1">&#39;</span>
-<span class="n">_SERVICE_CF</span> <span class="o">=</span> <span class="s2">&quot;Error: you must goto correct directory.&quot;</span>
-<span class="n">_SERVICE_TM</span> <span class="o">=</span> <span class="s2">&quot;Error: can not connect to microservice.&quot;</span>
+<span class="n">_SERVICE_EX</span> <span class="o">=</span> <span class="s1">&#39;nameko run </span><span class="si">%s</span><span class="s1"> --config </span><span class="si">%s</span><span class="s1">&#39;</span>
+<span class="n">_SERVICE_CF</span> <span class="o">=</span> <span class="s1">&#39;Error: you must goto correct directory.&#39;</span>
+<span class="n">_SERVICE_TM</span> <span class="o">=</span> <span class="s1">&#39;Error: can not connect to microservice.&#39;</span>
+<span class="n">_SERVICE_PY</span> <span class="o">=</span> <span class="s1">&#39;Error: can not find service in project.&#39;</span>
+<span class="n">_SERVICE_TS</span> <span class="o">=</span> <span class="s1">&#39;Error: can not find test in project.&#39;</span>
+<span class="n">_SERVICE_PK</span> <span class="o">=</span> <span class="s1">&#39;Error: can not kill </span><span class="si">%s</span><span class="s1">.&#39;</span>
 
 
 <span class="k">def</span> <span class="nf">_ls</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">rs</span><span class="p">,</span> <span class="n">sh</span><span class="p">):</span>
@@ -114,7 +118,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="n">_SERVICE_TM</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="add_one_service"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.add_one_service">[docs]</a><span class="k">def</span> <span class="nf">add_one_service</span><span class="p">(</span><span class="nb">all</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">expire</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
+<div class="viewcode-block" id="add_service"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.add_service">[docs]</a><span class="k">def</span> <span class="nf">add_service</span><span class="p">(</span><span class="nb">all</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">expire</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
     <span class="nb">all</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="s1">&#39;services&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
     <span class="nb">all</span><span class="o">.</span><span class="n">expire</span><span class="p">(</span><span class="s1">&#39;services&#39;</span><span class="p">,</span> <span class="n">expire</span><span class="p">)</span>
     <span class="nb">all</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;services:&#39;</span> <span class="o">+</span> <span class="n">s</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">|</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">expire</span><span class="p">)</span></div>
@@ -139,15 +143,19 @@
 
 
 <div class="viewcode-block" id="run"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">service</span><span class="p">):</span>
-    <span class="n">chdir</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.py&quot;</span> <span class="o">%</span> <span class="n">service</span><span class="p">,</span> <span class="s2">&quot;services&quot;</span><span class="p">))</span>
-    <span class="n">exe</span><span class="p">(</span><span class="s2">&quot;nameko run </span><span class="si">%s</span><span class="s2"> --config </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
-        <span class="n">service</span><span class="p">,</span> <span class="n">get_loc</span><span class="p">())</span>
-        <span class="p">)</span></div>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">chdir</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.py&quot;</span> <span class="o">%</span> <span class="n">service</span><span class="p">,</span> <span class="s2">&quot;services&quot;</span><span class="p">))</span>
+        <span class="n">exe</span><span class="p">(</span><span class="n">_SERVICE_EX</span> <span class="o">%</span> <span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="n">get_loc</span><span class="p">()))</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">_SERVICE_PY</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="test"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">service</span><span class="p">):</span>
-    <span class="n">chdir</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;test_</span><span class="si">%s</span><span class="s2">.py&quot;</span> <span class="o">%</span> <span class="n">service</span><span class="p">,</span> <span class="s2">&quot;tests&quot;</span><span class="p">))</span>
-    <span class="n">exe</span><span class="p">(</span><span class="s2">&quot;py.test&quot;</span><span class="p">)</span></div>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">chdir</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;test_</span><span class="si">%s</span><span class="s2">.py&quot;</span> <span class="o">%</span> <span class="n">service</span><span class="p">,</span> <span class="s2">&quot;tests&quot;</span><span class="p">))</span>
+        <span class="n">exe</span><span class="p">(</span><span class="s2">&quot;py.test&quot;</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">_SERVICE_TS</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_logger"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_logger">[docs]</a><span class="k">def</span> <span class="nf">get_logger</span><span class="p">():</span>
@@ -176,7 +184,7 @@
             <span class="n">pid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">get_first</span><span class="p">(</span><span class="n">proc</span><span class="p">))</span>
             <span class="n">exe</span><span class="p">(</span><span class="s2">&quot;kill </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pid</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Error: cannot kill </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="n">service</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">_SERVICE_PK</span> <span class="o">%</span> <span class="n">service</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="change_lang"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.change_lang">[docs]</a><span class="k">def</span> <span class="nf">change_lang</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="s1">&#39;zh&#39;</span><span class="p">):</span>
