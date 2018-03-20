@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>oriole_service package &#8212; Oriole-service 10.6.0 documentation</title>
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '10.6.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -25,8 +17,7 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="oriole_service.modules package" href="oriole_service.modules.html" />
     <link rel="prev" title="oriole_service" href="modules.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
@@ -130,7 +121,7 @@
 <dl class="class">
 <dt id="oriole_service.app.App">
 <em class="property">class </em><code class="descclassname">oriole_service.app.</code><code class="descname">App</code><a class="reference internal" href="_modules/oriole_service/app.html#App"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.app.App" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Connect database</p>
 <p>As usual, supply mysql and redis.</p>
 <dl class="attribute">
@@ -204,42 +195,62 @@
 <dl class="class">
 <dt id="oriole_service.db.Db">
 <em class="property">class </em><code class="descclassname">oriole_service.db.</code><code class="descname">Db</code><span class="sig-paren">(</span><em>Base</em>, <em>uri='database'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/db.html#Db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.db.Db" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">nameko.extensions.DependencyProvider</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">nameko.extensions.DependencyProvider</span></code></p>
 <dl class="method">
 <dt id="oriole_service.db.Db.get_dependency">
 <code class="descname">get_dependency</code><span class="sig-paren">(</span><em>worker_ctx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/db.html#Db.get_dependency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.db.Db.get_dependency" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Called before worker execution. A DependencyProvider should return
+an object to be injected into the worker instance by the container.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="oriole_service.db.Db.setup">
 <code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/db.html#Db.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.db.Db.setup" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="oriole_service.db.Db.stop">
-<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/db.html#Db.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.db.Db.stop" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Called on bound Extensions before the container starts.</p>
+<p>Extensions should do any required initialisation here.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="oriole_service.db.Db.worker_teardown">
 <code class="descname">worker_teardown</code><span class="sig-paren">(</span><em>worker_ctx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/db.html#Db.worker_teardown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.db.Db.worker_teardown" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Called after a service worker has executed a task.</p>
+<p>Dependencies should do any post-processing here, raising
+exceptions in the event of failure.</p>
+<p>Example: a database session dependency may commit the session</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>worker_ctx <span class="classifier-delimiter">:</span> <span class="classifier">WorkerContext</span></dt>
+<dd><p class="first last">See <code class="docutils literal notranslate"><span class="pre">nameko.containers.ServiceContainer.spawn_worker</span></code></p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="oriole_service.db.Rs">
 <em class="property">class </em><code class="descclassname">oriole_service.db.</code><code class="descname">Rs</code><span class="sig-paren">(</span><em>uri='datasets'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/db.html#Rs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.db.Rs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">nameko.extensions.DependencyProvider</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">nameko.extensions.DependencyProvider</span></code></p>
 <dl class="method">
 <dt id="oriole_service.db.Rs.get_dependency">
 <code class="descname">get_dependency</code><span class="sig-paren">(</span><em>worker_ctx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/db.html#Rs.get_dependency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.db.Rs.get_dependency" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Called before worker execution. A DependencyProvider should return
+an object to be injected into the worker instance by the container.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="oriole_service.db.Rs.setup">
 <code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/db.html#Rs.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.db.Rs.setup" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Called on bound Extensions before the container starts.</p>
+<p>Extensions should do any required initialisation here.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -249,7 +260,7 @@
 <dl class="class">
 <dt id="oriole_service.ext.CfExtension">
 <em class="property">class </em><code class="descclassname">oriole_service.ext.</code><code class="descname">CfExtension</code><span class="sig-paren">(</span><em>env</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/ext.html#CfExtension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.ext.CfExtension" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">jinja2.ext.Extension</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">jinja2.ext.Extension</span></code></p>
 <p>Restore configuration.</p>
 <dl class="attribute">
 <dt id="oriole_service.ext.CfExtension.identifier">
@@ -264,16 +275,20 @@
 <dl class="class">
 <dt id="oriole_service.log.Log">
 <em class="property">class </em><code class="descclassname">oriole_service.log.</code><code class="descname">Log</code><span class="sig-paren">(</span><em>module=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/log.html#Log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.log.Log" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">nameko.extensions.DependencyProvider</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">nameko.extensions.DependencyProvider</span></code></p>
 <dl class="method">
 <dt id="oriole_service.log.Log.get_dependency">
 <code class="descname">get_dependency</code><span class="sig-paren">(</span><em>worker_ctx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/log.html#Log.get_dependency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.log.Log.get_dependency" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Called before worker execution. A DependencyProvider should return
+an object to be injected into the worker instance by the container.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="oriole_service.log.Log.setup">
 <code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/oriole_service/log.html#Log.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#oriole_service.log.Log.setup" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Called on bound Extensions before the container starts.</p>
+<p>Extensions should do any required initialisation here.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -357,7 +372,7 @@
           
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Eric.Zhou.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.1.
     </div>
         </div>
         <div class="clearer"></div>

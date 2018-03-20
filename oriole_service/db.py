@@ -33,10 +33,6 @@ class Db(DependencyProvider):
         self.bind = get_engine(self.container.config.get(self.uri))
         self.base.metadata.create_all(self.bind)
 
-    def stop(self):
-        self.bind.dispose()
-        del self.bind
-
     def get_dependency(self, worker_ctx):
         session = get_session(self.bind)
         self.dbs[worker_ctx] = session

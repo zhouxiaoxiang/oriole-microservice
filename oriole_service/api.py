@@ -96,17 +96,19 @@ def get_all_available_services(all, services_all):
 def run(service):
     try:
         chdir(get_path("%s.py" % service, "services"))
-        exe(_SERVICE_EX % (service, get_loc()))
     except:
         raise RuntimeError(_SERVICE_PY)
+    else:
+        exe(_SERVICE_EX % (service, get_loc()))
 
 
 def test(service):
     try:
         chdir(get_path("test_%s.py" % service, "tests"))
-        exe("py.test")
     except:
         raise RuntimeError(_SERVICE_TS)
+    else:
+        exe("py.test")
 
 
 def get_logger():
