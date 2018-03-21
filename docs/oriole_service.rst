@@ -11,64 +11,64 @@ Subpackages
 Submodules
 ----------
 
-oriole\_service.api module
---------------------------
+oriole\_service\.api module
+---------------------------
 
 .. automodule:: oriole_service.api
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole\_service.app module
---------------------------
+oriole\_service\.app module
+---------------------------
 
 .. automodule:: oriole_service.app
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole\_service.cf module
--------------------------
+oriole\_service\.cf module
+--------------------------
 
 .. automodule:: oriole_service.cf
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole\_service.cli module
---------------------------
+oriole\_service\.cli module
+---------------------------
 
 .. automodule:: oriole_service.cli
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole\_service.db module
--------------------------
+oriole\_service\.db module
+--------------------------
 
 .. automodule:: oriole_service.db
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole\_service.ext module
---------------------------
+oriole\_service\.ext module
+---------------------------
 
 .. automodule:: oriole_service.ext
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole\_service.log module
---------------------------
+oriole\_service\.log module
+---------------------------
 
 .. automodule:: oriole_service.log
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole\_service.test module
----------------------------
+oriole\_service\.test module
+----------------------------
 
 .. automodule:: oriole_service.test
     :members:
