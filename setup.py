@@ -11,7 +11,7 @@ with open('README.md') as readme:
 
 setup(
     name='oriole-service',
-    version='12.2.0',
+    version='12.3.0',
     description='Rapidly create services.',
     long_description=readme,
     author='Eric.Zhou',
