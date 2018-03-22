@@ -1,31 +1,17 @@
-#!/usr/bin/env python
-
 import os
-import re
-import sys
-from codecs import open
-from ast import literal_eval
 from setuptools import find_packages, setup
 
-if sys.version_info[:2] < (3, 6):
-    raise RuntimeError('Error: Python < 3.6')
-
-_ver = re.compile(r'__version__\s+=\s+(.+)')
-with open('oriole_service/__init__.py', 'rb') as f:
-    version = str(literal_eval(_ver.search(f.read().decode()).group(1)))
-
 install_requires = [
-    "oriole==6.2.0",
+    "oriole==7.0.0",
     "nameko==2.8.4",
 ]
 
-here = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(here, 'README.md'), 'r', 'utf-8') as handle:
-    readme = handle.read()
+with open('README.md') as readme:
+    readme = readme.read()
 
 setup(
     name='oriole-service',
-    version=version,
+    version='11.0.0',
     description='Rapidly create services.',
     long_description=readme,
     author='Eric.Zhou',

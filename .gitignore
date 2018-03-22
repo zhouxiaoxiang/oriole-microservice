@@ -6,8 +6,8 @@
 *.sublime-*
 .cache
 _py_cache
-
-## Packages
+assets/
+report.html
 *.egg-info
 dist
 .tox

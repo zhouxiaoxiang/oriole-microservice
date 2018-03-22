@@ -4,27 +4,18 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>oriole_service.app &#8212; Oriole-service 11.0.0 documentation</title>
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '11.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
@@ -94,21 +85,21 @@
     <span class="n">name</span> <span class="o">=</span> <span class="n">SUPER_THREAD</span>
 
 <div class="viewcode-block" id="App.init"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.App.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Noop &#39;&#39;&#39;</span></div>
-
+        <span class="sd">&#39;&#39;&#39; Noop &#39;&#39;&#39;</span>
+</div>
 <div class="viewcode-block" id="App.ping"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.App.ping">[docs]</a>    <span class="nd">@rpc</span>
     <span class="k">def</span> <span class="nf">ping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">):</span>
-        <span class="k">return</span> <span class="kc">True</span></div>
-
+        <span class="k">return</span> <span class="kc">True</span>
+</div>
 <div class="viewcode-block" id="App.version"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.App.version">[docs]</a>    <span class="nd">@rpc</span>
     <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ver</span></div>
-
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ver</span>
+</div>
 <div class="viewcode-block" id="App.update_service"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.App.update_service">[docs]</a>    <span class="nd">@timer</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">update_service</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">SUPER_THREAD</span><span class="p">:</span>
-            <span class="n">add_service</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ver</span><span class="p">,</span> <span class="n">get_node</span><span class="p">())</span></div>
-
+            <span class="n">add_service</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ver</span><span class="p">,</span> <span class="n">get_node</span><span class="p">())</span>
+</div>
     <span class="c1">#</span>
     <span class="c1"># These methods are used in services.</span>
     <span class="c1"># NOT use in oriole code anytime.</span>
@@ -180,8 +171,8 @@
 <div class="viewcode-block" id="App.obj2dict"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.App.obj2dict">[docs]</a>    <span class="k">def</span> <span class="nf">obj2dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Don&#39;t use it! &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_oo</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div></div>
-</pre></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_oo</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</pre></div></div></div>
 
           </div>
         </div>
@@ -225,7 +216,7 @@
           
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Eric.Zhou.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.2.
     </div>
         </div>
         <div class="clearer"></div>
