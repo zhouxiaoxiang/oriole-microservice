@@ -27,16 +27,16 @@ from oriole.ops import open_shell
 from oriole.vos import exe, get_config, get_first, get_loc, get_path, sleep, switch_lang
 from oriole.yml import get_yml
 
-_SERVICE_CK = 'Check all online micro services....'
-_SERVICE_NO = 'No online services, Try ls() later.'
-_SERVICE_OK = 'All online services:'
+_SERVICE_CK = '>>> Check online services.......'
+_SERVICE_NO = '>>> No services, Try ls() later.'
+_SERVICE_OK = '>>> Show online micro services:'
+_SERVICE_CF = '>>> Error: correct directory ?'
+_SERVICE_TM = '>>> Error: connection fails.'
+_SERVICE_PY = '>>> Error: wrong service name.'
+_SERVICE_TS = '>>> Error: wrong test name.'
+_SERVICE_PK = '>>> Error: can not kill %s.'
 _SERVICE_CS = '%-30s => %-20s'
 _SERVICE_EX = 'nameko run %s --config %s'
-_SERVICE_CF = 'Error: you must goto correct directory.'
-_SERVICE_TM = 'Error: can not connect to microservice.'
-_SERVICE_PY = 'Error: can not find service in project.'
-_SERVICE_TS = 'Error: can not find test in project.'
-_SERVICE_PK = 'Error: can not kill %s.'
 
 
 def _ls(s, rs, sh):
