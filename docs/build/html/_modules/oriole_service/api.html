@@ -4,22 +4,31 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>oriole_service.api &#8212; Oriole-service 11.0.0 documentation</title>
+    <title>oriole_service.api &#8212; Oriole-service 12.2.0 documentation</title>
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '12.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
-  </head><body>
+  </head>
+  <body>
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="../../index.html">Oriole-service 11.0.0 documentation</a></div>
+          href="../../index.html">Oriole-service 12.2.0 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -67,16 +76,16 @@
 <span class="kn">from</span> <span class="nn">oriole.vos</span> <span class="k">import</span> <span class="n">exe</span><span class="p">,</span> <span class="n">get_config</span><span class="p">,</span> <span class="n">get_first</span><span class="p">,</span> <span class="n">get_loc</span><span class="p">,</span> <span class="n">get_path</span><span class="p">,</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">switch_lang</span>
 <span class="kn">from</span> <span class="nn">oriole.yml</span> <span class="k">import</span> <span class="n">get_yml</span>
 
-<span class="n">_SERVICE_CK</span> <span class="o">=</span> <span class="s1">&#39;Check all online micro services....&#39;</span>
-<span class="n">_SERVICE_NO</span> <span class="o">=</span> <span class="s1">&#39;No online services, Try ls() later.&#39;</span>
-<span class="n">_SERVICE_OK</span> <span class="o">=</span> <span class="s1">&#39;All online services:&#39;</span>
+<span class="n">_SERVICE_CK</span> <span class="o">=</span> <span class="s1">&#39;&gt;&gt;&gt; Check online services.......&#39;</span>
+<span class="n">_SERVICE_NO</span> <span class="o">=</span> <span class="s1">&#39;&gt;&gt;&gt; No services, Try ls() later.&#39;</span>
+<span class="n">_SERVICE_OK</span> <span class="o">=</span> <span class="s1">&#39;&gt;&gt;&gt; Show online micro services:&#39;</span>
+<span class="n">_SERVICE_CF</span> <span class="o">=</span> <span class="s1">&#39;&gt;&gt;&gt; Error: correct directory ?&#39;</span>
+<span class="n">_SERVICE_TM</span> <span class="o">=</span> <span class="s1">&#39;&gt;&gt;&gt; Error: connection fails.&#39;</span>
+<span class="n">_SERVICE_PY</span> <span class="o">=</span> <span class="s1">&#39;&gt;&gt;&gt; Error: wrong service name.&#39;</span>
+<span class="n">_SERVICE_TS</span> <span class="o">=</span> <span class="s1">&#39;&gt;&gt;&gt; Error: wrong test name.&#39;</span>
+<span class="n">_SERVICE_PK</span> <span class="o">=</span> <span class="s1">&#39;&gt;&gt;&gt; Error: can not kill </span><span class="si">%s</span><span class="s1">.&#39;</span>
 <span class="n">_SERVICE_CS</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%-30s</span><span class="s1"> =&gt; </span><span class="si">%-20s</span><span class="s1">&#39;</span>
 <span class="n">_SERVICE_EX</span> <span class="o">=</span> <span class="s1">&#39;nameko run </span><span class="si">%s</span><span class="s1"> --config </span><span class="si">%s</span><span class="s1">&#39;</span>
-<span class="n">_SERVICE_CF</span> <span class="o">=</span> <span class="s1">&#39;Error: you must goto correct directory.&#39;</span>
-<span class="n">_SERVICE_TM</span> <span class="o">=</span> <span class="s1">&#39;Error: can not connect to microservice.&#39;</span>
-<span class="n">_SERVICE_PY</span> <span class="o">=</span> <span class="s1">&#39;Error: can not find service in project.&#39;</span>
-<span class="n">_SERVICE_TS</span> <span class="o">=</span> <span class="s1">&#39;Error: can not find test in project.&#39;</span>
-<span class="n">_SERVICE_PK</span> <span class="o">=</span> <span class="s1">&#39;Error: can not kill </span><span class="si">%s</span><span class="s1">.&#39;</span>
 
 
 <span class="k">def</span> <span class="nf">_ls</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">rs</span><span class="p">,</span> <span class="n">sh</span><span class="p">):</span>
@@ -230,7 +239,7 @@
           
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Eric.Zhou.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
     </div>
         </div>
         <div class="clearer"></div>
