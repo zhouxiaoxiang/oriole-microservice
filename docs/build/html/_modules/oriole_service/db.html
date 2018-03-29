@@ -4,31 +4,22 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>oriole_service.db &#8212; Oriole-service 12.2.0 documentation</title>
+    <title>oriole_service.db &#8212; Oriole-service 12.3.0 documentation</title>
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '12.2.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="../../index.html">Oriole-service 12.2.0 documentation</a></div>
+          href="../../index.html">Oriole-service 12.3.0 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -79,29 +70,29 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dbs</span> <span class="o">=</span> <span class="n">WeakKeyDictionary</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Db.setup"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Db.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span> <span class="o">=</span> <span class="n">get_engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">))</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span> <span class="o">=</span> <span class="n">get_engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Db.get_dependency"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Db.get_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">get_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker_ctx</span><span class="p">):</span>
         <span class="n">session</span> <span class="o">=</span> <span class="n">get_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dbs</span><span class="p">[</span><span class="n">worker_ctx</span><span class="p">]</span> <span class="o">=</span> <span class="n">session</span>
-</div>
-        <span class="k">return</span> <span class="n">session</span>
+
+        <span class="k">return</span> <span class="n">session</span></div>
 
 <div class="viewcode-block" id="Db.worker_teardown"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Db.worker_teardown">[docs]</a>    <span class="k">def</span> <span class="nf">worker_teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker_ctx</span><span class="p">):</span>
-        <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">worker_ctx</span><span class="p">)</span></div></div>
-        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">worker_ctx</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
 
 
 <div class="viewcode-block" id="Rs"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Rs">[docs]</a><span class="k">class</span> <span class="nc">Rs</span><span class="p">(</span><span class="n">DependencyProvider</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="o">=</span><span class="s2">&quot;datasets&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="n">uri</span>
 
-<div class="viewcode-block" id="Rs.setup"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Rs.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rs</span> <span class="o">=</span> <span class="n">get_redis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">))</span>
+<div class="viewcode-block" id="Rs.setup"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Rs.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rs</span> <span class="o">=</span> <span class="n">get_redis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Rs.get_dependency"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Rs.get_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">get_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker_ctx</span><span class="p">):</span></div></div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rs</span>
+<div class="viewcode-block" id="Rs.get_dependency"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.app.Rs.get_dependency">[docs]</a>    <span class="k">def</span> <span class="nf">get_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker_ctx</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rs</span></div></div>
 </pre></div>
 
           </div>
@@ -146,7 +137,7 @@
           
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Eric.Zhou.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.2.
     </div>
         </div>
         <div class="clearer"></div>

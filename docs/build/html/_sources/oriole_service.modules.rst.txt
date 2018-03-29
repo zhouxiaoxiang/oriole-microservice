@@ -1,67 +1,67 @@
-oriole\_service\.modules package
-================================
+oriole\_service.modules package
+===============================
 
 Submodules
 ----------
 
-oriole\_service\.modules\.build module
---------------------------------------
+oriole\_service.modules.build module
+------------------------------------
 
 .. automodule:: oriole_service.modules.build
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole\_service\.modules\.conf module
--------------------------------------
+oriole\_service.modules.conf module
+-----------------------------------
 
 .. automodule:: oriole_service.modules.conf
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole\_service\.modules\.doc module
-------------------------------------
+oriole\_service.modules.doc module
+----------------------------------
 
 .. automodule:: oriole_service.modules.doc
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole\_service\.modules\.halt module
--------------------------------------
+oriole\_service.modules.halt module
+-----------------------------------
 
 .. automodule:: oriole_service.modules.halt
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole\_service\.modules\.i18n module
--------------------------------------
+oriole\_service.modules.i18n module
+-----------------------------------
 
 .. automodule:: oriole_service.modules.i18n
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole\_service\.modules\.run module
-------------------------------------
+oriole\_service.modules.run module
+----------------------------------
 
 .. automodule:: oriole_service.modules.run
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole\_service\.modules\.sh module
------------------------------------
+oriole\_service.modules.sh module
+---------------------------------
 
 .. automodule:: oriole_service.modules.sh
     :members:
     :undoc-members:
     :show-inheritance:
 
-oriole\_service\.modules\.test module
--------------------------------------
+oriole\_service.modules.test module
+-----------------------------------
 
 .. automodule:: oriole_service.modules.test
     :members:

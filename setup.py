@@ -2,18 +2,15 @@ import os
 from setuptools import find_packages, setup
 
 install_requires = [
-    "oriole==7.2.0",
-    "nameko==2.8.4",
+    "oriole>=7.2.0",
+    "nameko>=2.8.4",
 ]
-
-with open('README.md') as readme:
-    readme = readme.read()
 
 setup(
     name='oriole-service',
     version='12.3.0',
     description='Rapidly create services.',
-    long_description=readme,
+    long_description=open('README.md').read(),
     author='Eric.Zhou',
     author_email='xiaoxiang.cn@gmail.com',
     url='https://github.com/zhouxiaoxiang/oriole-service',

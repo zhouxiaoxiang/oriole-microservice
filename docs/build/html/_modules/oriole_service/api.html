@@ -4,31 +4,22 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>oriole_service.api &#8212; Oriole-service 12.2.0 documentation</title>
+    <title>oriole_service.api &#8212; Oriole-service 12.3.0 documentation</title>
     <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '12.2.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="../../index.html">Oriole-service 12.2.0 documentation</a></div>
+          href="../../index.html">Oriole-service 12.3.0 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -115,21 +106,21 @@
     <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">_SERVICE_CF</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">RpcTimeout</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">_SERVICE_TM</span><span class="p">)</span></div>
-
+        <span class="nb">print</span><span class="p">(</span><span class="n">_SERVICE_TM</span><span class="p">)</span>
+</div>
 
 <div class="viewcode-block" id="add_service"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.add_service">[docs]</a><span class="k">def</span> <span class="nf">add_service</span><span class="p">(</span><span class="nb">all</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">expire</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
     <span class="nb">all</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="s1">&#39;services&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
     <span class="nb">all</span><span class="o">.</span><span class="n">expire</span><span class="p">(</span><span class="s1">&#39;services&#39;</span><span class="p">,</span> <span class="n">expire</span><span class="p">)</span>
-    <span class="nb">all</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;services:&#39;</span> <span class="o">+</span> <span class="n">s</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">|</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">expire</span><span class="p">)</span></div>
-
+    <span class="nb">all</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;services:&#39;</span> <span class="o">+</span> <span class="n">s</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">|</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">expire</span><span class="p">)</span>
+</div>
 
 <div class="viewcode-block" id="get_all_services"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_all_services">[docs]</a><span class="k">def</span> <span class="nf">get_all_services</span><span class="p">(</span><span class="nb">all</span><span class="p">):</span>
     <span class="n">services</span> <span class="o">=</span> <span class="nb">all</span><span class="o">.</span><span class="n">smembers</span><span class="p">(</span><span class="s1">&#39;services&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">services</span><span class="p">:</span>
         <span class="n">services</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">services</span><span class="p">}</span>
-        <span class="k">return</span> <span class="n">get_all_available_services</span><span class="p">(</span><span class="nb">all</span><span class="p">,</span> <span class="n">services</span><span class="p">)</span></div>
-
+        <span class="k">return</span> <span class="n">get_all_available_services</span><span class="p">(</span><span class="nb">all</span><span class="p">,</span> <span class="n">services</span><span class="p">)</span>
+</div>
 
 <div class="viewcode-block" id="get_all_available_services"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_all_available_services">[docs]</a><span class="k">def</span> <span class="nf">get_all_available_services</span><span class="p">(</span><span class="nb">all</span><span class="p">,</span> <span class="n">services_all</span><span class="p">):</span>
     <span class="n">services</span> <span class="o">=</span> <span class="p">{}</span>
@@ -139,8 +130,8 @@
         <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
             <span class="n">services</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
 
-    <span class="k">return</span> <span class="n">services</span></div>
-
+    <span class="k">return</span> <span class="n">services</span>
+</div>
 
 <div class="viewcode-block" id="run"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">service</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
@@ -148,8 +139,8 @@
     <span class="k">except</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">_SERVICE_PY</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">exe</span><span class="p">(</span><span class="n">_SERVICE_EX</span> <span class="o">%</span> <span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="n">get_loc</span><span class="p">()))</span></div>
-
+        <span class="n">exe</span><span class="p">(</span><span class="n">_SERVICE_EX</span> <span class="o">%</span> <span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="n">get_loc</span><span class="p">()))</span>
+</div>
 
 <div class="viewcode-block" id="test"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">service</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
@@ -157,16 +148,16 @@
     <span class="k">except</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">_SERVICE_TS</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">exe</span><span class="p">(</span><span class="s2">&quot;py.test&quot;</span><span class="p">)</span></div>
-
+        <span class="n">exe</span><span class="p">(</span><span class="s2">&quot;py.test&quot;</span><span class="p">)</span>
+</div>
 
 <div class="viewcode-block" id="get_logger"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.get_logger">[docs]</a><span class="k">def</span> <span class="nf">get_logger</span><span class="p">():</span>
     <span class="n">cf</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
     <span class="n">level</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;log_level&quot;</span><span class="p">,</span> <span class="s2">&quot;DEBUG&quot;</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;log_name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">logger</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span></div>
-
+    <span class="k">return</span> <span class="n">logger</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span>
+</div>
 
 <div class="viewcode-block" id="halt"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.halt">[docs]</a><span class="k">def</span> <span class="nf">halt</span><span class="p">(</span><span class="n">service</span><span class="p">):</span>
     <span class="n">comm_ps</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ps&quot;</span><span class="p">,</span> <span class="s2">&quot;ax&quot;</span><span class="p">]</span>
@@ -186,16 +177,16 @@
             <span class="n">pid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">get_first</span><span class="p">(</span><span class="n">proc</span><span class="p">))</span>
             <span class="n">exe</span><span class="p">(</span><span class="s2">&quot;kill </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pid</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">_SERVICE_PK</span> <span class="o">%</span> <span class="n">service</span><span class="p">)</span></div>
-
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">_SERVICE_PK</span> <span class="o">%</span> <span class="n">service</span><span class="p">)</span>
+</div>
 
 <div class="viewcode-block" id="change_lang"><a class="viewcode-back" href="../../oriole_service.html#oriole_service.api.change_lang">[docs]</a><span class="k">def</span> <span class="nf">change_lang</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="s1">&#39;zh&#39;</span><span class="p">):</span>
     <span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;i18n&#39;</span>
     <span class="n">i18n_loc</span> <span class="o">=</span> <span class="n">get_loc</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">i18n_loc</span><span class="p">:</span>
         <span class="n">loc</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">i18n_loc</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
-        <span class="n">switch_lang</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span></div>
-</pre></div>
+        <span class="n">switch_lang</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
+</pre></div></div>
 
           </div>
         </div>
@@ -239,7 +230,7 @@
           
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Eric.Zhou.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.2.
     </div>
         </div>
         <div class="clearer"></div>
