@@ -11,3 +11,4 @@ report.html
 *.egg-info
 dist
 .tox
+docs/build

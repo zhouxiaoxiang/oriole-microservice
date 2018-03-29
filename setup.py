@@ -1,4 +1,3 @@
-import os
 from setuptools import find_packages, setup
 
 install_requires = [
@@ -27,7 +26,6 @@ setup(
     license='Apache License, Version 2.0',
     classifiers=[
         "Programming Language :: Python",
-        "Operating System :: MacOS :: MacOS X",
         "Operating System :: POSIX",
         "Programming Language :: Python :: 3.6",
         "Topic :: Internet",
