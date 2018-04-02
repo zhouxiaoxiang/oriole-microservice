@@ -24,7 +24,7 @@ from nameko.standalone.rpc import ClusterRpcProxy as cluster
 from oriole.db import get_redis
 from oriole.log import logger
 from oriole.ops import open_shell
-from oriole.vos import exe, get_config, get_first, get_loc, get_path, sleep, switch_lang
+from oriole.vos import exe, mexe, get_config, get_first, get_loc, get_path, sleep, switch_lang
 from oriole.yml import get_yml
 
 _SERVICE_CK = '>>> Check online services.......'
@@ -48,8 +48,9 @@ def _ls(s, rs, sh):
         print(_SERVICE_NO)
     else:
         print(_SERVICE_OK)
-        for k, v in services.items():
-            print(_SERVICE_CS % (k, v))
+        mexe(lambda n: print(
+            _SERVICE_CS % (n, services.get(n))),
+            sorted(services.keys()))
         sh.update({k: s[k] for k in services.keys()})
 
 
