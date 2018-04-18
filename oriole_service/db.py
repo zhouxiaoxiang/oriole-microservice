@@ -20,7 +20,23 @@ from nameko.extensions import DependencyProvider
 
 from oriole.db import *
 
-Base = declarative_base()
+MyBase = declarative_base()
+
+
+class Base(MyBase):
+    __abstract__ = True
+
+    def __init__(self, **kwargs):
+        for attr in self.__mapper__.column_attrs:
+            key = attr.key
+            if key in kwargs:
+                continue
+
+            val = attr.columns[0].default
+            if val and not callable(val.arg):
+                kwargs[key] = val.arg
+
+        super().__init__(**kwargs)
 
 
 class Db(DependencyProvider):
