@@ -14,8 +14,7 @@
 #    '-------------------------------------------'
 #
 
-from os import chdir
-from os import path
+from os import chdir, path
 from subprocess import PIPE, Popen
 
 from nameko.exceptions import RpcTimeout
@@ -24,12 +23,13 @@ from nameko.standalone.rpc import ClusterRpcProxy as cluster
 from oriole.db import get_redis
 from oriole.log import logger
 from oriole.ops import open_shell
-from oriole.vos import exe, mexe, get_config, get_first, get_loc, get_path, sleep, switch_lang
+from oriole.vos import (exe, get_config, get_first, get_loc, get_node,
+                        get_path, mexe, switch_lang)
 from oriole.yml import get_yml
 
-_SERVICE_CK = '>>> Check online services.......'
-_SERVICE_NO = '>>> No services, Try ls() later.'
-_SERVICE_OK = '>>> Show online micro services:'
+_SERVICE_CK = '>>> Check online services...'
+_SERVICE_NO = '>>> Try ls() to check again.'
+_SERVICE_OK = '>>> Online services:'
 _SERVICE_CF = '>>> Error: correct directory ?'
 _SERVICE_TM = '>>> Error: connection fails.'
 _SERVICE_PY = '>>> Error: wrong service name.'
@@ -41,7 +41,6 @@ _SERVICE_EX = 'nameko run %s --config %s'
 
 def _ls(s, rs, sh):
     print(_SERVICE_CK)
-    sleep(1)
     services = get_all_services(rs)
 
     if not services:
@@ -70,28 +69,29 @@ def remote_test(f, time=5):
         print(_SERVICE_TM)
 
 
-def add_service(all, s, v, n, expire=30):
-    all.sadd('services', s)
-    all.expire('services', expire)
-    all.set('services:' + s, '%s|%s' % (n, v), expire)
+def add_service(rs, service, ver, expire=30):
+    info = '%s|%s' % (get_node(), ver)
+    rs.sadd('services', service)
+    rs.expire('services', expire)
+    rs.set('services:' + service, info, expire)
 
 
-def get_all_services(all):
-    services = all.smembers('services')
+def get_all_services(rs):
+    services = rs.smembers('services')
     if services:
         services = {s.decode() for s in services}
-        return get_all_available_services(all, services)
+        return get_available_services(rs, services)
 
 
-def get_all_available_services(all, services_all):
-    services = {}
+def get_available_services(rs, services):
+    ss = {}
 
-    for s in services_all:
-        v = all.get('services:' + s)
+    for s in services:
+        v = rs.get('services:' + s)
         if v:
-            services[s] = v.decode()
+            ss[s] = v.decode()
 
-    return services
+    return ss
 
 
 def run(service):

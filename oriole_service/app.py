@@ -19,11 +19,11 @@ from datetime import date, datetime
 from decimal import Decimal
 
 from nameko.events import EventDispatcher, event_handler
-from nameko.rpc import RpcProxy, rpc
+from nameko.rpc import RpcProxy, rpc, Rpc
 from nameko.timer import timer
 
 from dao import *
-from oriole.vos import cwd, get_config, service_name, get_node
+from oriole.vos import cwd, get_config, service_name
 from oriole_service import *
 from oriole_service.api import add_service, get_logger, change_lang
 from oriole_service.db import *
@@ -58,7 +58,7 @@ class App:
     @timer(10)
     def update_service(self):
         if self.name != SUPER_THREAD:
-            add_service(self.rs, self.name, self.ver, get_node())
+            add_service(self.rs, self.name, self.ver)
 
     #
     # These methods are used in services.

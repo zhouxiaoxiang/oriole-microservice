@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 install_requires = [
     "oriole>=7.2.0",
-    "nameko>=2.8.4",
+    "nameko==2.9.0",
 ]
 
 setup(
