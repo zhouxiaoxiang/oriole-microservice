@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 install_requires = [
-    "oriole>=7.2.0",
+    "oriole>=9.0.0",
     "nameko==2.9.0",
 ]
 
@@ -28,6 +28,7 @@ setup(
         "Programming Language :: Python",
         "Operating System :: POSIX",
         "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
         "Topic :: Internet",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Intended Audience :: Developers",

@@ -114,10 +114,13 @@ def test(service):
 
 def get_logger():
     cf = get_config()
+    fmt = cf.get(
+        'fmt',
+        '[%(module)s] %(asctime)s %(levelname)-7.7s %(message)s')
+    dfmt = cf.get('dfmt', '%Y-%m-%d %H:%M:%S')
     level = cf.get("log_level", "DEBUG")
-    name = cf.get("log_name", "")
 
-    return logger(name, level)
+    return logger(level, fmt, dfmt)
 
 
 def halt(service):
