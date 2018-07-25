@@ -9,7 +9,7 @@ setup(
     name='oriole-service',
     version='16.0.0',
     description='Rapidly create services.',
-    long_description=open('README.md').read(),
+    long_description=open('README.rst').read(),
     author='Eric.Zhou',
     author_email='xiaoxiang.cn@gmail.com',
     url='https://github.com/zhouxiaoxiang/oriole-service',
