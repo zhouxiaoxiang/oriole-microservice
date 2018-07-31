@@ -31,7 +31,7 @@ class Log(DependencyProvider):
         try:
             self.conn = get_mongo(self.db, self.host)
             self.log = self.conn[self.db][self.tb]
-        except:
+        except Exception:
             raise RuntimeError("Error: Mongo is down.")
 
     def get_dependency(self, worker_ctx):

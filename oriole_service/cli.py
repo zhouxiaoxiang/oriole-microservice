@@ -17,5 +17,6 @@
 from oriole.cli import exec_cli
 from oriole_service.modules import *
 
+
 def main():
     exec_cli(modules)

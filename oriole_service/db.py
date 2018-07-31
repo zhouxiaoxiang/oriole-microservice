@@ -20,6 +20,7 @@ from nameko.extensions import DependencyProvider
 
 from oriole.db import *
 
+
 MyBase = declarative_base()
 
 

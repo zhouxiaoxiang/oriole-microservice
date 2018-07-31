@@ -16,6 +16,7 @@
 
 from oriole.cf import MsConfig
 
+
 # Create configuration for every microservice, not all.
 # Etcd is required, or raise an exception.
 _cf = MsConfig('oriole_service.ext.CfExtension')

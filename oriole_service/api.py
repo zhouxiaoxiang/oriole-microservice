@@ -23,9 +23,9 @@ from nameko.standalone.rpc import ClusterRpcProxy as cluster
 from oriole.db import get_redis
 from oriole.log import logger
 from oriole.ops import open_shell
-from oriole.vos import (exe, get_config, get_first, get_loc, get_node,
-                        get_path, mexe, switch_lang)
+from oriole.vos import exe, get_config, get_first, get_loc, get_node, get_path, mexe, switch_lang
 from oriole.yml import get_yml
+
 
 _SERVICE_CK = '>>> Check online services...'
 _SERVICE_NO = '>>> Try ls() to check again.'
@@ -97,7 +97,7 @@ def get_available_services(rs, services):
 def run(service):
     try:
         chdir(get_path("%s.py" % service, "services"))
-    except:
+    except Exception:
         raise RuntimeError(_SERVICE_PY)
     else:
         exe(_SERVICE_EX % (service, get_loc()))
@@ -106,7 +106,7 @@ def run(service):
 def test(service):
     try:
         chdir(get_path("test_%s.py" % service, "tests"))
-    except:
+    except Exception:
         raise RuntimeError(_SERVICE_TS)
     else:
         exe("py.test")
@@ -140,7 +140,7 @@ def halt(service):
         if proc:
             pid = int(get_first(proc))
             exe("kill %s" % pid)
-    except:
+    except Exception:
         raise RuntimeError(_SERVICE_PK % service)
 
 

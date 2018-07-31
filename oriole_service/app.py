@@ -19,14 +19,15 @@ from datetime import date, datetime
 from decimal import Decimal
 
 from nameko.events import EventDispatcher, event_handler
-from nameko.rpc import RpcProxy, rpc, Rpc
+from nameko.rpc import Rpc, RpcProxy, rpc
 from nameko.timer import timer
 
 from dao import *
 from oriole.vos import cwd, get_config, service_name
 from oriole_service import *
-from oriole_service.api import add_service, get_logger, change_lang
+from oriole_service.api import add_service, change_lang, get_logger
 from oriole_service.db import *
+
 
 change_lang('en')
 SUPER_THREAD = 'super_thread'
@@ -75,7 +76,7 @@ class App:
 
         try:
             return self._params.get(item)
-        except:
+        except Exception:
             raise RuntimeError("Error: Use self._(params) first.")
 
     def _o(self, obj):
@@ -85,7 +86,7 @@ class App:
         When return object from rpc, should always use _o.
         """
 
-        if obj == None:
+        if obj is None:
             return obj
         elif isinstance(obj, Decimal):
             return str(obj)
@@ -113,7 +114,7 @@ class App:
 
                     if not callable(value):
                         result[key] = self._o(value)
-        except:
+        except Exception:
             raise RuntimeError("Error: %s, only support json" % (type(obj)))
 
         return result
