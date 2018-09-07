@@ -61,3 +61,11 @@
   You can run `o s` to do the same thing.
 
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif)
+
+## Make service as docker container
+
+Don't use it if you don't know what docker is.
+
+```
+  o b
+```

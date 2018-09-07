@@ -19,7 +19,6 @@ notifications:
 deploy:
   provider: pypi
   on:
-    tags: true
     repo: zhouxiaoxiang/oriole-service
   distributions: bdist_wheel sdist
   user: zhouxiaoxiang
