@@ -62,10 +62,14 @@
 
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif)
 
-## Make service as docker container
+## Create docker image.
 
-Don't use it if you don't know what docker is.
+Don't use it if you don't know docker at all before.
+
+Create log_service image. 
 
 ```
-  o b
+  o b log
 ```
+
+OK, now you can deploy it into kubernetes.
