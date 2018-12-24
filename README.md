@@ -54,8 +54,6 @@
   o d
 ```
 
-## Publish log service
-
 ## Check online services
 
   You can run `o s` to do the same thing.
