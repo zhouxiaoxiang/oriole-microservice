@@ -41,13 +41,16 @@ class Base(MyBase):
 
 
 class Db(DependencyProvider):
-    def __init__(self, Base, uri="database"):
+    def __init__(self, Base, uri="database", read_only=False):
         self.base = Base
         self.uri = uri
         self.dbs = WeakKeyDictionary()
+        self.read_only = read_only
 
     def setup(self):
         self.bind = get_engine(self.container.config.get(self.uri))
+        if self.read_only:
+            return
         self.base.metadata.create_all(self.bind)
 
     def get_dependency(self, worker_ctx):
