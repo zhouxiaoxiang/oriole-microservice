@@ -27,11 +27,44 @@
 
 ## Add services.cfg
 
-  [services.cfg](https://github.com/zhouxiaoxiang/oriole-service/wiki/services.cfg)
+services.cfg
+
+```
+AMQP_URI:      ${RABBIT:pyamqp://test:test@127.0.0.1}                    
+database:      ${MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
+test_database: ${TEST_MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
+datasets:      ${REDIS:redis://127.0.0.1/0}
+```
+  
+## Add orm
+
+dao/\_\_init\_\_.py
+
+```
+from oriole_service.db import *
+
+class Eric(Base):
+    __tablename__ = 'eric_table'
+    uid = Column(types.Integer(), primary_key=True, autoincrement=True)
+    param = Column(types.Unicode(255), unique=None, default='')
+```
 
 ## Add services/log.py
 
-  [services/log.py](https://github.com/zhouxiaoxiang/oriole-service/wiki/log.py)
+services/log.py
+
+```
+from oriole_service.app import *
+
+class LogService(App):
+    name = service_name(__file__)
+    ver = "1.0.0"
+
+    @rpc
+    def add(self, params={"param": "eric"}):
+        self.log.debug("# %s(%s)" % ("add", params))
+        return self._o(params)
+```
 
 ## Run log service
 ```
