@@ -40,6 +40,7 @@ class App:
     """
 
     db = Db(Base)
+    db2 = Db(Base, 'db2', read_only=True)
     rs = Rs()
     log = get_logger()
     ver = "1.0.0"
