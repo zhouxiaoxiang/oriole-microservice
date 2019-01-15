@@ -1,10 +1,11 @@
 Oriole-Service
 ==============
 
-|image0| |image1|
+` <https://gitter.im/oriole-service/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link>`__
+` <https://travis-ci.org/zhouxiaoxiang/oriole-service>`__
 
 `【Chinese
-readme】 <https://github.com/zhouxiaoxiang/oriole-service/wiki>`__
+readme】 <https://zhouxiaoxiang.top/2019/01/05/微服务快速开发/>`__
 
 `【English
 readme】 <https://github.com/zhouxiaoxiang/oriole-service/blob/master/README.md>`__
@@ -26,72 +27,104 @@ Prerequisites
 
 2. Install oriole-service
 
-   ::
+::
 
-         pip install oriole-service
+     pip install oriole-service
 
 Add services.cfg
 ----------------
 
-`services.cfg <https://github.com/zhouxiaoxiang/oriole-service/wiki/services.cfg>`__
+services.cfg
+
+::
+
+   AMQP_URI:      ${RABBIT:pyamqp://test:test@127.0.0.1}                    
+   database:      ${MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
+   test_database: ${TEST_MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
+   datasets:      ${REDIS:redis://127.0.0.1/0}
+
+Add orm
+-------
+
+dao/__init__.py
+
+::
+
+   from oriole_service.db import *
+
+   class Eric(Base):
+       __tablename__ = 'eric_table'
+       uid = Column(types.Integer(), primary_key=True, autoincrement=True)
+       param = Column(types.Unicode(255), unique=None, default='')
 
 Add services/log.py
 -------------------
 
-`services/log.py <https://github.com/zhouxiaoxiang/oriole-service/wiki/log.py>`__
+services/log.py
+
+::
+
+   from oriole_service.app import *
+
+   class LogService(App):
+       name = service_name(__file__)
+       ver = "1.0.0"
+
+       @rpc
+       def add(self, params={"param": "eric"}):
+           self.log.debug("# %s(%s)" % ("add", params))
+           return self._o(params)
 
 Run log service
 ---------------
 
 ::
 
-      o r log
+     o r log
 
 Run console
 -----------
 
 ::
 
-      o s
+     o s
 
-.. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif
-   :alt: 
+|image0|
 
 Halt log service
 ----------------
 
 ::
 
-      o h log
+     o h log
 
 Create documents.
 -----------------
 
 ::
 
-      o d
-
-Publish log service
--------------------
+     o d
 
 Check online services
 ---------------------
 
  You can run ``o s`` to do the same thing.
 
-.. figure:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif
-   :alt: 
+|image1|
 
-Make service as docker container
---------------------------------
+Create docker image.
+--------------------
 
-Don't use it if you don't know what docker is.
+Don’t use it if you don’t know docker at all before.
+
+Create log_service image.
 
 ::
 
-      o b
+     o b log
 
-.. |image0| image:: https://badges.gitter.im/zhouxiaoxiang/oriole-service.svg
-   :target: https://gitter.im/oriole-service/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link
-.. |image1| image:: https://travis-ci.org/zhouxiaoxiang/oriole-service.svg?branch=master
-   :target: https://travis-ci.org/zhouxiaoxiang/oriole-service
+OK, now you can deploy it into kubernetes.
+
+.. |image0| image:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif
+.. |image1| image:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif
+
