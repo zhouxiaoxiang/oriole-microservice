@@ -1,5 +1,5 @@
 from oriole.vos import set_loc
 
-__version__ = '18.0.0'
+__version__ = '18.1.0'
 
 set_loc()
