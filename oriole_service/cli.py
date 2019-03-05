@@ -19,4 +19,4 @@ from oriole_service.modules import *
 
 
 def main():
-    exec_cli(modules)
+    return exec_cli(modules)

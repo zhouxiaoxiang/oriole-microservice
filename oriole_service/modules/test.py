@@ -19,7 +19,7 @@ from oriole_service import api
 
 
 def main(args):
-    api.test(args.service)
+    return api.test(args.service)
 
 
 def init_parser(parser):

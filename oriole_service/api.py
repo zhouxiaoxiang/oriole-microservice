@@ -109,7 +109,7 @@ def test(service):
     except Exception:
         raise RuntimeError(_SERVICE_TS)
     else:
-        exe("py.test")
+        return exe("py.test").returncode
 
 
 def get_logger():
