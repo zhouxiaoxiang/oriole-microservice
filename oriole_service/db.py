@@ -56,7 +56,6 @@ class Db(DependencyProvider):
     def get_dependency(self, worker_ctx):
         session = get_session(self.bind)
         self.dbs[worker_ctx] = session
-
         return session
 
     def worker_teardown(self, worker_ctx):
@@ -70,6 +69,8 @@ class Rs(DependencyProvider):
 
     def setup(self):
         self.rs = get_redis(self.container.config.get(self.uri))
+        if self.rs:
+            self.rs.current_ms_config = self.container.config
 
     def get_dependency(self, worker_ctx):
         return self.rs

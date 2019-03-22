@@ -49,15 +49,20 @@ class App:
         ''' Noop '''
 
     @rpc
-    def ping(self, name=name):
+    def ms_config(self):
+        if self.name != SUPER_THREAD:
+            return self.rs.current_ms_config
+
+    @rpc
+    def ms_ping(self, name=name):
         return True
 
     @rpc
-    def version(self):
+    def ms_version(self):
         return self.ver
 
     @timer(10)
-    def update_service(self):
+    def ms_update_service(self):
         if self.name != SUPER_THREAD:
             add_service(self.rs, self.name, self.ver)
 
