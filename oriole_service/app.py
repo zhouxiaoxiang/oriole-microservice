@@ -25,7 +25,7 @@ from nameko.timer import timer
 from dao import *
 from oriole.vos import cwd, get_config, service_name
 from oriole_service import *
-from oriole_service.api import add_service, change_lang, get_logger
+from oriole_service.api import add_service, change_lang, get_logger, get_all_services
 from oriole_service.db import *
 
 
@@ -39,14 +39,19 @@ class App:
     As usual, supply mysql and redis.
     """
 
+    ver = "0.0.1"
     db = Db(Base)
     rs = Rs()
     log = get_logger()
-    ver = "1.0.0"
     name = SUPER_THREAD
 
     def init(self):
         ''' Noop '''
+
+    @rpc
+    def ms_services(self):
+        if self.name == SUPER_THREAD:
+            return get_all_services(self.rs)
 
     @rpc
     def ms_config(self):
@@ -54,12 +59,14 @@ class App:
             return self.rs.current_ms_config
 
     @rpc
-    def ms_ping(self, name=name):
-        return True
+    def ms_ping(self):
+        if self.name != SUPER_THREAD:
+            return True
 
     @rpc
     def ms_version(self):
-        return self.ver
+        if self.name != SUPER_THREAD:
+            return self.ver
 
     @timer(10)
     def ms_update_service(self):
