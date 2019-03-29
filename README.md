@@ -30,10 +30,10 @@
 services.cfg
 
 ```
-AMQP_URI:      ${RABBIT:pyamqp://test:test@127.0.0.1}                    
-database:      ${MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
-test_database: ${TEST_MYSQL:mysql://test:test@127.0.0.1/test?charset=utf8}
-datasets:      ${REDIS:redis://127.0.0.1/0}
+AMQP_URI:      pyamqp://test:test@127.0.0.1                  
+database:      mysql://test:test@127.0.0.1/test?charset=utf8
+test_database: mysql://test:test@127.0.0.1/test?charset=utf8
+datasets:      redis://127.0.0.1/0
 ```
   
 ## Add orm
