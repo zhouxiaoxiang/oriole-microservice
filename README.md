@@ -102,5 +102,3 @@ Create log_service image.
 ```
   o b log
 ```
-
-OK, now you can deploy it into kubernetes.
