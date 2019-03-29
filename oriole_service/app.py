@@ -17,6 +17,7 @@
 import copy
 from datetime import date, datetime
 from decimal import Decimal
+from collections import namedtuple
 
 from nameko.events import EventDispatcher, event_handler
 from nameko.rpc import Rpc, RpcProxy, rpc
@@ -78,18 +79,21 @@ class App:
     # NOT use in oriole code anytime.
     #
 
-    def _(self, item):
-        """ Get item from params """
+    def _(self, k, d=None):
+        """ Get items from params """
 
-        if isinstance(item, dict):
-            self._params = copy.deepcopy(item)
+        if isinstance(k, dict):
+            self.ms_params = copy.deepcopy(k)
+            return self.ms_params
 
-            return self._params
-
-        try:
-            return self._params.get(item)
-        except Exception:
+        if not hasattr(self, 'ms_params'):
             raise RuntimeError("Error: Use self._(params) first.")
+
+        if isinstance(k, (list, tuple)):
+            D = namedtuple('D', k)
+            return D(*(self.ms_params.get(v, d) for v in k))
+
+        return self.ms_params.get(k, d)
 
     def _o(self, obj):
         """ Translate object to json.
