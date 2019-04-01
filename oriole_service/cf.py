@@ -15,11 +15,16 @@
 #
 
 from oriole.cf import MsConfig
+from oriole.vos import get_config
 
 
 # Create configuration for every microservice, not all.
-# Etcd is required, or raise an exception.
-_cf = MsConfig('oriole_service.ext.CfExtension')
+try:
+    ms_hosts = get_config('oc.cfg').get('etcds', 'localhost')
+except Exception:
+    ms_hosts = 'localhost'
+
+_cf = MsConfig('oriole_service.ext.CfExtension', ms_hosts=ms_hosts)
 
 # Supply r/w for configuration files.
 write, read = _cf.write, _cf.read
