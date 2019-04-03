@@ -2,7 +2,6 @@ Oriole-Service
 ==============
 
 ` <https://gitter.im/oriole-service/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link>`__
-` <https://travis-ci.org/zhouxiaoxiang/oriole-service>`__
 
 `【Chinese
 readme】 <https://zhouxiaoxiang.top/2019/01/05/微服务快速开发/>`__
@@ -38,7 +37,7 @@ services.cfg
 
 ::
 
-   AMQP_URI:      pyamqp://test:test@127.0.0.1
+   AMQP_URI:      pyamqp://test:test@127.0.0.1                  
    database:      mysql://test:test@127.0.0.1/test?charset=utf8
    test_database: mysql://test:test@127.0.0.1/test?charset=utf8
    datasets:      redis://127.0.0.1/0
