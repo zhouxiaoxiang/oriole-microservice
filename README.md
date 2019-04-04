@@ -12,12 +12,13 @@
 
 1. Install following packages
 
- - python
  - mongodb
  - mysql
  - rabbitmq
  - redis
+ - python3
 
+In ubuntu, you can use apt-get to install.
 Python3 is already installed in Ubuntu.
 
 2. Install oriole-service
@@ -26,8 +27,6 @@ Python3 is already installed in Ubuntu.
 ```
 
 ## Add services.cfg
-
-services.cfg
 
 ```
 AMQP_URI:      pyamqp://test:test@127.0.0.1                  
@@ -51,8 +50,6 @@ class Eric(Base):
 
 ## Add services/log.py
 
-services/log.py
-
 ```
 from oriole_service.app import *
 
@@ -66,29 +63,29 @@ class LogService(App):
         return self._o(params)
 ```
 
-## Run log service
+## run
 ```
   o r log
 ```
 
-## Run console
+## monitor
 ```
   o s
 ```
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif)
 
-## Create documents.
+## document
 ```
   o d
 ```
 
-## Check online services
+## check
 
 Run `o s` to do the same thing.
 
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif)
 
-## Create docker image.
+## Create docker image
 
 DONOT use it if you don't know docker at all before.
 

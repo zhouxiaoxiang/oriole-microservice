@@ -16,13 +16,14 @@ Prerequisites
 
 1. Install following packages
 
--  python
 -  mongodb
 -  mysql
 -  rabbitmq
 -  redis
+-  python3
 
-Python3 is already installed in Ubuntu.
+In ubuntu, you can use apt-get to install. Python3 is already installed
+in Ubuntu.
 
 2. Install oriole-service
 
@@ -32,8 +33,6 @@ Python3 is already installed in Ubuntu.
 
 Add services.cfg
 ----------------
-
-services.cfg
 
 ::
 
@@ -59,8 +58,6 @@ dao/__init__.py
 Add services/log.py
 -------------------
 
-services/log.py
-
 ::
 
    from oriole_service.app import *
@@ -74,15 +71,15 @@ services/log.py
            self.log.debug("# %s(%s)" % ("add", params))
            return self._o(params)
 
-Run log service
----------------
+run
+---
 
 ::
 
      o r log
 
-Run console
------------
+monitor
+-------
 
 ::
 
@@ -90,22 +87,22 @@ Run console
 
 |image0|
 
-Create documents.
------------------
+document
+--------
 
 ::
 
      o d
 
-Check online services
----------------------
+check
+-----
 
 Run ``o s`` to do the same thing.
 
 |image1|
 
-Create docker image.
---------------------
+Create docker image
+-------------------
 
 DONOT use it if you don’t know docker at all before.
 
