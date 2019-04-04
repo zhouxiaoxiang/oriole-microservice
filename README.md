@@ -6,19 +6,19 @@
 
 [【English readme】](https://github.com/zhouxiaoxiang/oriole-service/blob/master/README.md)
 
-[【Code】](https://github.com/zhouxiaoxiang/oriole-service)
-
 **The Zen of oriole: speed defines the winner.**
 
 ## Prerequisites
 
 1. Install following packages
 
- - python >= 3.6
+ - python
  - mongodb
  - mysql
  - rabbitmq
  - redis
+
+Python3 is already installed in Ubuntu.
 
 2. Install oriole-service
 ```
@@ -33,7 +33,7 @@ services.cfg
 AMQP_URI:      pyamqp://test:test@127.0.0.1                  
 database:      mysql://test:test@127.0.0.1/test?charset=utf8
 test_database: mysql://test:test@127.0.0.1/test?charset=utf8
-datasets:      redis://127.0.0.1/0
+datasets:      redis://127.0.0.1
 ```
   
 ## Add orm
@@ -77,11 +77,6 @@ class LogService(App):
 ```
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif)
 
-## Halt log service
-```
-  o h log
-```
-
 ## Create documents.
 ```
   o d
@@ -89,13 +84,13 @@ class LogService(App):
 
 ## Check online services
 
-  You can run `o s` to do the same thing.
+Run `o s` to do the same thing.
 
 ![](https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif)
 
 ## Create docker image.
 
-Don't use it if you don't know docker at all before.
+DONOT use it if you don't know docker at all before.
 
 Create log_service image. 
 
