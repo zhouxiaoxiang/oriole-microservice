@@ -14,17 +14,15 @@
 #    '-------------------------------------------'
 #
 
-import copy
 from datetime import date, datetime
 from decimal import Decimal
-from collections import namedtuple
 
 from nameko.events import EventDispatcher, event_handler
 from nameko.rpc import Rpc, RpcProxy, rpc
 from nameko.timer import timer
 
 from dao import *
-from oriole.vos import cwd, get_config, service_name
+from oriole.vos import cwd, get_config, service_name, _
 from oriole_service import *
 from oriole_service.api import add_service, change_lang, get_logger, get_all_services
 from oriole_service.db import *
@@ -35,10 +33,7 @@ SUPER_THREAD = 'super_thread'
 
 
 class App:
-    """ Connect database
-
-    As usual, supply mysql and redis.
-    """
+    """ Connect database """
 
     ver = "0.0.1"
     db = Db(Base)
@@ -47,7 +42,7 @@ class App:
     name = SUPER_THREAD
 
     def init(self):
-        ''' Noop '''
+        ''' Only for legacy '''
 
     @rpc
     def ms_services(self):
@@ -79,21 +74,7 @@ class App:
     # NOT use in oriole code anytime.
     #
 
-    def _(self, k, d=None):
-        """ Get items from params """
-
-        if isinstance(k, dict):
-            self.ms_params = copy.deepcopy(k)
-            return self.ms_params
-
-        if not hasattr(self, 'ms_params'):
-            raise RuntimeError("Error: Use self._(params) first.")
-
-        if isinstance(k, (list, tuple)):
-            D = namedtuple('D', k)
-            return D(*(self.ms_params.get(v, d) for v in k))
-
-        return self.ms_params.get(k, d)
+    _ = _
 
     def _o(self, obj):
         """ Translate object to json.

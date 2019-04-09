@@ -14,13 +14,12 @@
 #    '-------------------------------------------'
 #
 
-from os import chdir, path
+from os import path
 from subprocess import PIPE, Popen
 
 from nameko.exceptions import RpcTimeout
 from nameko.standalone.rpc import ClusterRpcProxy as cluster
 
-from oriole.db import get_redis
 from oriole.log import logger
 from oriole.ops import open_shell
 from oriole.vos import exe, get_config, get_first, get_loc, get_node, get_path, mexe, switch_lang
@@ -31,13 +30,12 @@ _SERVICE_NO = '>>> Try ls() to check again.'
 _SERVICE_OK = '>>> Online services:'
 _SERVICE_CF = '>>> Error: correct directory ?'
 _SERVICE_TM = '>>> Error: connection fails.'
-_SERVICE_PY = '>>> Error: wrong service name.'
-_SERVICE_TS = '>>> Error: wrong test name.'
 _SERVICE_PK = '>>> Error: can not kill %s.'
 _SERVICE_CS = '%-30s => %-20s'
 _SERVICE_EX = 'nameko run %s --config %s'
 _SERVICE_MQ = 'pyamqp://%s'
 _SERVICE_FT = '[%(module)s] %(asctime)s %(levelname)-7.7s %(message)s'
+
 
 def _ls(s, sh):
     print(_SERVICE_CK)
@@ -74,7 +72,7 @@ def remote_test(fil, server, time=5):
         print(_SERVICE_TM)
 
 
-def add_service(rs, service, ver, expire=30):
+def add_service(rs, service, ver, expire=60):
     info = '%s|%s' % (get_node(), ver)
     rs.sadd('services', service)
     rs.expire('services', expire)
@@ -100,21 +98,12 @@ def get_available_services(rs, services):
 
 
 def run(service):
-    try:
-        chdir(get_path("%s.py" % service, "services"))
-    except Exception:
-        raise RuntimeError(_SERVICE_PY)
-    else:
-        exe(_SERVICE_EX % (service, get_loc()))
+    exe(_SERVICE_EX % (service, get_loc()),
+        get_path("%s.py" % service, "services"))
 
 
 def test(service):
-    try:
-        chdir(get_path("test_%s.py" % service, "tests"))
-    except Exception:
-        raise RuntimeError(_SERVICE_TS)
-    else:
-        return exe("py.test").returncode
+    return exe("py.test", get_path("test_%s.py" % service, "tests")).returncode
 
 
 def get_logger():

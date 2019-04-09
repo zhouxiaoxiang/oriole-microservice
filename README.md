@@ -89,7 +89,7 @@ Run `o s` to do the same thing.
 
 DONOT use it if you don't know docker at all before.
 
-Create log_service image. 
+Create log\_service image.
 
 ```
   o b log

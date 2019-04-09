@@ -3,11 +3,9 @@ Oriole-Service
 
 ` <https://gitter.im/oriole-service/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link>`__
 
-`【Chinese
-readme】 <https://zhouxiaoxiang.top/2019/01/05/微服务快速开发/>`__
+`【Chinese readme】 <https://zhouxiaoxiang.top/2019/01/05/微服务快速开发/>`__
 
-`【English
-readme】 <https://github.com/zhouxiaoxiang/oriole-service/blob/master/README.md>`__
+`【English readme】 <https://github.com/zhouxiaoxiang/oriole-service/blob/master/README.md>`__
 
 **The Zen of oriole: speed defines the winner.**
 
@@ -22,8 +20,8 @@ Prerequisites
 -  redis
 -  python3
 
-In ubuntu, you can use apt-get to install. Python3 is already installed
-in Ubuntu.
+In ubuntu, you can use apt-get to install.
+Python3 is already installed in Ubuntu.
 
 2. Install oriole-service
 

@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 
 install_requires = [
-    "oriole>=10.0.0",
+    "oriole>=14.0.0",
     "nameko==2.11.0",
 ]
 
@@ -19,7 +19,6 @@ setup(
     install_requires=install_requires,
     entry_points={
         'console_scripts': [
-            'oriole=oriole_service.cli:main',
             'o=oriole_service.cli:main',
         ],
     },
@@ -29,7 +28,6 @@ setup(
         "Programming Language :: Python",
         "Operating System :: POSIX",
         "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
         "Topic :: Internet",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Intended Audience :: Developers",
