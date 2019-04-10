@@ -22,7 +22,7 @@ from nameko.standalone.rpc import ClusterRpcProxy as cluster
 
 from oriole.log import logger
 from oriole.ops import open_shell
-from oriole.vos import exe, get_config, get_first, get_loc, get_node, get_path, mexe, switch_lang
+from oriole.vos import exe, get_config, get_first, get_loc, get_path, mexe, switch_lang
 from oriole.yml import get_yml
 
 _SERVICE_CK = '>>> Check online services...'
@@ -70,31 +70,6 @@ def remote_test(fil, server, time=5):
         print(_SERVICE_CF)
     except RpcTimeout:
         print(_SERVICE_TM)
-
-
-def add_service(rs, service, ver, expire=60):
-    info = '%s|%s' % (get_node(), ver)
-    rs.sadd('services', service)
-    rs.expire('services', expire)
-    rs.set('services:' + service, info, expire)
-
-
-def get_all_services(rs):
-    services = rs.smembers('services')
-    if services:
-        services = {s.decode() for s in services}
-        return get_available_services(rs, services)
-
-
-def get_available_services(rs, services):
-    ss = {}
-
-    for s in services:
-        v = rs.get('services:' + s)
-        if v:
-            ss[s] = v.decode()
-
-    return ss
 
 
 def run(service):
