@@ -4,7 +4,7 @@ Oriole-Service
 ` <https://gitter.im/oriole-service/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link>`__
 
 `【Chinese
-readme】 <https://zhouxiaoxiang.top/2019/01/05/microservice/>`__
+readme】 <https://zhouxiaoxiang.top/2019/04/19/microservice/>`__
 
 `【English
 readme】 <https://github.com/zhouxiaoxiang/oriole-service/blob/master/README.md>`__
