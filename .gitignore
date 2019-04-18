@@ -1,0 +1,14 @@
+.DS_Store
+.codeintel
+.coverage
+.DS_Store
+*.pyc
+*.sublime-*
+.cache
+_py_cache
+assets/
+report.html
+*.egg-info
+dist
+.tox
+docs/build

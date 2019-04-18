@@ -1,0 +1,3 @@
+include CHANGES LICENSE README.md README.rst
+graft docs
+global-exclude *.pyc
