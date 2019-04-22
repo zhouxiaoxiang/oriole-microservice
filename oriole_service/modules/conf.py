@@ -15,19 +15,31 @@
 #    '-------------------------------------------'
 #
 
-from oriole_service.cf import write
+from oriole.vos import exe, opath
 
 
 def main(args):
-    write(args.directory, args.outfile, args.infile)
+    exe("oc %s %s %s" % (args.directory, args.outfile, args.infile))
 
 
 def init_parser(parser):
-    parser.add_argument('directory', metavar='directory', nargs='?',
-                        default='/ms/test/', help="server's directory")
+    parser.add_argument(
+        'directory',
+        metavar='directory',
+        nargs='?',
+        default='/ms/test/',
+        help="server's directory")
 
-    parser.add_argument('outfile', metavar='outfile', nargs='?',
-                        default='services.cfg', help="services.cfg")
+    parser.add_argument(
+        'outfile',
+        metavar='outfile',
+        nargs='?',
+        default='services.cfg',
+        help="services.cfg")
 
-    parser.add_argument('infile', metavar='infile', nargs='?',
-                        default='services.in', help="services.in")
+    parser.add_argument(
+        'infile',
+        metavar='infile',
+        nargs='?',
+        default='services.in',
+        help="services.in")
