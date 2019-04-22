@@ -1,8 +1,8 @@
 from setuptools import find_packages, setup
 
 install_requires = [
-    "nameko==2.11.0",
-    "oriole>=16.1.0",
+    "nameko==2.12.0",
+    "oriole>=16.2.0",
 ]
 
 setup(
