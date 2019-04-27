@@ -19,7 +19,7 @@ notifications:
 deploy:
   provider: pypi
   on:
-    repo: zhouxiaoxiang/oriole-service
+    repo: zhouxiaoxiang/oriole-microservice
   distributions: bdist_wheel
   user: zhouxiaoxiang
   password:
