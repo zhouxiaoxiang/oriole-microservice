@@ -22,7 +22,7 @@ from dao import *
 from oriole.fake import fake_db, fake_mongo, fake_redis
 
 
-@fixture
+@yield_fixture
 def app(monkeypatch):
     class _App:
         def __init__(self, fake):
