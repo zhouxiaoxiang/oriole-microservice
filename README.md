@@ -2,9 +2,9 @@
 
 [![](https://badges.gitter.im/zhouxiaoxiang/oriole-service.svg)](https://gitter.im/oriole-service/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
 
-[【Chinese readme】](https://zhouxiaoxiang.top/2019/04/19/microservice/)
+[【Chinese readme】](https://zhouxiaoxiang.top/zh-cn/microservice/)
 
-[【English readme】](https://github.com/zhouxiaoxiang/oriole-service/blob/master/README.md)
+[【English readme】](https://zhouxiaoxiang.top/microservice/)
 
 **The Zen of oriole: speed defines the winner.**
 
