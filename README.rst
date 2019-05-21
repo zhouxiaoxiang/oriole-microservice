@@ -111,6 +111,6 @@ Create log_service image.
 
      o b log
 
-.. |image0| image:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/run.gif
-.. |image1| image:: https://github.com/zhouxiaoxiang/oriole-service/raw/master/docs/check_service.gif
+.. |image0| image:: https://github.com/zhouxiaoxiang/oriole-microservice/raw/master/docs/run.gif
+.. |image1| image:: https://github.com/zhouxiaoxiang/oriole-microservice/raw/master/docs/check_service.gif
 
