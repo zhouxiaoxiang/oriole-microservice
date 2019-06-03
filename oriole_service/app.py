@@ -21,6 +21,7 @@ from decimal import Decimal
 from nameko.events import EventDispatcher, event_handler
 from nameko.rpc import Rpc, RpcProxy, rpc
 from nameko.timer import timer
+from nameko_tracer import Tracer
 
 from dao import *
 from oriole.vos import cwd, get_config, service_name, _, _o, _oo, _ol, _od, obj2dict
@@ -40,6 +41,7 @@ class App:
     rs = Rs()
     log = get_logger()
     name = SUPER_THREAD
+    tracer = Tracer()
 
     def init(self):
         ''' Only for legacy '''
