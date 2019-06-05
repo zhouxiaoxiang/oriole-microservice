@@ -1,0 +1,107 @@
+#!/usr/bin/env perl
+# Name:   Oriole-Flow
+# Author: Eric.Zhou <xiaoxiang.cn@gmail.com>
+# Date:   2018-05-09
+
+use strict;
+use File::Find ();
+use constant { TOOL => "vim" };
+my ( @menu, $num, $ind, @services, @langs );
+
+sub get_list {
+    our ( $dir, $dest ) = @_;
+    our $wanted = sub {
+        my ( $dev, $ino, $mode, $nlink, $uid, $gid );
+        ( ( $dev, $ino, $mode, $nlink, $uid, $gid ) = lstat($_) )
+            && $File::Find::name =~ m,^$dir/.*\z,s
+            && -d _
+            && $File::Find::name =~ s,.*/,,
+            && $File::Find::name !~ m,LC_MESSAGES,
+            && $File::Find::name !~ m,^[_.],
+            && push @$dest, $File::Find::name;
+    };
+
+    File::Find::find( { wanted => $wanted }, "$dir/" );
+}
+
+sub exe {
+    system "@_";
+}
+
+sub input {
+    exe 'stty', '-icanon', '-echo', 'eol', "\001";
+    my $opt = getc;
+    exe 'stty', 'icanon', 'echo', 'eol', '^@';
+    exit if $opt =~ m,q|Q,;
+    return $opt;
+}
+
+sub get_lang {
+    scalar(@langs) == 1 and return $langs[0];
+    for my $lang (@langs) {
+        print "\n$lang(y?)";
+        return $lang if input =~ m,y|Y,;
+    }
+    return "";
+}
+
+sub get_service {
+    scalar(@services) == 1 and return $services[0];
+    for my $service (@services) {
+        print "\n$service(y?)";
+        return $service if input =~ m,y|Y,;
+    }
+}
+
+sub f_doc {
+    exe "o d";
+}
+
+AUTOLOAD {
+    my $loc = our $AUTOLOAD;
+    $loc =~ s,.*::,,;
+
+    if ( $loc eq "e_cfg" ) {
+        exe TOOL, "services.cfg";
+        return;
+    }
+    elsif ( $loc eq "e_dao" ) {
+        exe TOOL, "dao/__init__.py";
+        return;
+    }
+
+    my $service = get_service;
+    my $module  = "$service.py";
+    return unless $service;
+
+    if ( $loc eq "e_srv" ) {
+        exe TOOL, "services/$service/$module";
+        return;
+    }
+    elsif ( $loc eq "e_tst" ) {
+        exe TOOL, "tests/$service/test_$module";
+        return;
+    }
+}
+
+@menu = (
+    [ 'edit config',  \&e_cfg ],
+    [ 'edit data',    \&e_dao ],
+    [ 'edit service', \&e_srv ],
+    [ 'edit test',    \&e_tst ],
+    [ 'create docs',  \&f_doc ],
+);
+
+$num = @menu;
+$ind = $#menu;
+get_list 'services', \@services if -e 'services';
+get_list 'i18n',     \@langs    if -e 'i18n';
+
+while (1) {
+    print("\n");
+    printf "%2d : %s\n", $_ + 1, $menu[$_][0] for ( 0 .. $ind );
+    printf "\n[1-$num] >>> ";
+    my $p = input;
+    print("\n");
+    &{ $menu[ $p - 1 ][1] } if ( $p >= 1 && $p <= $num );
+}
